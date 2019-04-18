@@ -1,0 +1,68 @@
+{
+	"name": "@egjs/flicking-plugins",
+	"version": "3.0.0",
+	"description": "",
+	"module": "./dist/plugins.esm.js",
+	"main": "./dist/plugins.js",
+	"types": "./index.d.ts",
+	"sideEffects": false,
+	"scripts": {
+		"start": "rollup -c -w",
+		"build": "rm -rf ./dist ./declaration && rollup -c && npm run declaration && npm run printsizes",
+		"declaration": "rm -rf declaration && tsc -p tsconfig.declaration.json",
+		"printsizes": "print-sizes ./dist --exclude=\\.map",
+		"lint": "tslint -c tslint.json 'src/**/*.ts'",
+		"jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
+		"release": "release-helper",
+		"demo:build": "npm run build && cpx 'dist/**/*' demo/release/latest/dist --clean",
+		"demo:prebuild-version": "cpx 'dist/**/*' demo/release/$npm_package_version/dist --clean && cpx 'doc/**/*' demo/release/$npm_package_version/doc --clean",
+		"demo:prebuild-latest": "cpx 'dist/**/*' demo/release/latest/dist --clean && cpx 'doc/**/*' demo/release/latest/doc --clean",
+		"demo:init": "npm run build && npm run jsdoc && npm run demo:prebuild-version && npm run demo:prebuild-latest && gh-pages -d demo/ --remote upstream",
+		"demo:deploy": "npm run build && npm run jsdoc && npm run demo:prebuild-version && npm run demo:prebuild-latest && gh-pages -d demo/ --remote upstream --add"
+	},
+	"keywords": [
+		"flicking",
+		"slide",
+		"swipe",
+		"css",
+		"parallax",
+		"fade",
+		"autoplay",
+		"snap",
+		"flick",
+		"egjs",
+		"eg"
+	],
+	"author": {
+		"name": "NAVER Corp."
+	},
+	"namespace": {
+		"eg": "eg"
+	},
+	"homepage": "https://github.com/naver/egjs-flicking-plugins",
+	"license": "MIT <https://github.com/naver/egjs-flicking-plugins>",
+	"bugs": {
+		"url": "https://github.com/naver/egjs-flicking-plugins/issues"
+	},
+	"dependencies": {
+		"@egjs/flicking": "^3.0.0"
+	},
+	"devDependencies": {
+		"@daybrush/jsdoc": "^0.3.7",
+		"@egjs/release-helper": "0.0.3",
+		"cpx": "^1.5.0",
+		"egjs-jsdoc-template": "^1.4.4",
+		"gh-pages": "^2.0.1",
+		"rollup": "^1.6.0",
+		"rollup-plugin-es3": "^1.1.0",
+		"rollup-plugin-node-resolve": "^4.0.1",
+		"rollup-plugin-prototype-minify": "^1.0.5",
+		"rollup-plugin-replace": "^2.1.0",
+		"rollup-plugin-typescript": "^1.0.0",
+		"rollup-plugin-uglify": "^6.0.2",
+		"tslint": "^5.13.1",
+		"tslint-consistent-codestyle": "^1.15.1",
+		"tslint-eslint-rules": "^5.4.0",
+		"typescript": "^3.3.3333"
+	}
+}
