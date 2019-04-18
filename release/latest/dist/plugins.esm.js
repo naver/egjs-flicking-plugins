@@ -4,7 +4,7 @@ Copyright (c) 2017 NAVER Corp.
 @egjs/flicking-plugins project is licensed under the MIT <https://github.com/naver/egjs-flicking-plugins> license
 
 https://github.com/naver/egjs-flicking-plugins
-@version 3.0.0-snapshot
+@version 3.0.0
 */
 /**
  * You can apply parallax effect while panel is moving.
