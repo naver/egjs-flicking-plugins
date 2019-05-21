@@ -17,6 +17,9 @@ class Fade implements Plugin {
     flicking.on("move", this.onMove);
     this.move(flicking);
   }
+  public update(flicking: Flicking): void {
+    this.move(flicking);
+  }
   public destroy(flicking: Flicking): void {
     flicking.off("move", this.onMove);
   }
