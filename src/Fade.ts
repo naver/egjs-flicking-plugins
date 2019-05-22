@@ -30,13 +30,11 @@ class Fade implements Plugin {
 
     panels.forEach(panel => {
       const progress = panel.getOutsetProgress();
+      const el = panel.getElement();
+      const target = selector ? el.querySelector<HTMLElement>(selector)! : el;
+      const opacity = Math.min(1, Math.max(0, (1 - Math.abs(progress * scale))));
 
-      panel.update(el => {
-        const target = selector ? el.querySelector<HTMLElement>(selector)! : el;
-        const opacity = Math.min(1, Math.max(0, (1 - Math.abs(progress * scale))));
-
-        target.style.opacity = `${opacity}`;
-      });
+      target.style.opacity = `${opacity}`;
     });
   }
 }

@@ -28,18 +28,16 @@ class Parallax implements Plugin {
 
     panels.forEach(panel => {
       const progress = panel.getOutsetProgress();
+      const el = panel.getElement();
+      const target = el.querySelector<HTMLElement>(this.selector)!;
+      const parentTarget = target.parentNode as Element;
+      const rect = target.getBoundingClientRect();
+      const parentRect = parentTarget.getBoundingClientRect();
+      const position = (parentRect.width - rect.width) / 2 * progress * this.scale;
+      const transform = `translate(-50%) translate(${position}px)`;
+      const style = target.style;
 
-      panel.update(el => {
-        const target = el.querySelector<HTMLElement>(this.selector)!;
-        const parentTarget = target.parentNode as Element;
-        const rect = target.getBoundingClientRect();
-        const parentRect = parentTarget.getBoundingClientRect();
-        const position = (parentRect.width - rect.width) / 2 * progress * this.scale;
-        const transform = `translate(-50%) translate(${position}px)`;
-        const style = target.style;
-
-        style.cssText += `transform: ${transform};-webkit-transform: ${transform};-ms-transform:${transform}`;
-      });
+      style.cssText += `transform: ${transform};-webkit-transform: ${transform};-ms-transform:${transform}`;
     });
   }
 }
