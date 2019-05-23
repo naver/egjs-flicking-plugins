@@ -46,6 +46,10 @@ function () {
     this.move(flicking);
   };
 
+  __proto.update = function (flicking) {
+    this.move(flicking);
+  };
+
   __proto.destroy = function (flicking) {
     flicking.off("move", this.onMove);
   };
@@ -56,16 +60,15 @@ function () {
     var panels = flicking.getVisiblePanels();
     panels.forEach(function (panel) {
       var progress = panel.getOutsetProgress();
-      panel.update(function (el) {
-        var target = el.querySelector(_this.selector);
-        var parentTarget = target.parentNode;
-        var rect = target.getBoundingClientRect();
-        var parentRect = parentTarget.getBoundingClientRect();
-        var position = (parentRect.width - rect.width) / 2 * progress * _this.scale;
-        var transform = "translate(-50%) translate(" + position + "px)";
-        var style = target.style;
-        style.cssText += "transform: " + transform + ";-webkit-transform: " + transform + ";-ms-transform:" + transform;
-      });
+      var el = panel.getElement();
+      var target = el.querySelector(_this.selector);
+      var parentTarget = target.parentNode;
+      var rect = target.getBoundingClientRect();
+      var parentRect = parentTarget.getBoundingClientRect();
+      var position = (parentRect.width - rect.width) / 2 * progress * _this.scale;
+      var transform = "translate(-50%) translate(" + position + "px)";
+      var style = target.style;
+      style.cssText += "transform: " + transform + ";-webkit-transform: " + transform + ";-ms-transform:" + transform;
     });
   };
 
@@ -112,6 +115,10 @@ function () {
     this.move(flicking);
   };
 
+  __proto.update = function (flicking) {
+    this.move(flicking);
+  };
+
   __proto.destroy = function (flicking) {
     flicking.off("move", this.onMove);
   };
@@ -122,11 +129,10 @@ function () {
     var scale = this.scale;
     panels.forEach(function (panel) {
       var progress = panel.getOutsetProgress();
-      panel.update(function (el) {
-        var target = selector ? el.querySelector(selector) : el;
-        var opacity = Math.min(1, Math.max(0, 1 - Math.abs(progress * scale)));
-        target.style.opacity = "" + opacity;
-      });
+      var el = panel.getElement();
+      var target = selector ? el.querySelector(selector) : el;
+      var opacity = Math.min(1, Math.max(0, 1 - Math.abs(progress * scale)));
+      target.style.opacity = "" + opacity;
     });
   };
 
