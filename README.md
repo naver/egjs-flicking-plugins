@@ -2,8 +2,8 @@
 
 This is plugins for [@egjs/flicking](https://github.com/naver/egjs-flicking)
 
-  - [Fade](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.OpacityEffect.html): Add fade effect attached with flicking interaction.
-  - [Parallax](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.ParallaxEffect.html): Add parallax effect attached with flicking interaction.
+  - [Fade](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.Fade.html): Add fade effect attached with flicking interaction.
+  - [Parallax](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.Parallax.html): Add parallax effect attached with flicking interaction.
   - [AutoPlay](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.AutoPlay.html): Add autoplay to move to the next/previous panel periodically.
 ## How to use
 
