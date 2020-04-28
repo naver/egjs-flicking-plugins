@@ -58,6 +58,7 @@
 		"cpx": "^1.5.0",
 		"egjs-jsdoc-template": "^1.4.4",
 		"gh-pages": "^2.0.1",
+		"print-sizes": "^0.1.0",
 		"tslint": "^5.13.1",
 		"tslint-consistent-codestyle": "^1.15.1",
 		"tslint-eslint-rules": "^5.4.0",
