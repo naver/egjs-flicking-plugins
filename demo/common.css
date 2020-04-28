@@ -1,5 +1,5 @@
 
-.flicking {
+.flick-container {
   width: 500px;
   height: 130px;
   margin: 0px auto;
@@ -7,10 +7,10 @@
   background: rgba(55, 55, 55 0.1);
   border-radius: 5px;
 }
-.flicking .panel {
+.flick-container .panel {
   padding: 5px 10px 5px 0px;
 }
-.flicking .panel:after {
+.flick-container .panel:after {
   content: "";
   position: relative;
   display: block;
@@ -19,18 +19,18 @@
   background: #f55;
   height: 120px
 }
-.flicking .panel:nth-child(5n + 1):after {
+.flick-container .panel:nth-child(5n + 1):after {
   background: #F47071;
 }
-.flicking .panel:nth-child(5n + 2):after {
+.flick-container .panel:nth-child(5n + 2):after {
   background: #F69462;
 }
-.flicking .panel:nth-child(5n + 3):after {
+.flick-container .panel:nth-child(5n + 3):after {
   background: #EDE484;
 }
-.flicking .panel:nth-child(5n + 4):after {
+.flick-container .panel:nth-child(5n + 4):after {
   background: #90F290;
 }
-.flicking .panel:nth-child(5n + 5):after {
+.flick-container .panel:nth-child(5n + 5):after {
   background: #78CAFF;
 }
