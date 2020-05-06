@@ -1,5 +1,4 @@
 import Flicking, { FlickingEvent, Plugin, Direction } from "@egjs/flicking";
-import { merge } from "./utils";
 
 interface AutoPlayOptions {
   duration: number;
@@ -7,6 +6,7 @@ interface AutoPlayOptions {
   stopOnHover: boolean;
 }
 
+// tslint:disable-next-line naming-convention
 const DEFAULT_OPTION: AutoPlayOptions = {
   duration: 2000,
   direction: "NEXT",
@@ -36,20 +36,23 @@ class AutoPlay implements Plugin {
    * @example
    * flicking.addPlugins(new eg.Flicking.plugins.AutoPlay(2000, "NEXT"));
    */
-  constructor(options: Partial<AutoPlayOptions> = DEFAULT_OPTION, _direction: AutoPlayOptions["direction"] = DEFAULT_OPTION.direction) {
+  constructor(options: Partial<AutoPlayOptions> = DEFAULT_OPTION, direction: AutoPlayOptions["direction"] = DEFAULT_OPTION.direction) {
     if (typeof options === "number") {
       // Fallback for previous interface
       this.duration = options as number;
-      this.direction = _direction;
+      this.direction = direction;
       this.stopOnHover = DEFAULT_OPTION.stopOnHover;
       return;
     }
 
-    const mergedOptions = merge({}, DEFAULT_OPTION, options) as AutoPlayOptions;
-    const { duration, direction, stopOnHover } = mergedOptions;
+    const mergedOptions = {
+      ...DEFAULT_OPTION,
+      ...options,
+    } as AutoPlayOptions;
+    const { duration, direction: dir, stopOnHover } = mergedOptions;
 
     this.duration = duration;
-    this.direction = direction;
+    this.direction = dir;
     this.stopOnHover = stopOnHover;
   }
 
@@ -64,8 +67,8 @@ class AutoPlay implements Plugin {
     this.flicking = flicking;
     if (this.stopOnHover) {
       const targetEl = this.flicking.getElement();
-      targetEl.addEventListener("mouseenter", this._onMouseEnter, false);
-      targetEl.addEventListener("mouseleave", this._onMouseLeave, false);
+      targetEl.addEventListener("mouseenter", this.onMouseEnter, false);
+      targetEl.addEventListener("mouseleave", this.onMouseLeave, false);
     }
 
     this.play(flicking);
@@ -80,8 +83,8 @@ class AutoPlay implements Plugin {
     flicking.off("select", this.onPlay);
 
     const targetEl = flicking.getElement();
-    targetEl.removeEventListener("mouseenter", this._onMouseEnter, false);
-    targetEl.removeEventListener("mouseleave", this._onMouseLeave, false);
+    targetEl.removeEventListener("mouseenter", this.onMouseEnter, false);
+    targetEl.removeEventListener("mouseleave", this.onMouseLeave, false);
 
     this.flicking = null;
   }
@@ -104,11 +107,11 @@ class AutoPlay implements Plugin {
     clearTimeout(this.timerId);
   }
 
-  private _onMouseEnter = () => {
+  private onMouseEnter = () => {
     this.onStop();
   }
 
-  private _onMouseLeave = () => {
+  private onMouseLeave = () => {
     this.play(this.flicking!);
   }
 }
