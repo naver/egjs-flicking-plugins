@@ -27,6 +27,7 @@ class AutoPlay implements Plugin {
   /* Internal Values */
   private flicking: Flicking | null = null;
   private timerId = 0;
+  private mouseEntered = false;
 
   /**
    * @param options Options for the AutoPlay instance.<ko>AutoPlay 옵션</ko>
@@ -58,10 +59,10 @@ class AutoPlay implements Plugin {
 
   public init(flicking: Flicking): void {
     flicking.on({
-      move: this.onStop,
-      holdStart: this.onStop,
-      select: this.onPlay,
-      moveEnd: this.onPlay,
+      moveStart: this.stop,
+      holdStart: this.stop,
+      moveEnd: this.play,
+      select: this.play,
     });
 
     this.flicking = flicking;
@@ -71,16 +72,20 @@ class AutoPlay implements Plugin {
       targetEl.addEventListener("mouseleave", this.onMouseLeave, false);
     }
 
-    this.play(flicking);
+    this.play();
   }
 
-  public destroy(flicking: Flicking): void {
-    this.onStop();
+  public destroy(): void {
+    const flicking = this.flicking;
+    this.mouseEntered = false;
+    this.stop();
 
-    flicking.off("moveStart", this.onStop);
-    flicking.off("holdStart", this.onStop);
-    flicking.off("moveEnd", this.onPlay);
-    flicking.off("select", this.onPlay);
+    if (!flicking) return;
+
+    flicking.off("moveStart", this.stop);
+    flicking.off("holdStart", this.stop);
+    flicking.off("moveEnd", this.play);
+    flicking.off("select", this.play);
 
     const targetEl = flicking.getElement();
     targetEl.removeEventListener("mouseenter", this.onMouseEnter, false);
@@ -89,30 +94,33 @@ class AutoPlay implements Plugin {
     this.flicking = null;
   }
 
-  private play(flicking: Flicking) {
-    this.onStop();
+  public play = () => {
+    const flicking = this.flicking;
+    if (!flicking) return;
+
+    this.stop();
+
+    if (this.mouseEntered || flicking.isPlaying()) return;
 
     this.timerId = window.setTimeout(() => {
       flicking[this.direction === "NEXT" ? "next" : "prev"]();
 
-      this.play(flicking);
+      this.play();
     }, this.duration);
   }
 
-  private onPlay = (e: FlickingEvent): void => {
-    this.play(e.currentTarget);
-  }
-
-  private onStop = () => {
+  public stop = () => {
     clearTimeout(this.timerId);
   }
 
   private onMouseEnter = () => {
-    this.onStop();
+    this.mouseEntered = true;
+    this.stop();
   }
 
   private onMouseLeave = () => {
-    this.play(this.flicking!);
+    this.mouseEntered = false;
+    this.play();
   }
 }
 
