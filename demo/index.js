@@ -1,8 +1,17 @@
-const containers = Array.from(document.querySelectorAll(".flick-container"));
-
-const flickings = containers.map(el => new eg.Flicking(el, { circular: true }));
+const flicking = new eg.Flicking("#autoplay", {
+  circular: true,
+});
 
 // AutoPlay
-flickings[0].addPlugins([new eg.Flicking.plugins.AutoPlay({
+const autoplay = new eg.Flicking.plugins.AutoPlay({
   stopOnHover: true
-})])
+});
+flicking.addPlugins([autoplay])
+
+document.getElementById("play").addEventListener("click", () => {
+  autoplay.play();
+});
+
+document.getElementById("stop").addEventListener("click", () => {
+  autoplay.stop();
+});
