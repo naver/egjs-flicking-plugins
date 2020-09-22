@@ -210,21 +210,36 @@ version: 3.2.0
 
       this.flicking = null;
       this.timerId = 0;
+      this.mouseEntered = false;
 
-      this.onPlay = function (e) {
-        _this.play(e.currentTarget);
+      this.play = function () {
+        var flicking = _this.flicking;
+        if (!flicking) return;
+
+        _this.stop();
+
+        if (_this.mouseEntered || flicking.isPlaying()) return;
+        _this.timerId = window.setTimeout(function () {
+          flicking[_this.direction === "NEXT" ? "next" : "prev"]();
+
+          _this.play();
+        }, _this.duration);
       };
 
-      this.onStop = function () {
+      this.stop = function () {
         clearTimeout(_this.timerId);
       };
 
       this.onMouseEnter = function () {
-        _this.onStop();
+        _this.mouseEntered = true;
+
+        _this.stop();
       };
 
       this.onMouseLeave = function () {
-        _this.play(_this.flicking);
+        _this.mouseEntered = false;
+
+        _this.play();
       };
 
       if (typeof options === "number") {
@@ -249,10 +264,10 @@ version: 3.2.0
 
     __proto.init = function (flicking) {
       flicking.on({
-        move: this.onStop,
-        holdStart: this.onStop,
-        select: this.onPlay,
-        moveEnd: this.onPlay
+        moveStart: this.stop,
+        holdStart: this.stop,
+        moveEnd: this.play,
+        select: this.play
       });
       this.flicking = flicking;
 
@@ -262,30 +277,22 @@ version: 3.2.0
         targetEl.addEventListener("mouseleave", this.onMouseLeave, false);
       }
 
-      this.play(flicking);
+      this.play();
     };
 
-    __proto.destroy = function (flicking) {
-      this.onStop();
-      flicking.off("moveStart", this.onStop);
-      flicking.off("holdStart", this.onStop);
-      flicking.off("moveEnd", this.onPlay);
-      flicking.off("select", this.onPlay);
+    __proto.destroy = function () {
+      var flicking = this.flicking;
+      this.mouseEntered = false;
+      this.stop();
+      if (!flicking) return;
+      flicking.off("moveStart", this.stop);
+      flicking.off("holdStart", this.stop);
+      flicking.off("moveEnd", this.play);
+      flicking.off("select", this.play);
       var targetEl = flicking.getElement();
       targetEl.removeEventListener("mouseenter", this.onMouseEnter, false);
       targetEl.removeEventListener("mouseleave", this.onMouseLeave, false);
       this.flicking = null;
-    };
-
-    __proto.play = function (flicking) {
-      var _this = this;
-
-      this.onStop();
-      this.timerId = window.setTimeout(function () {
-        flicking[_this.direction === "NEXT" ? "next" : "prev"]();
-
-        _this.play(flicking);
-      }, this.duration);
     };
 
     return AutoPlay;
