@@ -17,8 +17,8 @@
 		"demo:build": "npm run build && cpx 'dist/**/*' demo/release/latest/dist --clean",
 		"demo:prebuild-version": "cpx 'dist/**/*' demo/release/$npm_package_version/dist --clean && cpx 'doc/**/*' demo/release/$npm_package_version/doc --clean",
 		"demo:prebuild-latest": "cpx 'dist/**/*' demo/release/latest/dist --clean && cpx 'doc/**/*' demo/release/latest/doc --clean",
-		"demo:init": "npm run build && npm run jsdoc && npm run demo:prebuild-version && npm run demo:prebuild-latest && gh-pages -d demo/ --remote upstream",
-		"demo:deploy": "echo \"We have no demos to deploy on this repository, skipping.\""
+    "demo:predeploy": "npm run build && npm run jsdoc && npm run demo:prebuild-version && npm run demo:prebuild-latest",
+		"demo:deploy": "npm run demo:predeploy && gh-pages -a -d demo/ --remote upstream"
 	},
 	"keywords": [
 		"flicking",
