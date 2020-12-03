@@ -2,12 +2,11 @@ language: node_js
 node_js:
   - "10"
 dist: trusty # needs Ubuntu Trusty
-sudo: false  # no need for virtualization
+sudo: required
 before_install:
   - npm install -g npm@latest
 install:
   - npm ci
-sudo: required
 addons:
   chrome: stable # install chrome stable
 cache:

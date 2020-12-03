@@ -1,4 +1,4 @@
-# @egjs/flicking-plugins [![version][badge-version]][link-version]
+# @egjs/flicking-plugins [![version][badge-version]][link-version] <a href="https://travis-ci.org/naver/egjs-flicking-plugins" target="_blank"><img alt="Travis (.org)" src="https://img.shields.io/travis/naver/egjs-flicking-plugins.svg?style=flat-square&label=build&logo=travis%20ci" /></a> [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-flicking-plugins/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-flicking-plugins?branch=master)
 
 This is plugins for [@egjs/flicking](https://github.com/naver/egjs-flicking)
 
