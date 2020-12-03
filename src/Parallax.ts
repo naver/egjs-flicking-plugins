@@ -32,7 +32,7 @@ class Parallax implements Plugin {
     panels.forEach(panel => {
       const progress = panel.getOutsetProgress();
       const el = panel.getElement();
-      const target = el.querySelector<HTMLElement>(this.selector)!;
+      const target = this.selector ? el.querySelector<HTMLElement>(this.selector)! : el;
       const parentTarget = target.parentNode as Element;
       const rect = target.getBoundingClientRect();
       const parentRect = parentTarget.getBoundingClientRect();

@@ -1,4 +1,4 @@
-import Flicking, { FlickingEvent, Plugin, Direction } from "@egjs/flicking";
+import Flicking, { Plugin, Direction } from "@egjs/flicking";
 
 interface AutoPlayOptions {
   duration: number;
@@ -80,7 +80,9 @@ class AutoPlay implements Plugin {
     this.mouseEntered = false;
     this.stop();
 
-    if (!flicking) return;
+    if (!flicking) {
+      return;
+    }
 
     flicking.off("moveStart", this.stop);
     flicking.off("holdStart", this.stop);
@@ -96,11 +98,15 @@ class AutoPlay implements Plugin {
 
   public play = () => {
     const flicking = this.flicking;
-    if (!flicking) return;
+    if (!flicking) {
+      return;
+    }
 
     this.stop();
 
-    if (this.mouseEntered || flicking.isPlaying()) return;
+    if (this.mouseEntered || flicking.isPlaying()) {
+      return;
+    }
 
     this.timerId = window.setTimeout(() => {
       flicking[this.direction === "NEXT" ? "next" : "prev"]();
