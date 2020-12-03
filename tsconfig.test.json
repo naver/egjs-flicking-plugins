@@ -4,6 +4,8 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "experimentalDecorators": true,
     "types": [
       "karma-chai",
       "mocha",
