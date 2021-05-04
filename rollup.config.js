@@ -1,8 +1,8 @@
 const buildHelper = require("@egjs/build-helper");
 const external = {
-	"@egjs/flicking": "eg.Flicking",
+	"@egjs/flicking": "Flicking"
 }
-const name = "eg.Flicking.plugins";
+const name = "Flicking.Plugins";
 
 export default buildHelper([
 		{
@@ -11,7 +11,7 @@ export default buildHelper([
       output: "./dist/plugins.js",
       format: "umd",
 			external,
-			exports: "named",
+			exports: "named"
     },
     {
       name,
@@ -20,14 +20,14 @@ export default buildHelper([
       format: "umd",
       uglify: true,
 			external,
-			exports: "named",
+			exports: "named"
     },
     {
       input: "./src/index.ts",
       output: "./dist/plugins.esm.js",
       format: "esm",
       external,
-      exports: "named",
-    },
+      exports: "named"
+    }
 ]);
 

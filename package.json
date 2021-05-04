@@ -1,6 +1,6 @@
 {
 	"name": "@egjs/flicking-plugins",
-	"version": "3.3.0-snapshot",
+	"version": "4.0.0-beta.1",
 	"description": "",
 	"module": "./dist/plugins.esm.js",
 	"main": "./dist/plugins.js",
@@ -11,7 +11,7 @@
 		"build": "rm -rf ./dist ./declaration && rollup -c && npm run declaration && npm run printsizes",
 		"declaration": "rm -rf declaration && tsc -p tsconfig.declaration.json",
 		"printsizes": "print-sizes ./dist --exclude=\\.map",
-		"lint": "tslint -c tslint.json 'src/**/*.ts'",
+		"lint": "eslint 'src/**/*.ts'",
 		"jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
 		"release": "release-helper",
 		"test": "karma start",
@@ -53,7 +53,7 @@
 		"url": "https://github.com/naver/egjs-flicking-plugins/issues"
 	},
 	"dependencies": {
-		"@egjs/flicking": "^3.1.1"
+		"@egjs/flicking": "^4.0.0-beta.4"
 	},
 	"devDependencies": {
 		"@daybrush/jsdoc": "^0.3.7",
@@ -64,10 +64,17 @@
 		"@types/mocha": "^5.2.5",
 		"@types/node": "^14.0.27",
 		"@types/sinon": "^7.0.3",
+		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/eslint-plugin-tslint": "^4.22.0",
+		"@typescript-eslint/parser": "^4.22.0",
 		"chai": "^4.2.0",
 		"coveralls": "^3.1.0",
 		"cpx": "^1.5.0",
 		"egjs-jsdoc-template": "^1.4.4",
+		"eslint": "^7.25.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-jsdoc": "^33.0.0",
+		"eslint-plugin-prefer-arrow": "^1.2.3",
 		"gh-pages": "^2.0.1",
 		"karma": "^3.1.4",
 		"karma-chai": "^0.1.0",
@@ -82,8 +89,6 @@
 		"print-sizes": "^0.1.0",
 		"sinon": "^7.2.3",
 		"tslint": "^5.13.1",
-		"tslint-consistent-codestyle": "^1.15.1",
-		"tslint-eslint-rules": "^5.4.0",
-		"typescript": "^3.3.3333"
+		"typescript": "^4.2.3"
 	}
 }
