@@ -1,4 +1,4 @@
-import Flicking, { Plugin, DIRECTION } from "@egjs/flicking";
+import Flicking, { EVENTS, Plugin, DIRECTION } from "@egjs/flicking";
 
 interface AutoPlayOptions {
   duration: number;
@@ -54,10 +54,10 @@ class AutoPlay implements Plugin {
     }
 
     flicking.on({
-      moveStart: this.stop,
-      holdStart: this.stop,
-      moveEnd: this.play,
-      select: this.play
+      [EVENTS.MOVE_START]: this.stop,
+      [EVENTS.HOLD_START]: this.stop,
+      [EVENTS.MOVE_END]: this.play,
+      [EVENTS.SELECT]: this.play
     });
 
     this._flicking = flicking;
@@ -80,10 +80,10 @@ class AutoPlay implements Plugin {
       return;
     }
 
-    flicking.off("moveStart", this.stop);
-    flicking.off("holdStart", this.stop);
-    flicking.off("moveEnd", this.play);
-    flicking.off("select", this.play);
+    flicking.off(EVENTS.MOVE_START, this.stop);
+    flicking.off(EVENTS.HOLD_START, this.stop);
+    flicking.off(EVENTS.MOVE_END, this.play);
+    flicking.off(EVENTS.SELECT, this.play);
 
     const targetEl = flicking.element;
     targetEl.removeEventListener("mouseenter", this._onMouseEnter, false);

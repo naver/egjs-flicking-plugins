@@ -1,4 +1,4 @@
-import Flicking, { Plugin } from "@egjs/flicking";
+import Flicking, { EVENTS, Plugin } from "@egjs/flicking";
 
 /**
  * You can apply fade in / out effect while panel is moving.
@@ -37,20 +37,21 @@ class Fade implements Plugin {
 
     this._flicking = flicking;
 
-    flicking.on("move", this._onMove);
-    this._onMove();
-  }
-
-  public update(): void {
+    flicking.on(EVENTS.MOVE, this._onMove);
+    flicking.on(EVENTS.AFTER_RESIZE, this.update);
     this._onMove();
   }
 
   public destroy(): void {
     if (!this._flicking) return;
 
-    this._flicking.off("move", this._onMove);
+    this._flicking.off(EVENTS.MOVE, this._onMove);
     this._flicking = null;
   }
+
+  public update = (): void => {
+    this._onMove();
+  };
 
   private _onMove = (): void => {
     const flicking = this._flicking;
