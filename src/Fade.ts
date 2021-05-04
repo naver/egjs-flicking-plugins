@@ -12,6 +12,12 @@ class Fade implements Plugin {
   private _selector: string;
   private _scale: number;
 
+  public get selector() { return this._selector; }
+  public get scale() { return this._scale}
+
+  public set selector(val: string) { this._selector = val; }
+  public set scale(val: number) { this._scale = val; }
+
   /**
    * @param - The selector of the element to which the fade effect is to be applied. If the selector is blank, it applies to panel element. <ko>Fade 효과를 적용할 대상의 선택자. 선택자가 공백이면 패널 엘리먼트에 적용된다.</ko>
    * @param - Effect amplication scale<ko>효과 증폭도</ko>

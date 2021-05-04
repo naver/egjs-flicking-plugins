@@ -12,6 +12,12 @@ class Parallax implements Plugin {
   private _selector: string;
   private _scale: number;
 
+  public get selector() { return this._selector; }
+  public get scale() { return this._scale}
+
+  public set selector(val: string) { this._selector = val; }
+  public set scale(val: number) { this._scale = val; }
+
   /**
    * @param {string} selector Selector of the element to apply parallax effect<ko> Parallax 효과를 적용할 엘리먼트의 선택자 </ko>
    * @param {number} scale Effect amplication scale<ko>효과 증폭도</ko>

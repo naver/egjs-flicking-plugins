@@ -22,6 +22,14 @@ class AutoPlay implements Plugin {
   private _timerId = 0;
   private _mouseEntered = false;
 
+  public get duration() { return this._duration; }
+  public get direction() { return this._direction; }
+  public get stopOnHover() { return this._stopOnHover}
+
+  public set duration(val: number) { this._duration = val; }
+  public set direction(val: AutoPlayOptions["direction"]) { this._direction = val; }
+  public set stopOnHover(val: boolean) { this._stopOnHover = val; }
+
   /**
    * @param {AutoPlayOptions} options Options for the AutoPlay instance.<ko>AutoPlay 옵션</ko>
    * @param {number} options.duration Time to wait before moving on to the next panel.<ko>다음 패널로 움직이기까지 대기 시간</ko>
