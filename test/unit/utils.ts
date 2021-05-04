@@ -31,6 +31,20 @@ export function cleanup() {
   });
 }
 
+export const createFlickingFixture = () => {
+  const viewport = document.createElement("div");
+  const camera = document.createElement("div");
+  const panels = [0, 1, 2].map(() => document.createElement("div"));
+
+  viewport.className = "flicking-viewport";
+  camera.className = "flicking-camera";
+
+  viewport.appendChild(camera);
+  panels.forEach(panel => camera.appendChild(panel));
+
+  return viewport
+}
+
 declare var Simulator: any;
 export function simulate(el: HTMLElement, option?: object, time: number = 15000): Promise<void> {
   let targetElement = el.querySelector(".eg-flick-viewport");

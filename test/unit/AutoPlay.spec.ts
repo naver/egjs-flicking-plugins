@@ -1,22 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import Flicking from "@egjs/flicking";
 import * as sinon from "sinon";
+
 import AutoPlay from "../../src/AutoPlay";
-import { tick } from "./utils";
+
+import { createFlickingFixture, tick } from "./utils";
 
 describe("AutoPlay", () => {
   it("can receive older API of receiving duration and direction", () => {
     // Given & When
-    const plugin = new AutoPlay(500 as any, "PREV");
+    const plugin = new AutoPlay({ duration: 500, direction: "PREV" });
 
     // Then
-    expect((plugin as any).duration).to.equal(500);
-    expect((plugin as any).direction).to.equal("PREV");
+    expect(plugin.duration).to.equal(500);
+    expect(plugin.direction).to.equal("PREV");
   });
 
   it("should call play after initializing", () => {
     // Given
     const plugin = new AutoPlay();
-    const flicking = new Flicking(document.createElement("div"));
+    const flicking = new Flicking(createFlickingFixture());
     const playSpy = sinon.spy();
 
     plugin.play = playSpy;
@@ -31,51 +34,51 @@ describe("AutoPlay", () => {
   it("should call Flicking's move method after duration", () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500 });
-    const flicking = new Flicking(document.createElement("div"));
-    const nextSpy = sinon.spy();
+    const flicking = new Flicking(createFlickingFixture());
+    const nextStub = sinon.stub(flicking, "next");
 
-    flicking.next = nextSpy;
+    nextStub.resolves(void 0);
 
     // When
     flicking.addPlugins(plugin);
 
     // Then
-    expect(nextSpy.called).to.be.false;
+    expect(nextStub.called).to.be.false;
     tick(500);
-    expect(nextSpy.calledOnce).to.be.true;
+    expect(nextStub.calledOnce).to.be.true;
   });
 
   it("can stop autoplay if stop is called before duration", () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500 });
-    const flicking = new Flicking(document.createElement("div"));
-    const nextSpy = sinon.spy();
+    const flicking = new Flicking(createFlickingFixture());
+    const nextStub = sinon.stub(flicking, "next");
 
-    flicking.next = nextSpy;
+    nextStub.resolves(void 0);
 
     // When
     flicking.addPlugins(plugin);
 
     // Then
-    expect(nextSpy.called).to.be.false;
+    expect(nextStub.called).to.be.false;
     tick(250);
-    expect(nextSpy.called).to.be.false;
+    expect(nextStub.called).to.be.false;
     plugin.stop();
     tick(500);
-    expect(nextSpy.called).to.be.false;
+    expect(nextStub.called).to.be.false;
   });
 
   it("should call stop if mouse is entered and stopOnHover is true", () => {
     // Given
     const plugin = new AutoPlay({ stopOnHover: true });
-    const flicking = new Flicking(document.createElement("div"));
+    const flicking = new Flicking(createFlickingFixture());
     const stopSpy = sinon.spy();
 
     plugin.stop = stopSpy;
 
     // When
     flicking.addPlugins(plugin);
-    const wrapper = flicking.getElement();
+    const wrapper = flicking.element;
 
     // Then
     expect(stopSpy.calledOnce).to.be.true; // removing previous one
@@ -86,14 +89,14 @@ describe("AutoPlay", () => {
   it("should call play if mouse leaved and stopOnHover is true", () => {
     // Given
     const plugin = new AutoPlay({ stopOnHover: true });
-    const flicking = new Flicking(document.createElement("div"));
+    const flicking = new Flicking(createFlickingFixture());
     const playSpy = sinon.spy();
 
     plugin.play = playSpy;
 
     // When
     flicking.addPlugins(plugin);
-    const wrapper = flicking.getElement();
+    const wrapper = flicking.element;
 
     // Then
     expect(playSpy.calledOnce).to.be.true; // first play call
@@ -104,7 +107,7 @@ describe("AutoPlay", () => {
   it("should detach flicking event handlers when destroyed", () => {
     // Given
     const plugin = new AutoPlay({ stopOnHover: true });
-    const flicking = new Flicking(document.createElement("div"));
+    const flicking = new Flicking(createFlickingFixture());
     const playSpy = sinon.spy();
     const stopSpy = sinon.spy();
 
@@ -117,7 +120,7 @@ describe("AutoPlay", () => {
     playSpy.resetHistory();
     stopSpy.resetHistory();
 
-    flicking.next(500);
+    void flicking.next(500);
     tick(500);
 
     // Then
@@ -128,16 +131,19 @@ describe("AutoPlay", () => {
   it("won't call next if Flicking is already moving", () => {
     // Given
     const plugin = new AutoPlay({ duration: 500, stopOnHover: true });
-    const flicking = new Flicking(document.createElement("div"));
-    const nextSpy = sinon.spy();
+    const flicking = new Flicking(createFlickingFixture());
+    const nextStub = sinon.stub(flicking, "next");
+
+    nextStub.resolves(void 0);
 
     // When
-    flicking.isPlaying = () => true;
-    flicking.next = nextSpy;
+    const animatingStub = sinon.stub(flicking, "animating");
+    animatingStub.get(() => true);
+
     flicking.addPlugins(plugin);
     tick(1000);
 
     // Then
-    expect(nextSpy.called).to.be.false;
+    expect(nextStub.called).to.be.false;
   });
 });

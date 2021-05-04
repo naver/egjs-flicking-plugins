@@ -1,4 +1,5 @@
 import Flicking from "@egjs/flicking";
+
 import Parallax from "../../src/Parallax";
 import { sandbox, cleanup } from "../unit/utils";
 
@@ -7,11 +8,14 @@ describe("Parallax", () => {
 
   beforeEach(() => {
     const wrapper = sandbox("flick");
-    wrapper.style.width = "200px";
+    wrapper.style.width = "199px";
+    wrapper.className = "flicking-viewport";
     wrapper.innerHTML = `
-      <div style="width: 200px; height: 200px;"><p></p></div>
-      <div style="width: 200px; height: 200px;"><p></p></div>
-      <div style="width: 200px; height: 200px;"><p></p></div>
+      <div class="flicking-camera">
+        <div style="width: 200px; height: 200px;"><p></p></div>
+        <div style="width: 200px; height: 200px;"><p></p></div>
+        <div style="width: 200px; height: 200px;"><p></p></div>
+      </div>
     `;
     flicking = new Flicking(wrapper);
   });
@@ -26,9 +30,10 @@ describe("Parallax", () => {
     flicking.addPlugins(new Parallax());
 
     // Then
-    const visiblePanels = flicking.getVisiblePanels();
+    const visiblePanels = flicking.visiblePanels;
+
     visiblePanels.forEach(panel => {
-      expect(panel.getElement().style.transform).not.to.equal("");
+      expect(panel.element.style.transform).not.to.equal("");
     });
   });
 
@@ -37,9 +42,9 @@ describe("Parallax", () => {
     flicking.addPlugins(new Parallax("p"));
 
     // Then
-    const visiblePanels = flicking.getVisiblePanels();
+    const visiblePanels = flicking.visiblePanels;
     visiblePanels.forEach(panel => {
-      expect(panel.getElement().querySelector("p").style.transform).not.to.equal("");
+      expect(panel.element.querySelector("p").style.transform).not.to.equal("");
     });
   });
 
@@ -48,16 +53,16 @@ describe("Parallax", () => {
     flicking.addPlugins(new Parallax());
 
     // Then
-    expect(flicking.getPanel(1).getElement().style.transform).to.equal("");
-    expect(flicking.getPanel(2).getElement().style.transform).to.equal("");
+    expect(flicking.getPanel(1).element.style.transform).to.equal("");
+    expect(flicking.getPanel(2).element.style.transform).to.equal("");
   });
 
   it("should be updated whenever flicking moves", () => {
     // Given & When
     flicking.addPlugins(new Parallax());
-    flicking.moveTo(1, 0);
+    void flicking.moveTo(1, 0);
 
     // Then
-    expect(flicking.getPanel(1).getElement().style.transform).not.to.equal("");
+    expect(flicking.getPanel(1).element.style.transform).not.to.equal("");
   });
 });
