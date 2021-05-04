@@ -1,45 +1,69 @@
-import Flicking, { FlickingEvent, Plugin } from "@egjs/flicking";
+import Flicking, { Plugin } from "@egjs/flicking";
 
 /**
  * You can apply fade in / out effect while panel is moving.
  * @ko 패널들을 움직이면서 fade in / out 효과를 부여할 수 있습니다.
- * @memberof eg.Flicking.plugins
+ * @memberof Flicking.Plugins
  */
 class Fade implements Plugin {
+  private _flicking: Flicking | null;
+
+  /* Options  */
+  private _selector: string;
+  private _scale: number;
+
   /**
    * @param - The selector of the element to which the fade effect is to be applied. If the selector is blank, it applies to panel element. <ko>Fade 효과를 적용할 대상의 선택자. 선택자가 공백이면 패널 엘리먼트에 적용된다.</ko>
-   * @param - Effect amplication scale <ko>효과 증폭도</ko>
+   * @param - Effect amplication scale<ko>효과 증폭도</ko>
    * @example
-   * flicking.addPlugins(new eg.Flicking.plugins.Fade("p", 1));
+   * flicking.addPlugins(new Fade("p", 1));
    */
-  constructor(private selector: string = "", private scale: number = 1) {}
+  public constructor(selector = "", scale = 1) {
+    this._flicking = null;
+    this._selector = selector;
+    this._scale = scale;
+  }
+
   public init(flicking: Flicking): void {
-    flicking.on("move", this.onMove);
-    this.move(flicking);
+    if (this._flicking) {
+      this.destroy();
+    }
+
+    this._flicking = flicking;
+
+    flicking.on("move", this._onMove);
+    this._onMove();
   }
-  public update(flicking: Flicking): void {
-    this.move(flicking);
+
+  public update(): void {
+    this._onMove();
   }
-  public destroy(flicking: Flicking): void {
-    flicking.off("move", this.onMove);
+
+  public destroy(): void {
+    if (!this._flicking) return;
+
+    this._flicking.off("move", this._onMove);
+    this._flicking = null;
   }
-  private onMove = (e: FlickingEvent): void => {
-    this.move(e.currentTarget);
-  }
-  private move(flicking: Flicking): void {
-    const panels = flicking.getVisiblePanels();
-    const selector = this.selector;
-    const scale = this.scale;
+
+  private _onMove = (): void => {
+    const flicking = this._flicking;
+    const selector = this._selector;
+    const scale = this._scale;
+
+    if (!flicking) return;
+
+    const panels = flicking.visiblePanels;
 
     panels.forEach(panel => {
-      const progress = panel.getOutsetProgress();
-      const el = panel.getElement();
+      const progress = panel.outsetProgress;
+      const el = panel.element;
       const target = selector ? el.querySelector<HTMLElement>(selector)! : el;
       const opacity = Math.min(1, Math.max(0, (1 - Math.abs(progress * scale))));
 
       target.style.opacity = `${opacity}`;
     });
-  }
+  };
 }
 
 export default Fade;

@@ -1,83 +1,71 @@
-import Flicking, { Plugin, Direction } from "@egjs/flicking";
+import Flicking, { Plugin, DIRECTION } from "@egjs/flicking";
 
 interface AutoPlayOptions {
   duration: number;
-  direction: Direction[keyof Direction];
+  direction: typeof DIRECTION["NEXT"] | typeof DIRECTION["PREV"];
   stopOnHover: boolean;
 }
-
-// tslint:disable-next-line naming-convention
-const DEFAULT_OPTION: AutoPlayOptions = {
-  duration: 2000,
-  direction: "NEXT",
-  stopOnHover: false,
-};
 
 /**
  * Plugin that allow you to automatically move to the next/previous panel, on a specific time basis
  * @ko 일정 시간마다, 자동으로 다음/이전 패널로 넘어가도록 할 수 있는 플러그인
- * @memberof eg.Flicking.plugins
+ * @memberof Flicking.Plugins
  */
 class AutoPlay implements Plugin {
   /* Options */
-  private duration: AutoPlayOptions["duration"];
-  private direction: AutoPlayOptions["direction"];
-  private stopOnHover: AutoPlayOptions["stopOnHover"];
+  private _duration: AutoPlayOptions["duration"];
+  private _direction: AutoPlayOptions["direction"];
+  private _stopOnHover: AutoPlayOptions["stopOnHover"];
 
   /* Internal Values */
-  private flicking: Flicking | null = null;
-  private timerId = 0;
-  private mouseEntered = false;
+  private _flicking: Flicking | null = null;
+  private _timerId = 0;
+  private _mouseEntered = false;
 
   /**
-   * @param options Options for the AutoPlay instance.<ko>AutoPlay 옵션</ko>
-   * @param options.duration Time to wait before moving on to the next panel.<ko>다음 패널로 움직이기까지 대기 시간</ko>
-   * @param options.direction The direction in which the panel moves.<ko>패널이 움직이는 방향</ko>
-   * @param options.stopOnHover Whether to stop when mouse hover upon the element.<ko>엘리먼트에 마우스를 올렸을 때 AutoPlay를 정지할지 여부</ko>
+   * @param {AutoPlayOptions} options Options for the AutoPlay instance.<ko>AutoPlay 옵션</ko>
+   * @param {number} options.duration Time to wait before moving on to the next panel.<ko>다음 패널로 움직이기까지 대기 시간</ko>
+   * @param {"PREV" | "NEXT"} options.direction The direction in which the panel moves.<ko>패널이 움직이는 방향</ko>
+   * @param {boolean} options.stopOnHover Whether to stop when mouse hover upon the element.<ko>엘리먼트에 마우스를 올렸을 때 AutoPlay를 정지할지 여부</ko>
    * @example
-   * flicking.addPlugins(new eg.Flicking.plugins.AutoPlay(2000, "NEXT"));
+   * flicking.addPlugins(new AutoPlay(2000, "NEXT"));
    */
-  constructor(options: Partial<AutoPlayOptions> = DEFAULT_OPTION, direction: AutoPlayOptions["direction"] = DEFAULT_OPTION.direction) {
-    if (typeof options === "number") {
-      // Fallback for previous interface
-      this.duration = options as number;
-      this.direction = direction;
-      this.stopOnHover = DEFAULT_OPTION.stopOnHover;
-      return;
-    }
-
-    const mergedOptions = {
-      ...DEFAULT_OPTION,
-      ...options,
-    } as AutoPlayOptions;
-    const { duration, direction: dir, stopOnHover } = mergedOptions;
-
-    this.duration = duration;
-    this.direction = dir;
-    this.stopOnHover = stopOnHover;
+  public constructor({
+    duration = 2000,
+    direction = "NEXT",
+    stopOnHover = false
+  }: Partial<AutoPlayOptions> = {}) {
+    this._duration = duration;
+    this._direction = direction;
+    this._stopOnHover = stopOnHover;
   }
 
   public init(flicking: Flicking): void {
+    if (this._flicking) {
+      this.destroy();
+    }
+
     flicking.on({
       moveStart: this.stop,
       holdStart: this.stop,
       moveEnd: this.play,
-      select: this.play,
+      select: this.play
     });
 
-    this.flicking = flicking;
-    if (this.stopOnHover) {
-      const targetEl = this.flicking.getElement();
-      targetEl.addEventListener("mouseenter", this.onMouseEnter, false);
-      targetEl.addEventListener("mouseleave", this.onMouseLeave, false);
+    this._flicking = flicking;
+    if (this._stopOnHover) {
+      const targetEl = this._flicking.element;
+      targetEl.addEventListener("mouseenter", this._onMouseEnter, false);
+      targetEl.addEventListener("mouseleave", this._onMouseLeave, false);
     }
 
     this.play();
   }
 
   public destroy(): void {
-    const flicking = this.flicking;
-    this.mouseEntered = false;
+    const flicking = this._flicking;
+
+    this._mouseEntered = false;
     this.stop();
 
     if (!flicking) {
@@ -89,45 +77,55 @@ class AutoPlay implements Plugin {
     flicking.off("moveEnd", this.play);
     flicking.off("select", this.play);
 
-    const targetEl = flicking.getElement();
-    targetEl.removeEventListener("mouseenter", this.onMouseEnter, false);
-    targetEl.removeEventListener("mouseleave", this.onMouseLeave, false);
+    const targetEl = flicking.element;
+    targetEl.removeEventListener("mouseenter", this._onMouseEnter, false);
+    targetEl.removeEventListener("mouseleave", this._onMouseLeave, false);
 
-    this.flicking = null;
+    this._flicking = null;
+  }
+
+  public update(): void {
+    // DO-NOTHING
   }
 
   public play = () => {
-    const flicking = this.flicking;
+    const flicking = this._flicking;
+    const direction = this._direction;
+
     if (!flicking) {
       return;
     }
 
     this.stop();
 
-    if (this.mouseEntered || flicking.isPlaying()) {
+    if (this._mouseEntered || flicking.animating) {
       return;
     }
 
-    this.timerId = window.setTimeout(() => {
-      flicking[this.direction === "NEXT" ? "next" : "prev"]();
+    this._timerId = window.setTimeout(() => {
+      if (direction === DIRECTION.NEXT) {
+        flicking.next().catch(() => void 0);
+      } else {
+        flicking.prev().catch(() => void 0);
+      }
 
       this.play();
-    }, this.duration);
-  }
+    }, this._duration);
+  };
 
   public stop = () => {
-    clearTimeout(this.timerId);
-  }
+    clearTimeout(this._timerId);
+  };
 
-  private onMouseEnter = () => {
-    this.mouseEntered = true;
+  private _onMouseEnter = () => {
+    this._mouseEntered = true;
     this.stop();
-  }
+  };
 
-  private onMouseLeave = () => {
-    this.mouseEntered = false;
+  private _onMouseLeave = () => {
+    this._mouseEntered = false;
     this.play();
-  }
+  };
 }
 
 export default AutoPlay;
