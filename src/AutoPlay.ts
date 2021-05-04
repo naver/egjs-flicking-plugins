@@ -24,7 +24,7 @@ class AutoPlay implements Plugin {
 
   public get duration() { return this._duration; }
   public get direction() { return this._direction; }
-  public get stopOnHover() { return this._stopOnHover}
+  public get stopOnHover() { return this._stopOnHover; }
 
   public set duration(val: number) { this._duration = val; }
   public set direction(val: AutoPlayOptions["direction"]) { this._direction = val; }
