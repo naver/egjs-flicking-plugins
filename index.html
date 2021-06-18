@@ -2,22 +2,45 @@
 <html>
     <head>
         <title>Flicking plugins test page</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
         <script src="../node_modules/@egjs/flicking/dist/flicking.pkgd.js"></script>
         <script src="../dist/plugins.js"></script>
+        <link rel="stylesheet" href="../node_modules/@egjs/flicking/dist/flicking.css">
         <link rel="stylesheet" href="./common.css">
     </head>
     <body>
         <h1>AutoPlay</h1>
-        <div id="autoplay" class="flick-container">
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
+        <div id="autoplay" class="flick-container flicking-viewport">
+            <div class="flicking-camera">
+                <div class="panel"></div>
+                <div class="panel"></div>
+                <div class="panel"></div>
+                <div class="panel"></div>
+                <div class="panel"></div>
+            </div>
         </div>
         <div>
             <button id="play">Play</button>
             <button id="stop">Stop</button>
+        </div>
+        <div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc orci ante, placerat in nunc vel, cursus laoreet turpis. Quisque elementum turpis eget ligula condimentum gravida. Proin vulputate est arcu. Nunc elementum, massa a tempus dignissim, urna elit porttitor odio, in fringilla dolor metus finibus ante. Morbi sagittis finibus posuere. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut blandit, neque et scelerisque lacinia, libero ipsum dictum massa, eget cursus arcu turpis quis nunc. Proin rhoncus auctor arcu at bibendum. Aenean urna diam, cursus in lacus non, dignissim finibus purus. Nulla semper massa lorem, a elementum eros tempus et. Curabitur quis elit eget lorem bibendum ultrices sodales sit amet risus. Aenean ipsum justo, varius non pharetra eget, fermentum in sapien.
+
+Fusce cursus finibus tellus, at consectetur ligula maximus eget. Nunc faucibus sollicitudin odio ut placerat. Sed et rhoncus diam. Curabitur gravida iaculis tempus. Pellentesque gravida malesuada nulla, blandit consectetur metus convallis in. Etiam vel sodales ipsum, vitae maximus nunc. Mauris a mattis quam. Vestibulum vitae est mauris. In interdum quam lectus, varius tempus magna ultricies ut. Mauris nec est justo. Etiam neque magna, euismod sed erat vitae, sollicitudin tincidunt nisl.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac ex orci. Praesent nec porttitor ex. Ut ut leo faucibus, viverra odio in, ultricies nulla. Duis id lectus sapien. Donec eleifend massa nec urna semper, sit amet accumsan elit eleifend. Nullam tempus dui vitae rhoncus semper. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse vitae erat vitae eros luctus congue vitae at elit. Nam a diam nec turpis consequat sodales. Ut ut semper massa. Aenean a diam eu odio venenatis pellentesque vel non tellus. Nulla augue arcu, placerat et ligula quis, ultrices sodales leo.
+
+Integer nec libero non justo blandit tincidunt vel id odio. Etiam ornare vel metus vitae ullamcorper. Sed porta lacus eget lectus sodales, non cursus nibh posuere. Suspendisse gravida vestibulum lacus, ac pulvinar purus maximus quis. Aliquam consequat lacinia pellentesque. Curabitur non auctor metus, ut sollicitudin ex. Curabitur elit turpis, porta eget magna in, semper lobortis lacus. Mauris aliquet sapien nec turpis euismod, sit amet consequat purus convallis. Aliquam congue magna vel nulla varius, sit amet condimentum nunc dignissim. Morbi malesuada ante finibus posuere tempor. Proin efficitur quam nec lectus consequat, a euismod ex gravida. Aliquam euismod arcu at nibh venenatis interdum. Donec augue nibh, convallis ac luctus quis, luctus sit amet quam. Phasellus dapibus venenatis dui at consequat. Aenean non venenatis lorem, a imperdiet eros. Ut ac diam id nulla placerat dapibus.
+
+Ut non hendrerit quam. Ut eu leo at ex ultrices pretium. Sed nec mauris est. Donec vehicula, nunc non fringilla iaculis, augue nisl pulvinar est, efficitur feugiat erat turpis nec tellus. Nullam condimentum dui sed velit dapibus, ut consectetur enim ornare. Nam sagittis nec massa vel faucibus. Donec vestibulum lobortis turpis, non ullamcorper urna sagittis vel. Phasellus porta orci vel arcu congue, ac aliquam ipsum volutpat. Morbi vel nisi ante. Fusce egestas elit sit amet malesuada placerat. Cras euismod, eros tincidunt aliquet posuere, odio nisi lacinia metus, ut consequat tellus enim nec justo. Nunc iaculis luctus dolor maximus semper. Suspendisse ac nulla ut dui feugiat fringilla.
+        </div>
+
+        <div id="parallax" class="flick-container flicking-viewport">
+            <div class="flicking-camera">
+                <div class="panel"><img src="./img/bg01.jpg" /></div>
+                <div class="panel"><img src="./img/bg02.jpg" /></div>
+                <div class="panel"><img src="./img/bg03.jpg" /></div>
+            </div>
         </div>
         <script src="./index.js"></script>
     </body>
