@@ -1,10 +1,9 @@
 # @egjs/flicking-plugins [![version][badge-version]][link-version] <a href="https://travis-ci.org/naver/egjs-flicking-plugins" target="_blank"><img alt="Travis (.org)" src="https://img.shields.io/travis/naver/egjs-flicking-plugins.svg?style=flat-square&label=build&logo=travis%20ci" /></a> [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-flicking-plugins/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-flicking-plugins?branch=master)
 
-This is plugins for [@egjs/flicking](https://github.com/naver/egjs-flicking)
-
-  - [Fade](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.Fade.html): Add fade effect attached with flicking interaction.
-  - [Parallax](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.Parallax.html): Add parallax effect attached with flicking interaction.
-  - [AutoPlay](https://naver.github.io/egjs-flicking-plugins/release/latest/doc/eg.Flicking.plugins.AutoPlay.html): Add autoplay to move to the next/previous panel periodically.
+Ready to use plugins for [@egjs/flicking](https://github.com/naver/egjs-flicking)
+- [AutoPlay](https://naver.github.io/egjs-flicking/ko/Plugins#autoplay): Add autoplay to move to the next/previous panel periodically.
+- [Parallax](https://naver.github.io/egjs-flicking/ko/Plugins#parallax): Add parallax effect attached with flicking interaction.
+- [Fade](https://naver.github.io/egjs-flicking/ko/Plugins#fade): Add fade effect attached with flicking interaction.
 ## How to use
 
 Using npm:

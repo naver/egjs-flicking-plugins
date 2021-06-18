@@ -1,7 +1,7 @@
 {
 	"name": "@egjs/flicking-plugins",
-	"version": "4.0.0-beta.1",
-	"description": "",
+	"version": "4.0.0",
+	"description": "Ready-to-use plugins for @egjs/flicking",
 	"module": "./dist/plugins.esm.js",
 	"main": "./dist/plugins.js",
 	"types": "./declaration/index.d.ts",
@@ -12,16 +12,15 @@
 		"declaration": "rm -rf declaration && tsc -p tsconfig.declaration.json",
 		"printsizes": "print-sizes ./dist --exclude=\\.map",
 		"lint": "eslint 'src/**/*.ts'",
-		"jsdoc": "rm -rf ./doc && jsdoc -c jsdoc.json",
 		"release": "release-helper",
 		"test": "karma start",
 		"test:chrome": "karma start --chrome",
 		"coverage": "karma start --coverage && print-coveralls --sort=desc",
 		"coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
 		"demo:build": "npm run build && cpx 'dist/**/*' demo/release/latest/dist --clean",
-		"demo:prebuild-version": "cpx 'dist/**/*' demo/release/$npm_package_version/dist --clean && cpx 'doc/**/*' demo/release/$npm_package_version/doc --clean",
-		"demo:prebuild-latest": "cpx 'dist/**/*' demo/release/latest/dist --clean && cpx 'doc/**/*' demo/release/latest/doc --clean",
-		"demo:predeploy": "npm run build && npm run jsdoc && npm run demo:prebuild-version && npm run demo:prebuild-latest",
+		"demo:prebuild-version": "cpx 'dist/**/*' demo/release/$npm_package_version/dist --clean",
+		"demo:prebuild-latest": "cpx 'dist/**/*' demo/release/latest/dist --clean",
+		"demo:predeploy": "npm run build && npm run demo:prebuild-version && npm run demo:prebuild-latest",
 		"demo:deploy": "npm run demo:predeploy && gh-pages -a -d demo/ --remote upstream"
 	},
 	"keywords": [
@@ -48,16 +47,16 @@
 		"url": "https://github.com/naver/egjs-flicking-plugins"
 	},
 	"homepage": "https://github.com/naver/egjs-flicking-plugins",
-	"license": "MIT <https://github.com/naver/egjs-flicking-plugins>",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/naver/egjs-flicking-plugins/issues"
 	},
-	"dependencies": {
-		"@egjs/flicking": "^4.0.0-beta.4"
+	"peerDependencies": {
+		"@egjs/flicking": "~4.0.0"
 	},
 	"devDependencies": {
-		"@daybrush/jsdoc": "^0.3.7",
 		"@egjs/build-helper": "0.0.5",
+		"@egjs/flicking": "^4.0.0",
 		"@egjs/release-helper": "0.0.3",
 		"@types/chai": "^4.0.10",
 		"@types/karma-chai": "^0.1.1",
@@ -70,7 +69,6 @@
 		"chai": "^4.2.0",
 		"coveralls": "^3.1.0",
 		"cpx": "^1.5.0",
-		"egjs-jsdoc-template": "^1.4.4",
 		"eslint": "^7.25.0",
 		"eslint-plugin-import": "^2.22.1",
 		"eslint-plugin-jsdoc": "^33.0.0",

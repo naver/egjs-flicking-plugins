@@ -22,7 +22,9 @@ class Parallax implements Plugin {
    * @param {string} selector Selector of the element to apply parallax effect<ko> Parallax 효과를 적용할 엘리먼트의 선택자 </ko>
    * @param {number} scale Effect amplication scale<ko>효과 증폭도</ko>
    * @example
+   * ```ts
    * flicking.addPlugins(new Parallax("img", 1));
+   * ```
    */
   public constructor(selector = "", scale = 1) {
     this._flicking = null;

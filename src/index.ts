@@ -1,8 +1,8 @@
 /**
- * @namepsace Flicking
+ * @namespace Flicking
  */
 /**
- * @namepsace Flicking.Plugins
+ * @namespace Flicking.Plugins
  */
 import Parallax from "./Parallax";
 import Fade from "./Fade";

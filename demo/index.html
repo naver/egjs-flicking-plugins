@@ -5,16 +5,19 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
         <script src="../node_modules/@egjs/flicking/dist/flicking.pkgd.js"></script>
         <script src="../dist/plugins.js"></script>
+        <link rel="stylesheet" href="../node_modules/@egjs/flicking/dist/flicking.css">
         <link rel="stylesheet" href="./common.css">
     </head>
     <body>
         <h1>AutoPlay</h1>
-        <div id="autoplay" class="flick-container">
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
-            <div class="panel"></div>
+        <div id="autoplay" class="flick-container flicking-viewport">
+            <div class="flicking-camera">
+                <div class="panel"></div>
+                <div class="panel"></div>
+                <div class="panel"></div>
+                <div class="panel"></div>
+                <div class="panel"></div>
+            </div>
         </div>
         <div>
             <button id="play">Play</button>
@@ -30,6 +33,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac ex orci. Pr
 Integer nec libero non justo blandit tincidunt vel id odio. Etiam ornare vel metus vitae ullamcorper. Sed porta lacus eget lectus sodales, non cursus nibh posuere. Suspendisse gravida vestibulum lacus, ac pulvinar purus maximus quis. Aliquam consequat lacinia pellentesque. Curabitur non auctor metus, ut sollicitudin ex. Curabitur elit turpis, porta eget magna in, semper lobortis lacus. Mauris aliquet sapien nec turpis euismod, sit amet consequat purus convallis. Aliquam congue magna vel nulla varius, sit amet condimentum nunc dignissim. Morbi malesuada ante finibus posuere tempor. Proin efficitur quam nec lectus consequat, a euismod ex gravida. Aliquam euismod arcu at nibh venenatis interdum. Donec augue nibh, convallis ac luctus quis, luctus sit amet quam. Phasellus dapibus venenatis dui at consequat. Aenean non venenatis lorem, a imperdiet eros. Ut ac diam id nulla placerat dapibus.
 
 Ut non hendrerit quam. Ut eu leo at ex ultrices pretium. Sed nec mauris est. Donec vehicula, nunc non fringilla iaculis, augue nisl pulvinar est, efficitur feugiat erat turpis nec tellus. Nullam condimentum dui sed velit dapibus, ut consectetur enim ornare. Nam sagittis nec massa vel faucibus. Donec vestibulum lobortis turpis, non ullamcorper urna sagittis vel. Phasellus porta orci vel arcu congue, ac aliquam ipsum volutpat. Morbi vel nisi ante. Fusce egestas elit sit amet malesuada placerat. Cras euismod, eros tincidunt aliquet posuere, odio nisi lacinia metus, ut consequat tellus enim nec justo. Nunc iaculis luctus dolor maximus semper. Suspendisse ac nulla ut dui feugiat fringilla.
+        </div>
+
+        <div id="parallax" class="flick-container flicking-viewport">
+            <div class="flicking-camera">
+                <div class="panel"><img src="./img/bg01.jpg" /></div>
+                <div class="panel"><img src="./img/bg02.jpg" /></div>
+                <div class="panel"><img src="./img/bg03.jpg" /></div>
+            </div>
         </div>
         <script src="./index.js"></script>
     </body>

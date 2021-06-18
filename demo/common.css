@@ -11,10 +11,13 @@ body {
   background: rgba(55, 55, 55 0.1);
   border-radius: 5px;
 }
-.flick-container .panel {
-  padding: 5px 10px 5px 0px;
+#parallax .panel {
+  width: 500px;
+  position: relative;
+  overflow: hidden;
+  margin-right: 10px;
 }
-.flick-container .panel:after {
+#autoplay .panel:after {
   content: "";
   position: relative;
   display: block;
@@ -23,18 +26,26 @@ body {
   background: #f55;
   height: 120px
 }
-.flick-container .panel:nth-child(5n + 1):after {
+#autoplay .panel:nth-child(5n + 1):after {
   background: #F47071;
 }
-.flick-container .panel:nth-child(5n + 2):after {
+#autoplay .panel:nth-child(5n + 2):after {
   background: #F69462;
 }
-.flick-container .panel:nth-child(5n + 3):after {
+#autoplay .panel:nth-child(5n + 3):after {
   background: #EDE484;
 }
-.flick-container .panel:nth-child(5n + 4):after {
+#autoplay .panel:nth-child(5n + 4):after {
   background: #90F290;
 }
-.flick-container .panel:nth-child(5n + 5):after {
+#autoplay .panel:nth-child(5n + 5):after {
   background: #78CAFF;
+}
+.flick-container .panel img {
+  user-select: none;
+  -webkit-user-drag: none;
+  position: absolute;
+  top: -100%;
+  bottom: -100%;
+  left: 50%;
 }

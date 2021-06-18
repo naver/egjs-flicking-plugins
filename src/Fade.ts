@@ -22,7 +22,9 @@ class Fade implements Plugin {
    * @param - The selector of the element to which the fade effect is to be applied. If the selector is blank, it applies to panel element. <ko>Fade 효과를 적용할 대상의 선택자. 선택자가 공백이면 패널 엘리먼트에 적용된다.</ko>
    * @param - Effect amplication scale<ko>효과 증폭도</ko>
    * @example
+   * ```ts
    * flicking.addPlugins(new Fade("p", 1));
+   * ```
    */
   public constructor(selector = "", scale = 1) {
     this._flicking = null;

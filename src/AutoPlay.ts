@@ -36,11 +36,13 @@ class AutoPlay implements Plugin {
    * @param {"PREV" | "NEXT"} options.direction The direction in which the panel moves.<ko>패널이 움직이는 방향</ko>
    * @param {boolean} options.stopOnHover Whether to stop when mouse hover upon the element.<ko>엘리먼트에 마우스를 올렸을 때 AutoPlay를 정지할지 여부</ko>
    * @example
-   * flicking.addPlugins(new AutoPlay(2000, "NEXT"));
+   * ```ts
+   * flicking.addPlugins(new AutoPlay({ duration: 2000, direction: "NEXT" }));
+   * ```
    */
   public constructor({
     duration = 2000,
-    direction = "NEXT",
+    direction = DIRECTION.NEXT,
     stopOnHover = false
   }: Partial<AutoPlayOptions> = {}) {
     this._duration = duration;

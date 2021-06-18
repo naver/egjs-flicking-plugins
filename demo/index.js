@@ -1,12 +1,12 @@
-const flicking = new eg.Flicking("#autoplay", {
-  circular: true,
+const flicking = new Flicking("#autoplay", {
+  circular: true
 });
 
 // AutoPlay
-const autoplay = new eg.Flicking.plugins.AutoPlay({
+const autoplay = new Flicking.Plugins.AutoPlay({
   stopOnHover: true
 });
-flicking.addPlugins([autoplay])
+flicking.addPlugins(autoplay)
 
 document.getElementById("play").addEventListener("click", () => {
   autoplay.play();
@@ -15,3 +15,9 @@ document.getElementById("play").addEventListener("click", () => {
 document.getElementById("stop").addEventListener("click", () => {
   autoplay.stop();
 });
+
+const flicking2 = new Flicking("#parallax", {
+  circular: true
+});
+
+flicking2.addPlugins(new Flicking.Plugins.Parallax("img"));
