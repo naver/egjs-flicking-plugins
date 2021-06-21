@@ -1,0 +1,63 @@
+.flicking-arrow-prev,
+.flicking-arrow-next {
+  position: absolute;
+  top: 50%;
+  width: 34px;
+  height: 52px;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.flicking-arrow-prev {
+  left: 0;
+}
+.flicking-arrow-next {
+  right: 0;
+}
+
+.flicking-arrow-prev::before,
+.flicking-arrow-prev::after,
+.flicking-arrow-next::before,
+.flicking-arrow-next::after {
+  content: "";
+  width: 36px;
+  height: 6px;
+  position: absolute;
+  background-color: black;
+}
+.flicking-arrow-prev::before {
+  top: 50%;
+  left: 5px;
+  transform: rotate(-45deg);
+  transform-origin: 0% 50%;
+}
+.flicking-arrow-prev::after {
+  top: calc(50% - 4px);
+  left: 5px;
+  transform: rotate(45deg);
+  transform-origin: 0% 50%;
+}
+.flicking-arrow-next::before {
+  top: 50%;
+  right: 5px;
+  transform: rotate(45deg);
+  transform-origin: 100% 50%;
+}
+.flicking-arrow-next::after {
+  top: calc(50% - 4px);
+  right: 5px;
+  transform: rotate(-45deg);
+  transform-origin: 100% 50%;
+}
+
+.flicking-arrow-prev.disabled,
+.flicking-arrow-next.disabled {
+  cursor: default;
+}
+
+.flicking-arrow-prev.disabled::before,
+.flicking-arrow-prev.disabled::after,
+.flicking-arrow-next.disabled::before,
+.flicking-arrow-next.disabled::after {
+  background-color: grey;
+}
