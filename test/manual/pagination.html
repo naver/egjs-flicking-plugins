@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+        <script src="../../node_modules/@egjs/flicking/dist/flicking.pkgd.js"></script>
+        <script src="../../dist/plugins.js"></script>
+        <link rel="stylesheet" href="../../node_modules/@egjs/flicking/dist/flicking.css">
+        <link rel="stylesheet" href="../../node_modules/bulma/css/bulma.min.css">
+        <link rel="stylesheet" href="../../css/flicking-plugins.css">
+        <link rel="stylesheet" href="./css/common.css">
+        <link rel="stylesheet" href="./css/pagination.css">
+    </head>
+    <body class="has-background">
+      <h1 class="title has-text-dark my-4">Pagination</h1>
+      <div id="pagination" class="flicking-viewport p-2">
+        <div class="flicking-camera">
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+        </div>
+        <div class="flicking-pagination"></div>
+      </div>
+      <h1 class="title has-text-dark my-4">Pagination - Fraction</h1>
+      <div id="pagination-number" class="flicking-viewport p-2">
+        <div class="flicking-camera">
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+          <div class="card mr-2"></div>
+        </div>
+        <div class="flicking-pagination"></div>
+      </div>
+      <script src="./js/pagination.js"></script>
+    </body>
+</html>

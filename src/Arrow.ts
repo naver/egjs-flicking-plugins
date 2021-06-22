@@ -2,6 +2,7 @@ import Flicking, { EVENTS, FlickingError, Plugin } from "@egjs/flicking";
 
 import { BROWSER } from "./event";
 import { ARROW } from "./const";
+import { addClass, removeClass } from "./utils";
 
 interface ArrowOptions {
   parentEl: HTMLElement | null;
@@ -44,7 +45,7 @@ class Arrow implements Plugin {
     parentEl = null,
     prevElSelector = ARROW.PREV_SELECTOR,
     nextElSelector = ARROW.NEXT_SELECTOR,
-    disabledClass = ARROW.DISABLED
+    disabledClass = ARROW.DISABLED_CLASS
   }: Partial<ArrowOptions> = {}) {
     this._parentEl = parentEl;
     this._prevElSelector = prevElSelector;
@@ -59,6 +60,7 @@ class Arrow implements Plugin {
 
     this._flicking = flicking;
 
+    flicking.on(EVENTS.READY, this._onChanged);
     flicking.on(EVENTS.CHANGED, this._onChanged);
 
     const parentEl = this._parentEl ? this._parentEl : flicking.element;
@@ -84,6 +86,7 @@ class Arrow implements Plugin {
       return;
     }
 
+    flicking.off(EVENTS.READY, this._onChanged);
     flicking.off(EVENTS.CHANGED, this._onChanged);
 
     const prevEl = this._prevEl;
@@ -128,17 +131,19 @@ class Arrow implements Plugin {
     const disabledClass = this._disabledClass;
     const atPrevEdge = camera.position === camera.range.min;
     const atNextEdge = camera.position === camera.range.max;
+    const prevEl = this._prevEl;
+    const nextEl = this._nextEl;
 
     if (atPrevEdge) {
-      this._prevEl.classList.add(disabledClass);
+      addClass(prevEl, disabledClass);
     } else {
-      this._prevEl.classList.remove(disabledClass);
+      removeClass(prevEl, disabledClass);
     }
 
     if (atNextEdge) {
-      this._nextEl.classList.add(disabledClass);
+      addClass(nextEl, disabledClass);
     } else {
-      this._nextEl.classList.remove(disabledClass);
+      removeClass(nextEl, disabledClass);
     }
   };
 
@@ -146,7 +151,7 @@ class Arrow implements Plugin {
     const el = parent.querySelector(selector);
 
     if (!el) {
-      throw new Error(`[Flicking-Arrow] Couldn't find element inside the "flicking-viewport" element with the given selector: ${selector}`);
+      throw new Error(`[Flicking-Arrow] Couldn't find element with the given selector: ${selector}`);
     }
 
     return el as HTMLElement;
