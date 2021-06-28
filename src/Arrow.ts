@@ -130,13 +130,22 @@ class Arrow implements Plugin {
     if (flicking.animating || anchorPoints.length <= 0) return;
 
     const firstAnchor = anchorPoints[0];
+    const moveCount = this._moveCount;
 
     if (this._moveByViewportSize) {
       flicking.control.moveToPosition(camera.position - camera.size, flicking.duration)
         .catch(this._onCatch);
     } else {
-      if (flicking.circularEnabled || flicking.index > firstAnchor.panel.index) {
-        flicking.moveTo(Math.max(flicking.index - this._moveCount, firstAnchor.panel.index))
+      if (flicking.circularEnabled) {
+        let targetPanel = flicking.currentPanel;
+
+        for (let i = 0; i < moveCount; i++) {
+          targetPanel = targetPanel.prev()!;
+        }
+
+        targetPanel.focus().catch(this._onCatch);
+      } else if (flicking.index > firstAnchor.panel.index) {
+        flicking.moveTo(Math.max(flicking.index - moveCount, firstAnchor.panel.index))
           .catch(this._onCatch);
       } else if (camera.position > camera.range.min) {
         flicking.moveTo(flicking.index)
@@ -154,13 +163,22 @@ class Arrow implements Plugin {
     if (flicking.animating || anchorPoints.length <= 0) return;
 
     const lastAnchor = anchorPoints[anchorPoints.length - 1];
+    const moveCount = this._moveCount;
 
     if (this._moveByViewportSize) {
       flicking.control.moveToPosition(camera.position + camera.size, flicking.duration)
         .catch(this._onCatch);
     } else {
-      if (flicking.circularEnabled || flicking.index < lastAnchor.panel.index) {
-        flicking.moveTo(Math.min(flicking.index + this._moveCount, lastAnchor.panel.index))
+      if (flicking.circularEnabled) {
+        let targetPanel = flicking.currentPanel;
+
+        for (let i = 0; i < moveCount; i++) {
+          targetPanel = targetPanel.next()!;
+        }
+
+        targetPanel.focus().catch(this._onCatch);
+      } else if (flicking.index < lastAnchor.panel.index) {
+        flicking.moveTo(Math.min(flicking.index + moveCount, lastAnchor.panel.index))
           .catch(this._onCatch);
       } else if (camera.position > camera.range.min) {
         flicking.moveTo(flicking.index)

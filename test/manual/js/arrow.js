@@ -4,10 +4,10 @@ flicking.addPlugins(new Flicking.Plugins.Arrow({
   moveByViewportSize: true
 }));
 
-const flicking2 = new Flicking("#arrow2");
+const flicking2 = new Flicking("#arrow2", { circular: true });
 
 flicking2.addPlugins(new Flicking.Plugins.Arrow({
-  moveCount: 1
+  moveCount: 3
 }));
 
 const flicking3 = new Flicking("#arrow3");
