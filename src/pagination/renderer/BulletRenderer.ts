@@ -1,6 +1,7 @@
 import { FlickingError } from "@egjs/flicking";
 
 import { PAGINATION } from "../../const";
+import { BROWSER } from "../../event";
 import { addClass, removeClass } from "../../utils";
 
 import Renderer from "./Renderer";
@@ -33,15 +34,15 @@ class BulletRenderer extends Renderer {
         addClass(bullet, bulletActiveClass);
       }
 
-      bullet.addEventListener("mousedown", e => {
+      bullet.addEventListener(BROWSER.MOUSE_DOWN, e => {
         e.stopPropagation();
       });
 
-      bullet.addEventListener("touchstart", e => {
+      bullet.addEventListener(BROWSER.TOUCH_START, e => {
         e.stopPropagation();
       });
 
-      bullet.addEventListener("click", () => {
+      bullet.addEventListener(BROWSER.CLICK, () => {
         flicking.moveTo(anchorPoint.panel.index)
           .catch(err => {
             if (err instanceof FlickingError) return;
