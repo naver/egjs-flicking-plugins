@@ -52,11 +52,11 @@
 		"url": "https://github.com/naver/egjs-flicking-plugins/issues"
 	},
 	"peerDependencies": {
-		"@egjs/flicking": "~4.0.0"
+		"@egjs/flicking": "~4.1.0"
 	},
 	"devDependencies": {
 		"@egjs/build-helper": "0.0.5",
-		"@egjs/flicking": "^4.0.0",
+		"@egjs/flicking": "^4.1.0",
 		"@egjs/release-helper": "0.0.3",
 		"@types/chai": "^4.0.10",
 		"@types/karma-chai": "^0.1.1",

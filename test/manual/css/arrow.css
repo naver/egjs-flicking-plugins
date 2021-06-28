@@ -1,13 +1,4 @@
-.flicking-arrow-prev {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    z-index: 2;
-}
-
-.flicking-arrow-next {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    z-index: 2;
+.overflow-wrapper {
+  overflow: visible;
+  position: relative;
 }

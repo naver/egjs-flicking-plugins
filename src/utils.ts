@@ -16,3 +16,13 @@ export const removeClass = (el: HTMLElement, className: string) => {
     el.className.replace(classRegex, " ");
   }
 };
+
+export const getElement = (selector: string, parent: HTMLElement, pluginName: string) => {
+  const el = parent.querySelector(selector);
+
+  if (!el) {
+    throw new Error(`[Flicking-${pluginName}] Couldn't find element with the given selector: ${selector}`);
+  }
+
+  return el as HTMLElement;
+};

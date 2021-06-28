@@ -6,12 +6,21 @@ export const ARROW = {
 
 export const PAGINATION = {
   SELECTOR: ".flicking-pagination",
-  BULLET_CLASS: "flicking-pagination-bullet",
-  BULLET_ACTIVE_CLASS: "flicking-pagination-bullet-active",
-  FRACTION_CURRENT_CLASS: "flicking-pagination-fraction-current",
-  FRACTION_TOTAL_CLASS: "flicking-pagination-fraction-total",
+  PREFIX: "flicking-pagination",
+  BULLET_WRAPPER_SUFFIX: "bullets",
+  BULLET_SUFFIX: "bullet",
+  BULLET_ACTIVE_SUFFIX: "bullet-active",
+  FRACTION_WRAPPER_SUFFIX: "fraction",
+  FRACTION_CURRENT_SUFFIX: "fraction-current",
+  FRACTION_TOTAL_SUFFIX: "fraction-total",
+  SCROLL_UNINIT_SUFFIX: "uninitialized",
+  SCROLL_WRAPPER_SUFFIX: "scroll",
+  SCROLL_SLIDER_SUFFIX: "slider",
+  SCROLL_PREV_SUFFIX: "bullet-prev",
+  SCROLL_NEXT_SUFFIX: "bullet-next",
   TYPE: {
     BULLET: "bullet",
-    FRACTION: "fraction"
+    FRACTION: "fraction",
+    SCROLL: "scroll"
   }
 } as const;
