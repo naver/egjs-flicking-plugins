@@ -2,7 +2,9 @@ export const addClass = (el: HTMLElement, className: string) => {
   if (el.classList) {
     el.classList.add(className);
   } else {
-    if (el.className.indexOf(className) < 0) {
+    const classes = el.className.split(" ");
+
+    if (classes.indexOf(className) < 0) {
       el.className = `${el.className} ${className}`;
     }
   }
