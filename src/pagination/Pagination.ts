@@ -1,4 +1,4 @@
-import Flicking, { EVENTS, FlickingOptions, Plugin } from "@egjs/flicking";
+import Flicking, { EVENTS, Plugin } from "@egjs/flicking";
 
 import { PAGINATION } from "../const";
 import ScrollContext from "../type";
@@ -13,8 +13,7 @@ export interface PaginationOptions {
   selector: string;
   type: "bullet" | "fraction" | "scroll";
   classPrefix: string;
-  dynamicBulletCount: number;
-  dynamicFlickingOptions: Partial<FlickingOptions>;
+  bulletCount: number;
   renderBullet: (className: string, index: number) => string;
   renderFraction: (currentClass: string, totalClass: string) => string;
   fractionCurrentFormat: (index: number) => string;
@@ -36,8 +35,7 @@ class Pagination implements Plugin {
   private _selector: PaginationOptions["selector"];
   private _type: PaginationOptions["type"];
   private _classPrefix: PaginationOptions["classPrefix"];
-  private _dynamicBulletCount: PaginationOptions["dynamicBulletCount"];
-  private _dynamicFlickingOptions: PaginationOptions["dynamicFlickingOptions"];
+  private _bulletCount: PaginationOptions["bulletCount"];
   private _renderBullet: PaginationOptions["renderBullet"];
   private _renderFraction: PaginationOptions["renderFraction"];
   private _fractionCurrentFormat: PaginationOptions["fractionCurrentFormat"];
@@ -48,8 +46,7 @@ class Pagination implements Plugin {
   public get selector() { return this._selector; }
   public get type() { return this._type; }
   public get classPrefix() { return this._classPrefix; }
-  public get dynamicBulletCount() { return this._dynamicBulletCount; }
-  public get dynamicFlickingOptions() { return this._dynamicFlickingOptions; }
+  public get bulletCount() { return this._bulletCount; }
   public get renderBullet() { return this._renderBullet; }
   public get renderFraction() { return this._renderFraction; }
   public get fractionCurrentFormat() { return this._fractionCurrentFormat; }
@@ -60,8 +57,7 @@ class Pagination implements Plugin {
   public set selector(val: PaginationOptions["selector"]) { this._selector = val; }
   public set type(val: PaginationOptions["type"]) { this._type = val; }
   public set bulletWrapperclassPrefixClass(val: PaginationOptions["classPrefix"]) { this._classPrefix = val; }
-  public set dynamicBulletCount(val: PaginationOptions["dynamicBulletCount"]) { this._dynamicBulletCount = val; }
-  public set dynamicFlickingOptions(val: PaginationOptions["dynamicFlickingOptions"]) { this._dynamicFlickingOptions = val; }
+  public set bulletCount(val: PaginationOptions["bulletCount"]) { this._bulletCount = val; }
   public set renderBullet(val: PaginationOptions["renderBullet"]) { this._renderBullet = val; }
   public set renderFraction(val: PaginationOptions["renderFraction"]) { this._renderFraction = val; }
   public set fractionCurrentFormat(val: PaginationOptions["fractionCurrentFormat"]) { this._fractionCurrentFormat = val; }
@@ -73,8 +69,7 @@ class Pagination implements Plugin {
     selector = PAGINATION.SELECTOR,
     type = PAGINATION.TYPE.BULLET,
     classPrefix = PAGINATION.PREFIX,
-    dynamicBulletCount = 5,
-    dynamicFlickingOptions = {},
+    bulletCount = 5,
     renderBullet = (className: string) => `<span class="${className}"></span>`,
     renderFraction = (currentClass: string, totalClass: string) => `<span class="${currentClass}"></span>/<span class="${totalClass}"></span>`,
     fractionCurrentFormat = (index: number) => index.toString(),
@@ -85,8 +80,7 @@ class Pagination implements Plugin {
     this._selector = selector;
     this._type = type;
     this._classPrefix = classPrefix;
-    this._dynamicBulletCount = dynamicBulletCount;
-    this._dynamicFlickingOptions = dynamicFlickingOptions;
+    this._bulletCount = bulletCount;
     this._renderBullet = renderBullet;
     this._renderFraction = renderFraction;
     this._fractionCurrentFormat = fractionCurrentFormat;

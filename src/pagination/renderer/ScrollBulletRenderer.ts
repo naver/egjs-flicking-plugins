@@ -62,7 +62,7 @@ class ScrollBulletRenderer extends Renderer {
     const bulletStyle = getComputedStyle(bullets[0]);
     const bulletSize = bullets[0].clientWidth + parseFloat(bulletStyle.marginLeft) + parseFloat(bulletStyle.marginRight);
 
-    wrapper.style.width = `${bulletSize * pagination.dynamicBulletCount}px`;
+    wrapper.style.width = `${bulletSize * pagination.bulletCount}px`;
 
     this._bullets = bullets;
     this._bulletSize = bulletSize;
@@ -119,7 +119,7 @@ class ScrollBulletRenderer extends Renderer {
     const pagination = this._pagination;
     const sliderEl = this._wrapper.firstElementChild as HTMLElement;
     const bulletSize = this._bulletSize;
-    const wrapperSize = bulletSize * pagination.dynamicBulletCount;
+    const wrapperSize = bulletSize * pagination.bulletCount;
 
     sliderEl.style.transform = `translate(${wrapperSize / 2 - (index + 0.5) * bulletSize}px)`;
     this._sliderIndex = index;
