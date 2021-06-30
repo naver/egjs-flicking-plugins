@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+        <script src="../../node_modules/@egjs/flicking/dist/flicking.pkgd.js"></script>
+        <script src="../../dist/plugins.js"></script>
+        <link rel="stylesheet" href="../../node_modules/@egjs/flicking/dist/flicking.css">
+        <link rel="stylesheet" href="../../node_modules/bulma/css/bulma.min.css">
+        <link rel="stylesheet" href="../../css/arrow.css">
+        <link rel="stylesheet" href="./css/common.css">
+        <link rel="stylesheet" href="./css/arrow.css">
+    </head>
+    <body>
+      <div class="container">
+        <h1 class="title has-text-dark my-4">Arrow</h1>
+        <div id="arrow" class="flicking-viewport p-2">
+          <div class="flicking-camera">
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+          </div>
+          <span class="flicking-arrow-prev"></span>
+          <span class="flicking-arrow-next"></span>
+        </div>
+        <h1 class="title has-text-dark my-4">Arrow "is-circle"</h1>
+        <div id="arrow2" class="flicking-viewport p-2">
+          <div class="flicking-camera">
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+            <div class="card mr-2"></div>
+          </div>
+          <span class="flicking-arrow-prev is-circle"></span>
+          <span class="flicking-arrow-next is-circle"></span>
+        </div>
+        <h1 class="title has-text-dark my-4">Arrow "is-outside"</h1>
+        <div id="arrow3-wrapper" class="overflow-wrapper">
+          <div id="arrow3" class="flicking-viewport p-2">
+            <div class="flicking-camera">
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+              <div class="card mr-2"></div>
+            </div>
+          </div>
+          <span class="flicking-arrow-prev is-outside"></span>
+          <span class="flicking-arrow-next is-outside"></span>
+        </div>
+      </div>
+      <script src="./js/arrow.js"></script>
+    </body>
+</html>

@@ -1,0 +1,43 @@
+.pagination-bound-bullets,
+.pagination-bound-scroll {
+  font-size: 0;
+}
+
+.pagination-bound-scroll {
+  left: 50%;
+  transform: translate(-50%);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.pagination-bound-scroll .pagination-bound-slider {
+  transition: .2s transform;
+}
+
+.pagination-bound-bullet {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  border-radius: 50%;
+  background-color: rgb(10 10 10 / 10%);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.pagination-bound-scroll .pagination-bound-bullet {
+  vertical-align: middle;
+  position: relative;
+  transition: .2s transform;
+}
+
+.pagination-bound-bullet-active {
+  background-color: #f2a65e;
+}
+
+.pagination-bound-scroll .pagination-bound-bullet {
+  vertical-align: middle;
+  position: relative;
+  transition: .2s transform,.2s left;
+  transform: scale(1);
+}

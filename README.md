@@ -1,50 +1,43 @@
 # @egjs/flicking-plugins [![version][badge-version]][link-version] <a href="https://travis-ci.org/naver/egjs-flicking-plugins" target="_blank"><img alt="Travis (.org)" src="https://img.shields.io/travis/naver/egjs-flicking-plugins.svg?style=flat-square&label=build&logo=travis%20ci" /></a> [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-flicking-plugins/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-flicking-plugins?branch=master)
 
+
+<h1 align="center" style="max-width: 100%;">
+  <img width="800" alt="Flicking Logo" src="https://naver.github.io/egjs-flicking/images/flicking.svg" style="max-width: 100%;" /><br/>
+  <a href="https://naver.github.io/egjs-flicking/Plugins">@egjs/flicking-plugins</a>
+</h1>
+
 Ready to use plugins for [@egjs/flicking](https://github.com/naver/egjs-flicking)
-- [AutoPlay](https://naver.github.io/egjs-flicking/ko/Plugins#autoplay): Add autoplay to move to the next/previous panel periodically.
-- [Parallax](https://naver.github.io/egjs-flicking/ko/Plugins#parallax): Add parallax effect attached with flicking interaction.
-- [Fade](https://naver.github.io/egjs-flicking/ko/Plugins#fade): Add fade effect attached with flicking interaction.
-## How to use
+- [Demos & Documents](https://naver.github.io/egjs-flicking/Plugins)
+- [AutoPlay](https://naver.github.io/egjs-flicking/Plugins#autoplay): Add autoplay to move to the next/previous panel periodically.
+- [Parallax](https://naver.github.io/egjs-flicking/Plugins#parallax): Add parallax effect attached with flicking interaction.
+- [Fade](https://naver.github.io/egjs-flicking/Plugins#fade): Add fade effect attached with flicking interaction.
 
-Using npm:
-
-```
+## ⚙️ Installation
+#### npm
+```bash
 npm install @egjs/flicking-plugins
 ```
+
+#### CDN
+- **Latest**
+   - https://naver.github.io/egjs-flicking-plugins/release/latest/dist/plugins.js (all)
+   - https://naver.github.io/egjs-flicking-plugins/release/latest/dist/plugins.min.js (all)
+- **Specific version**
+   - https://naver.github.io/egjs-flicking-plugins/release/[PLUGIN-VERSION]/dist/plugins.js (all)
+   - https://naver.github.io/egjs-flicking-plugins/release/[PLUGIN-VERSION]/dist/plugins.min.js (all)
+
+## 🏃 Quick Start
 ```js
-import {Fade, Parallax, AutoPlay} from "@egjs/flicking-plugins";
+import { Fade, Parallax, AutoPlay } from "@egjs/flicking-plugins";
+
+flicking.addPlugins(new Fade(), new Parallax(), new AutoPlay());
 ```
 
-Download dist files from repo directly:
+## 📝 Feedback
+Please file an [Issue](https://github.com/naver/egjs-flicking/issues).
 
-
- - **Latest**
-    - https://naver.github.io/egjs-flicking-plugins/release/latest/dist/plugins.js (all)
-    - https://naver.github.io/egjs-flicking-plugins/release/latest/dist/plugins.min.js (all)
-    - https://naver.github.io/egjs-flicking-plugins/release/latest/dist/[PLUGIN-NAME].js
-    - https://naver.github.io/egjs-flicking-plugins/release/latest/dist/[PLUGIN-NAME].min.js
- - **Specific version**
-    - https://naver.github.io/egjs-flicking-plugins/release/[PLUGIN-VERSION]/dist/plugins.js (all)
-    - https://naver.github.io/egjs-flicking-plugins/release/[PLUGIN-VERSION]/dist/plugins.min.js (all)
-    - https://naver.github.io/egjs-flicking-plugins/release/[PLUGIN-VERSION]/dist/[PLUGIN-NAME].js
-    - https://naver.github.io/egjs-flicking-plugins/release/[PLUGIN-VERSION]/dist/[PLUGIN-NAME].min.js
-
-
-<!-- badges -->
-[badge-version]: https://img.shields.io/npm/v/@egjs/flicking-plugins.svg?style=flat
-
-<!-- links -->
-[link-version]: https://www.npmjs.com/package/@egjs/flicking-plugins
-
-
-
-## Bug Report
-
-If you find a bug, please report to us opening a new [Issues](https://github.com/naver/egjs-flicking/issues) on GitHub.
-
-
-## License
-egjs-flicking is released under the [MIT license](http://naver.github.io/egjs/license.txt).
+## 📜 License
+egjs-flicking-plugins is released under the [MIT license](http://naver.github.io/egjs/license.txt).
 
 ```
 Copyright (c) 2019-present NAVER Corp.
@@ -67,3 +60,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
+
+<p align="center">
+  <a href="https://naver.github.io/egjs/"><img height="50" src="https://naver.github.io/egjs/img/logotype1_black.svg" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/naver"><img height="50" src="https://naver.github.io/OpenSourceGuide/book/assets/naver_logo.png" /></a>
+</p>
+
+
+<!-- badges -->
+[badge-version]: https://img.shields.io/npm/v/@egjs/flicking-plugins.svg?style=flat
+
+<!-- links -->
+[link-version]: https://www.npmjs.com/package/@egjs/flicking-plugins
