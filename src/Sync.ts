@@ -1,3 +1,4 @@
+import { ComponentEvent } from "@egjs/component";
 import Flicking, { EVENTS, Plugin } from "@egjs/flicking";
 
 interface SyncOptions {
@@ -12,6 +13,7 @@ interface SyncOptions {
 class Sync implements Plugin {
   /* Internal Values */
   private _flicking: Flicking | null = null;
+  private _flickings: Flicking[];
 
   /* Options */
   private _others: SyncOptions["others"];
@@ -32,33 +34,12 @@ class Sync implements Plugin {
     }
 
     this._flicking = flicking;
+    this._flickings = [flicking, ...this._others];
 
-    const flickings = [flicking, ...this._others];
-    flickings.forEach((flicking, idx) => {
-      const others = [...flickings];
-      others.splice(idx, 1);
-
-      flicking.on({
-        [EVENTS.MOVE]: e => {
-          const camera = e.currentTarget.camera;
-          const progress = (camera.position - camera.range.min) / camera.rangeDiff;
-    
-          others.forEach(otherFlicking => {
-            otherFlicking.camera.lookAt(otherFlicking.camera.range.min + otherFlicking.camera.rangeDiff * progress);
-          });
-        },
-        [EVENTS.MOVE_START]: e => {
-          others.forEach(otherFlicking => {
-            otherFlicking.disableInput();
-          });
-        },
-        [EVENTS.MOVE_END]: e => {
-          others.forEach(otherFlicking => {
-            otherFlicking.enableInput();
-            otherFlicking.control.updateInput();
-          });
-        }
-      })
+    this._flickings.forEach((flicking) => {
+      flicking.on(EVENTS.MOVE, this._onMove);
+      flicking.on(EVENTS.MOVE_START, this._onMoveStart);
+      flicking.on(EVENTS.MOVE_END, this._onMoveEnd);
     });
 
   }
@@ -76,6 +57,34 @@ class Sync implements Plugin {
   public update(): void {
     // DO-NOTHING
   }
+
+  private _onMove = (e: ComponentEvent): void => {
+    const camera = e.currentTarget.camera;
+    const progress = (camera.position - camera.range.min) / camera.rangeDiff;
+
+    this._flickings.forEach(flicking => {
+      if (flicking !== e.currentTarget) {
+        flicking.camera.lookAt(flicking.camera.range.min + flicking.camera.rangeDiff * progress);
+      }
+    });
+  };
+
+  private _onMoveStart = (e: ComponentEvent): void => {
+    this._flickings.forEach(flicking => {
+      if (flicking !== e.currentTarget) {
+        flicking.disableInput();
+      }
+    });
+  };
+
+  private _onMoveEnd = (e: ComponentEvent): void => {
+    this._flickings.forEach(flicking => {
+      if (flicking !== e.currentTarget) {
+        flicking.enableInput();
+        flicking.control.updateInput();
+      }
+    });
+  };
 }
 
 export default Sync;
