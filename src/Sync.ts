@@ -18,8 +18,6 @@ class Sync implements Plugin {
   /* Options */
   private _others: SyncOptions["others"];
 
-  public get others() { return this._others; }
-
   public set others(val: SyncOptions["others"]) { this._others = val; }
 
   public constructor({
@@ -50,6 +48,12 @@ class Sync implements Plugin {
     if (!flicking) {
       return;
     }
+
+    this._flickings.forEach((flicking) => {
+      flicking.off(EVENTS.MOVE, this._onMove);
+      flicking.off(EVENTS.MOVE_START, this._onMoveStart);
+      flicking.off(EVENTS.MOVE_END, this._onMoveEnd);
+    });
 
     this._flicking = null;
   }
