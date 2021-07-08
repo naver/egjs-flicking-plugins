@@ -40,9 +40,7 @@ class Sync implements Plugin {
     });
   }
   public set thumbs(val: SyncOptions["thumbs"]) {
-    if (this._thumbs) {
-      this._thumbs.off(EVENTS.SELECT, this._onThumbsClick);
-    }
+    this._thumbs?.off(EVENTS.SELECT, this._onThumbsClick);
     this._thumbs = val;
     this._thumbs!.on(EVENTS.SELECT, this._onThumbsClick);
   }
@@ -69,9 +67,7 @@ class Sync implements Plugin {
       flicking.on(EVENTS.MOVE_END, this._onMoveEnd);
     });
 
-    if (this._thumbs) {
-      this._thumbs.on(EVENTS.SELECT, this._onThumbsClick);
-    }
+    this._thumbs?.on(EVENTS.SELECT, this._onThumbsClick);
   }
 
   public destroy(): void {
@@ -87,9 +83,7 @@ class Sync implements Plugin {
       flicking.off(EVENTS.MOVE_END, this._onMoveEnd);
     });
 
-    if (this._thumbs) {
-      this._thumbs.off(EVENTS.SELECT, this._onThumbsClick);
-    }
+    this._thumbs?.off(EVENTS.SELECT, this._onThumbsClick);
 
     this._flicking = null;
   }
