@@ -14,13 +14,3 @@ let others = [flicking1, flicking2];
 flicking0.addPlugins(new Flicking.Plugins.Sync({
   others,
 }));
-
-const flicking3 = new Flicking("#flick3");
-
-const flicking4 = new Flicking("#flick4", {
-  bound: true,
-});
-
-flicking3.addPlugins(new Flicking.Plugins.Sync({
-  thumbs: flicking4
-}));

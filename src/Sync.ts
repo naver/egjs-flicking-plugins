@@ -3,7 +3,6 @@ import Flicking, { EVENTS, Plugin } from "@egjs/flicking";
 
 interface SyncOptions {
   others: Flicking[];
-  thumbs: Flicking | null;
 }
 
 /**
@@ -18,10 +17,8 @@ class Sync implements Plugin {
 
   /* Options */
   private _others: SyncOptions["others"];
-  private _thumbs: SyncOptions["thumbs"];
 
   public get others() { return this._others; }
-  public get thumbs() { return this._thumbs; }
 
   public set others(val: SyncOptions["others"]) {
     this._flickings.forEach((flicking) => {
@@ -39,18 +36,11 @@ class Sync implements Plugin {
       flicking.on(EVENTS.MOVE_END, this._onMoveEnd);
     });
   }
-  public set thumbs(val: SyncOptions["thumbs"]) {
-    this._thumbs?.off(EVENTS.SELECT, this._onThumbsClick);
-    this._thumbs = val;
-    this._thumbs!.on(EVENTS.SELECT, this._onThumbsClick);
-  }
 
   public constructor({
     others = [],
-    thumbs = null
   }: Partial<SyncOptions> = {}) {
     this._others = others;
-    this._thumbs = thumbs;
   }
 
   public init(flicking: Flicking): void {
@@ -66,8 +56,6 @@ class Sync implements Plugin {
       flicking.on(EVENTS.MOVE_START, this._onMoveStart);
       flicking.on(EVENTS.MOVE_END, this._onMoveEnd);
     });
-
-    this._thumbs?.on(EVENTS.SELECT, this._onThumbsClick);
   }
 
   public destroy(): void {
@@ -82,8 +70,6 @@ class Sync implements Plugin {
       flicking.off(EVENTS.MOVE_START, this._onMoveStart);
       flicking.off(EVENTS.MOVE_END, this._onMoveEnd);
     });
-
-    this._thumbs?.off(EVENTS.SELECT, this._onThumbsClick);
 
     this._flicking = null;
   }
@@ -119,14 +105,6 @@ class Sync implements Plugin {
       }
     });
   };
-
-  private _onThumbsClick = (e: ComponentEvent) => {
-    const flicking = this._flicking!;
-
-    if (e["index"] && !flicking.control.animating) {
-      flicking.moveTo(e["index"])
-    }
-  }
 }
 
 export default Sync;

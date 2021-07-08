@@ -24,3 +24,7 @@ export const PAGINATION = {
     SCROLL: "scroll"
   }
 } as const;
+
+export const GALLERY = {
+  ACTIVE_CLASS: "flicking-tuumbnail-active"
+} as const;
