@@ -1,0 +1,17 @@
+.flicking-camera .card {
+  height: 120px;
+}
+
+.slide {
+  width: 100%;
+  height: 200px;
+}
+
+.slide img {
+  width: 100%;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+}
