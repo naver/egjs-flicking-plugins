@@ -10,7 +10,38 @@ const flicking2 = new Flicking("#flick2", {
   bound: true,
 });
 
-let others = [flicking1, flicking2];
 flicking0.addPlugins(new Flicking.Plugins.Sync({
-  others,
+  type: "camera",
+  synchronizedFlickings: [
+    {
+      flicking: flicking0,
+    },
+    {
+      flicking: flicking1,
+    },
+    {
+      flicking: flicking2,
+    }
+  ],
+}));
+
+const flicking3 = new Flicking("#flick3");
+
+const flicking4 = new Flicking("#flick4", {
+  bound: true,
+});
+
+flicking0.addPlugins(new Flicking.Plugins.Sync({
+  type: "index",
+  synchronizedFlickings: [
+    {
+      flicking: flicking3,
+      isSlidable: true,
+    },
+    {
+      flicking: flicking4,
+      isClickable: true,
+      activeClass: "flicking-tuumbnail-active"
+    }
+  ],
 }));

@@ -9,8 +9,7 @@ import Fade from "./Fade";
 import AutoPlay from "./AutoPlay";
 import Arrow from "./Arrow";
 import Sync from "./Sync";
-import Gallery from "./Gallery";
- 
+
 export * from "./pagination";
 
 export {
@@ -18,9 +17,7 @@ export {
   Fade,
   AutoPlay,
   Arrow,
-  Sync,
-  Gallery
+  Sync
 };
 
 export * from "./const";
- 

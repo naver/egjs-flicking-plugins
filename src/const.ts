@@ -25,6 +25,9 @@ export const PAGINATION = {
   }
 } as const;
 
-export const GALLERY = {
-  ACTIVE_CLASS: "flicking-tuumbnail-active"
+export const SYNC = {
+  TYPE: {
+    CAMERA: "camera",
+    INDEX: "index"
+  }
 } as const;
