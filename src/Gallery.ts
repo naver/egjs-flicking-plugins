@@ -27,7 +27,7 @@ class Gallery implements Plugin {
   public set thumbs(val: GalleryOptions["thumbs"]) {
     this._thumbs?.off(EVENTS.SELECT, this._onThumbsClick);
     this._thumbs = val;
-    this._thumbs!.on(EVENTS.SELECT, this._onThumbsClick);
+    this._thumbs?.on(EVENTS.SELECT, this._onThumbsClick);
   }
   public set activeClass(val: GalleryOptions["activeClass"]) { this._activeClass = val; }
 
@@ -72,9 +72,11 @@ class Gallery implements Plugin {
   private _onThumbsClick = (e: { index: number }) => {
     const flicking = this._flicking!;
 
-    if (flicking.control.animating) return;
-    flicking.moveTo(e.index);
+    if (flicking.control.animating) {
+      return;
+    }
 
+    flicking.moveTo(e.index);
   }
 
   private _onIndexChange = (e: { index: number }) => {
@@ -88,7 +90,9 @@ class Gallery implements Plugin {
   
   private _updateClass(index: number) {
     const thumbs = this._thumbs!;
-    thumbs.panels.forEach((panel) => panel.index === index ? addClass(panel.element, this._activeClass) : removeClass(panel.element, this._activeClass));
+    thumbs.panels.forEach((panel) => {
+      panel.index === index ? addClass(panel.element, this._activeClass) : removeClass(panel.element, this._activeClass);
+    });
   }
 }
 
