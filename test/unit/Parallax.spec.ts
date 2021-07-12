@@ -1,7 +1,7 @@
 import Flicking from "@egjs/flicking";
 
 import Parallax from "../../src/Parallax";
-import { sandbox, cleanup } from "../unit/utils";
+import { sandbox, cleanup, waitEvent } from "../unit/utils";
 
 describe("Parallax", () => {
   let flicking: Flicking;
@@ -57,9 +57,12 @@ describe("Parallax", () => {
     expect(flicking.getPanel(2).element.style.transform).to.equal("");
   });
 
-  it("should be updated whenever flicking moves", () => {
-    // Given & When
+  it("should be updated whenever flicking moves", async () => {
+    // Given
     flicking.addPlugins(new Parallax());
+    await waitEvent(flicking, "ready");
+
+    // When
     void flicking.moveTo(1, 0);
 
     // Then

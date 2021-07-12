@@ -1,6 +1,10 @@
-export function tick(time) {
+import Flicking, { EVENTS } from "@egjs/flicking";
+
+declare let Simulator: any;
+
+export const tick = (time: number) => {
   (window as any).timer.tick(time);
-}
+};
 
 export const sandbox = (obj: object | string, prop?: object): HTMLElement => {
   const tmp = document.createElement("div");
@@ -42,10 +46,9 @@ export const createFlickingFixture = () => {
   viewport.appendChild(camera);
   panels.forEach(panel => camera.appendChild(panel));
 
-  return viewport
-}
+  return viewport;
+};
 
-declare var Simulator: any;
 export function simulate(el: HTMLElement, option?: object, time: number = 15000): Promise<void> {
   let targetElement = el.querySelector(".eg-flick-viewport");
 
@@ -60,9 +63,13 @@ export function simulate(el: HTMLElement, option?: object, time: number = 15000)
       deltaY: 0,
       duration: 500,
       easing: "linear",
-      ...option,
+      ...option
     }, resolve);
 
     tick(time);
   });
 }
+
+export const waitEvent = (flicking: Flicking, eventName: typeof EVENTS[keyof typeof EVENTS]) => new Promise(res => {
+  flicking.once(eventName, res);
+});

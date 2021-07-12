@@ -4,7 +4,7 @@ import * as sinon from "sinon";
 
 import AutoPlay from "../../src/AutoPlay";
 
-import { createFlickingFixture, tick } from "./utils";
+import { createFlickingFixture, tick, waitEvent } from "./utils";
 
 describe("AutoPlay", () => {
   it("can receive older API of receiving duration and direction", () => {
@@ -16,22 +16,21 @@ describe("AutoPlay", () => {
     expect(plugin.direction).to.equal("PREV");
   });
 
-  it("should call play after initializing", () => {
+  it("should call play after initializing", async () => {
     // Given
     const plugin = new AutoPlay();
     const flicking = new Flicking(createFlickingFixture());
-    const playSpy = sinon.spy();
-
-    plugin.play = playSpy;
+    const playSpy = sinon.spy(plugin, "play");
 
     // When
     flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
 
     // Then
     expect(playSpy.calledOnce).to.be.true;
   });
 
-  it("should call Flicking's move method after duration", () => {
+  it("should call Flicking's move method after duration", async () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500 });
     const flicking = new Flicking(createFlickingFixture());
@@ -41,6 +40,7 @@ describe("AutoPlay", () => {
 
     // When
     flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
 
     // Then
     expect(nextStub.called).to.be.false;
@@ -68,7 +68,7 @@ describe("AutoPlay", () => {
     expect(nextStub.called).to.be.false;
   });
 
-  it("should call stop if mouse is entered and stopOnHover is true", () => {
+  it("should call stop if mouse is entered and stopOnHover is true", async () => {
     // Given
     const plugin = new AutoPlay({ stopOnHover: true });
     const flicking = new Flicking(createFlickingFixture());
@@ -78,6 +78,7 @@ describe("AutoPlay", () => {
 
     // When
     flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
     const wrapper = flicking.element;
 
     // Then
@@ -86,7 +87,7 @@ describe("AutoPlay", () => {
     expect(stopSpy.calledTwice).to.be.true;
   });
 
-  it("should call play if mouse leaved and stopOnHover is true", () => {
+  it("should call play if mouse leaved and stopOnHover is true", async () => {
     // Given
     const plugin = new AutoPlay({ stopOnHover: true });
     const flicking = new Flicking(createFlickingFixture());
@@ -96,6 +97,7 @@ describe("AutoPlay", () => {
 
     // When
     flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
     const wrapper = flicking.element;
 
     // Then
