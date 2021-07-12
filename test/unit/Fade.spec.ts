@@ -1,7 +1,7 @@
 import Flicking from "@egjs/flicking";
 
 import Fade from "../../src/Fade";
-import { sandbox, cleanup } from "../unit/utils";
+import { sandbox, cleanup, waitEvent } from "../unit/utils";
 
 describe("Fade", () => {
   let flicking: Flicking;
@@ -25,17 +25,19 @@ describe("Fade", () => {
     flicking.destroy();
   });
 
-  it("should set opacity to 1 for current panel", () => {
+  it("should set opacity to 1 for current panel", async () => {
     // Given & When
     flicking.addPlugins(new Fade());
+    await waitEvent(flicking, "ready");
 
     // Then
     expect(flicking.currentPanel.element.style.opacity).to.equal("1");
   });
 
-  it("should apply opacity to child elements if a selector is given", () => {
+  it("should apply opacity to child elements if a selector is given", async () => {
     // Given & When
     flicking.addPlugins(new Fade("p"));
+    await waitEvent(flicking, "ready");
 
     // Then
     const currentPanelEl = flicking.currentPanel.element;
@@ -53,9 +55,12 @@ describe("Fade", () => {
     expect(flicking.getPanel(2).element.style.opacity).to.equal("");
   });
 
-  it("should be updated whenever flicking moves", () => {
-    // Given & When
+  it("should be updated whenever flicking moves", async () => {
+    // Given
     flicking.addPlugins(new Fade());
+    await waitEvent(flicking, "ready");
+
+    // When
     void flicking.moveTo(1, 0);
 
     // Then
