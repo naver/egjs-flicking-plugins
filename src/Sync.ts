@@ -98,10 +98,10 @@ class Sync implements Plugin {
         synchronizedFlickingOption.flicking.on(EVENTS.MOVE_END, this._onMoveEnd);
       }
       if (this._type === "index" && synchronizedFlickingOption.isSlidable) {
-        synchronizedFlickingOption.flicking.on(EVENTS.WILL_CHANGE, this._onChangeIndex);
+        synchronizedFlickingOption.flicking.on(EVENTS.WILL_CHANGE, this._onIndexChange);
       }
       if (synchronizedFlickingOption.isClickable) {
-        synchronizedFlickingOption.flicking.on(EVENTS.SELECT, this._onChangeIndex);
+        synchronizedFlickingOption.flicking.on(EVENTS.SELECT, this._onIndexChange);
       }
     });
   };
@@ -114,19 +114,19 @@ class Sync implements Plugin {
         synchronizedFlickingOption.flicking.off(EVENTS.MOVE_END, this._onMoveEnd);
       }
       if (this._type === "index" && synchronizedFlickingOption.isSlidable) {
-        synchronizedFlickingOption.flicking.off(EVENTS.WILL_CHANGE, this._onChangeIndex);
+        synchronizedFlickingOption.flicking.off(EVENTS.WILL_CHANGE, this._onIndexChange);
       }
       if (synchronizedFlickingOption.isClickable) {
-        synchronizedFlickingOption.flicking.off(EVENTS.SELECT, this._onChangeIndex);
+        synchronizedFlickingOption.flicking.off(EVENTS.SELECT, this._onIndexChange);
       }
     });
   };
 
-  private _onChangeIndex = (e: ComponentEvent): void => {
+  private _onIndexChange = (e: ComponentEvent): void => {
     const flicking = e.currentTarget;
     const synchronizedFlickingOptions = this._synchronizedFlickingOptions;
 
-    if (!flicking.initialized || this._checkIsAnimating(synchronizedFlickingOptions, flicking)) {
+    if (!flicking.initialized) {
       return;
     }
     
@@ -210,15 +210,6 @@ class Sync implements Plugin {
       range: Infinity,
     }).index;
     return flicking.panels[nearsetIndex];
-  };
-
-  private _checkIsAnimating(synchronizedFlickingOptions: SychronizableFlickingOptions[], currentTarget: Flicking): boolean {
-    for (let { flicking } of synchronizedFlickingOptions) {
-      if (flicking !== currentTarget && flicking.animating) {
-        return true;
-      }
-    };
-    return false;
   };
 }
 
