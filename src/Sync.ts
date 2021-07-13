@@ -135,7 +135,15 @@ class Sync implements Plugin {
 
     this._synchronizedFlickings.forEach(({ flicking }) => {
       if (flicking !== e.currentTarget) {
-        flicking.camera.lookAt(flicking.camera.range.min + flicking.camera.rangeDiff * progress);
+        if (camera.position < camera.range.min) {
+          flicking.camera.lookAt(camera.position);
+        }
+        else if (camera.position > camera.range.max) {
+          flicking.camera.lookAt(flicking.camera.range.max + camera.position - camera.range.max);
+        }
+        else {
+          flicking.camera.lookAt(flicking.camera.range.min + flicking.camera.rangeDiff * progress);
+        }
       }
     });
   };
