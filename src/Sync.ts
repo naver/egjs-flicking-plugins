@@ -96,7 +96,7 @@ class Sync implements Plugin {
       if (this._type === "index" && synchronizedFlicking.isSlidable) {
         synchronizedFlicking.flicking.on(EVENTS.WILL_CHANGE, this._onChangeIndex);
       }
-      if (this._type === "index" && synchronizedFlicking.isClickable) {
+      if (synchronizedFlicking.isClickable) {
         synchronizedFlicking.flicking.on(EVENTS.SELECT, this._onChangeIndex);
       }
     });
@@ -112,7 +112,7 @@ class Sync implements Plugin {
       if (this._type === "index" && synchronizedFlicking.isSlidable) {
         synchronizedFlicking.flicking.off(EVENTS.WILL_CHANGE, this._onChangeIndex);
       }
-      if (this._type === "index" && synchronizedFlicking.isClickable) {
+      if (synchronizedFlicking.isClickable) {
         synchronizedFlicking.flicking.off(EVENTS.SELECT, this._onChangeIndex);
       }
     });
@@ -201,11 +201,11 @@ class Sync implements Plugin {
   };
 
   private _checkIsAnimating(synchronizedFlickings: SychronizableFlickingOptions[], currentTarget: Flicking): boolean {
-    synchronizedFlickings.forEach(({ flicking }) => {
+    for (let { flicking } of synchronizedFlickings) {
       if (flicking !== currentTarget && flicking.animating) {
         return true;
       }
-    });
+    };
     return false;
   };
 }

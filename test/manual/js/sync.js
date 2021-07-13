@@ -15,12 +15,15 @@ flicking0.addPlugins(new Flicking.Plugins.Sync({
   synchronizedFlickings: [
     {
       flicking: flicking0,
+      isClickable: true,
     },
     {
       flicking: flicking1,
+      isClickable: true,
     },
     {
       flicking: flicking2,
+      isClickable: true,
     }
   ],
 }));
@@ -41,7 +44,7 @@ flicking0.addPlugins(new Flicking.Plugins.Sync({
     {
       flicking: flicking4,
       isClickable: true,
-      activeClass: "flicking-thumbnail-active"
+      activeClass: "flicking-thumbnail-active",
     }
   ],
 }));
