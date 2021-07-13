@@ -41,7 +41,7 @@ flicking0.addPlugins(new Flicking.Plugins.Sync({
     {
       flicking: flicking4,
       isClickable: true,
-      activeClass: "flicking-tuumbnail-active"
+      activeClass: "flicking-thumbnail-active"
     }
   ],
 }));

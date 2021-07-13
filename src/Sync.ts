@@ -1,15 +1,15 @@
 import { ComponentEvent } from "@egjs/component";
-import Flicking, { EVENTS, Plugin } from "@egjs/flicking";
+import Flicking, { EVENTS, Panel, Plugin } from "@egjs/flicking";
 
 import { SYNC } from "./const";
 import { addClass, removeClass } from "./utils";
 
 interface SyncOptions {
   type: "camera" | "index";
-  synchronizedFlickings: SychronisableFlickingOptions[];
+  synchronizedFlickings: SychronizableFlickingOptions[];
 }
 
-interface SychronisableFlickingOptions {
+interface SychronizableFlickingOptions {
   flicking: Flicking;
   isClickable?: boolean;
   isSlidable?: boolean;
@@ -33,13 +33,16 @@ class Sync implements Plugin {
   public get synchronizedFlickings() { return this._synchronizedFlickings; }
 
   public set type(val: SyncOptions["type"]) {
-    this._removeEvents(this._synchronizedFlickings);
-    this._type = val;
-    this._addEvents(this._synchronizedFlickings);
+    this.restore<SyncOptions["type"]>(val, "_type");
   }
+
   public set synchronizedFlickings(val: SyncOptions["synchronizedFlickings"]) {
+    this.restore<SyncOptions["synchronizedFlickings"]>(val, "_synchronizedFlickings");
+  }
+
+  private restore<T>(val: T, type: "_type" | "_synchronizedFlickings") {
     this._removeEvents(this._synchronizedFlickings);
-    this._synchronizedFlickings = val;
+    this[`${type}`] = val;
     this._addEvents(this._synchronizedFlickings);
   }
 
@@ -83,7 +86,7 @@ class Sync implements Plugin {
     });
   }
 
-  private _addEvents = (synchronizedFlickings: SychronisableFlickingOptions[]) => {
+  private _addEvents = (synchronizedFlickings: SychronizableFlickingOptions[]): void => {
     synchronizedFlickings.forEach((synchronizedFlicking) => {
       if (this._type === "camera") {
         synchronizedFlicking.flicking.on(EVENTS.MOVE, this._onMove);
@@ -99,7 +102,7 @@ class Sync implements Plugin {
     });
   };
 
-  private _removeEvents = (synchronizedFlickings: SychronisableFlickingOptions[]) => {
+  private _removeEvents = (synchronizedFlickings: SychronizableFlickingOptions[]): void => {
     synchronizedFlickings.forEach((synchronizedFlicking) => {
       if (this._type === "camera") {
         synchronizedFlicking.flicking.off(EVENTS.MOVE, this._onMove);
@@ -115,11 +118,11 @@ class Sync implements Plugin {
     });
   };
 
-  private _onChangeIndex = (e: ComponentEvent) => {
+  private _onChangeIndex = (e: ComponentEvent): void => {
     const flicking = e.currentTarget;
     const synchronizedFlickings = this._synchronizedFlickings;
 
-    if (!flicking.initialized || synchronizedFlickings.reduce((isAnimationComplete, synchronizedFlicking) => isAnimationComplete || (synchronizedFlicking.flicking !== flicking && synchronizedFlicking.flicking.animating), false)) {
+    if (!flicking.initialized || this._checkIsAnimating(synchronizedFlickings, flicking)) {
       return;
     }
     
@@ -130,31 +133,31 @@ class Sync implements Plugin {
     const camera = e.currentTarget.camera;
     const progress = (camera.position - camera.range.min) / camera.rangeDiff;
 
-    this._synchronizedFlickings.forEach(synchronizedFlicking => {
-      if (synchronizedFlicking.flicking !== e.currentTarget) {
-        synchronizedFlicking.flicking.camera.lookAt(synchronizedFlicking.flicking.camera.range.min + synchronizedFlicking.flicking.camera.rangeDiff * progress);
+    this._synchronizedFlickings.forEach(({ flicking }) => {
+      if (flicking !== e.currentTarget) {
+        flicking.camera.lookAt(flicking.camera.range.min + flicking.camera.rangeDiff * progress);
       }
     });
   };
 
   private _onMoveStart = (e: ComponentEvent): void => {
-    this._synchronizedFlickings.forEach(synchronizedFlicking => {
-      if (synchronizedFlicking.flicking !== e.currentTarget) {
-        synchronizedFlicking.flicking.disableInput();
+    this._synchronizedFlickings.forEach(({ flicking }) => {
+      if (flicking !== e.currentTarget) {
+        flicking.disableInput();
       }
     });
   };
 
   private _onMoveEnd = (e: ComponentEvent): void => {
-    this._synchronizedFlickings.forEach(synchronizedFlicking => {
-      if (synchronizedFlicking.flicking !== e.currentTarget) {
-        synchronizedFlicking.flicking.enableInput();
-        synchronizedFlicking.flicking.control.updateInput();
+    this._synchronizedFlickings.forEach(({ flicking }) => {
+      if (flicking !== e.currentTarget) {
+        flicking.enableInput();
+        flicking.control.updateInput();
       }
     });
   };
   
-  private _synchronizeByIndex = (flicking: Flicking, index: number) => {
+  private _synchronizeByIndex = (flicking: Flicking, index: number): void => {
     const synchronizedFlickings = this._synchronizedFlickings;
     const activePanel =  flicking.panels.find(panel => panel.index === index);
     const lastPanel = flicking.panels[flicking.panels.length - 1];
@@ -165,6 +168,7 @@ class Sync implements Plugin {
 
     this._removeEvents(synchronizedFlickings);
     synchronizedFlickings.forEach((synchronizedFlicking) => {
+      // calculate new target flicking position with active flicking size and target flicking size
       const targetLastPanel = synchronizedFlicking.flicking.panels[synchronizedFlicking.flicking.panels.length - 1];
       const targetPos = activePanel.position / (lastPanel.position + (lastPanel.size / 2)) * (targetLastPanel.position + (targetLastPanel.size / 2));
 
@@ -176,14 +180,14 @@ class Sync implements Plugin {
     this._addEvents(synchronizedFlickings);
   };
   
-  private _updateClass(synchronizedFlicking: SychronisableFlickingOptions, pos: number) {
+  private _updateClass(synchronizedFlicking: SychronizableFlickingOptions, pos: number): void {
     const target = this._findNearsetPanel(synchronizedFlicking.flicking, pos);
     synchronizedFlicking.flicking.panels.forEach((panel) => {
       panel.index === target.index ? addClass(panel.element, synchronizedFlicking.activeClass) : removeClass(panel.element, synchronizedFlicking.activeClass);
     });
   };
 
-  private _findNearsetPanel(flicking: Flicking, pos: number) {
+  private _findNearsetPanel(flicking: Flicking, pos: number): Panel {
     const nearsetIndex = flicking.panels.reduce((nearest, panel, index) => {
       return Math.abs(panel.position - pos) <= nearest.range ? {
         index,
@@ -194,6 +198,15 @@ class Sync implements Plugin {
       range: Infinity,
     }).index;
     return flicking.panels[nearsetIndex];
+  };
+
+  private _checkIsAnimating(synchronizedFlickings: SychronizableFlickingOptions[], currentTarget: Flicking): boolean {
+    synchronizedFlickings.forEach(({ flicking }) => {
+      if (flicking !== currentTarget && flicking.animating) {
+        return true;
+      }
+    });
+    return false;
   };
 }
 
