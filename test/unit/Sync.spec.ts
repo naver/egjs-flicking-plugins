@@ -49,15 +49,15 @@ describe("Sync", () => {
       type: "camera",
       synchronizedFlickingOptions: [
         {
-          flicking: flicking0,
+          flicking: flicking0
         },
         {
-          flicking: flicking1,
+          flicking: flicking1
         }
       ]
     }));
     await waitEvent(flicking0, "ready");
-    
+
     // When
     void flicking0.control.moveToPosition(200, 0);
 
@@ -71,15 +71,15 @@ describe("Sync", () => {
       type: "camera",
       synchronizedFlickingOptions: [
         {
-          flicking: flicking0,
+          flicking: flicking0
         },
         {
-          flicking: flicking1,
+          flicking: flicking1
         }
       ]
     }));
     await waitEvent(flicking1, "ready");
-    
+
     // When
     void flicking1.control.moveToPosition(200, 0);
 
