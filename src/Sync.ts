@@ -108,24 +108,22 @@ class Sync implements Plugin {
 
   private _removeEvents = (synchronizedFlickingOptions: SychronizableFlickingOptions[]): void => {
     synchronizedFlickingOptions.forEach((synchronizedFlickingOption) => {
-      if (this._type === "camera") {
-        synchronizedFlickingOption.flicking.off(EVENTS.MOVE, this._onMove);
-        synchronizedFlickingOption.flicking.off(EVENTS.MOVE_START, this._onMoveStart);
-        synchronizedFlickingOption.flicking.off(EVENTS.MOVE_END, this._onMoveEnd);
-      }
-      if (this._type === "index" && synchronizedFlickingOption.isSlidable) {
-        synchronizedFlickingOption.flicking.off(EVENTS.WILL_CHANGE, this._onIndexChange);
-      }
-      if (synchronizedFlickingOption.isClickable) {
-        synchronizedFlickingOption.flicking.off(EVENTS.SELECT, this._onIndexChange);
-      }
+        if (this._type === "camera") {
+          synchronizedFlickingOption.flicking.off(EVENTS.MOVE, this._onMove);
+          synchronizedFlickingOption.flicking.off(EVENTS.MOVE_START, this._onMoveStart);
+          synchronizedFlickingOption.flicking.off(EVENTS.MOVE_END, this._onMoveEnd);
+        }
+        if (this._type === "index" && synchronizedFlickingOption.isSlidable) {
+          synchronizedFlickingOption.flicking.off(EVENTS.WILL_CHANGE, this._onIndexChange);
+        }
+        if (synchronizedFlickingOption.isClickable) {
+          synchronizedFlickingOption.flicking.off(EVENTS.SELECT, this._onIndexChange);
+        }
     });
   };
 
   private _onIndexChange = (e: ComponentEvent): void => {
     const flicking = e.currentTarget;
-    const synchronizedFlickingOptions = this._synchronizedFlickingOptions;
-
     if (!flicking.initialized) {
       return;
     }
@@ -184,7 +182,7 @@ class Sync implements Plugin {
         const targetLastPanel = synchronizedFlickingOption.flicking.panels[synchronizedFlickingOption.flicking.panels.length - 1];
         const targetPos = activePanel.position / (lastPanel.position + (lastPanel.size / 2)) * (targetLastPanel.position + (targetLastPanel.size / 2));
   
-        synchronizedFlickingOption.flicking.control.moveToPosition(targetPos, 500);
+        synchronizedFlickingOption.flicking.control.moveToPosition(targetPos, 500).catch(() => void 0);
         if (synchronizedFlickingOption.activeClass) {
           this._updateClass(synchronizedFlickingOption, targetPos);
         }
