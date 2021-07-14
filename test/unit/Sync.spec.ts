@@ -59,9 +59,10 @@ describe("Sync", () => {
     await waitEvent(flicking0, "ready");
 
     // When
-    void flicking0.control.moveToPosition(200, 0);
+    void flicking0.control.moveToPosition(500, 0);
 
     // Then
+    expect(flicking1.camera.position).equal(1100);
     expect(flicking1.camera.position).not.to.equal(100);
   });
 
@@ -81,9 +82,10 @@ describe("Sync", () => {
     await waitEvent(flicking1, "ready");
 
     // When
-    void flicking1.control.moveToPosition(200, 0);
+    void flicking1.control.moveToPosition(1100, 0);
 
     // Then
+    expect(flicking0.camera.position).equal(500);
     expect(flicking0.camera.position).not.to.equal(100);
   });
 
@@ -106,11 +108,12 @@ describe("Sync", () => {
 
     // When
     void flicking0.moveTo(1, 0);
-    tick(100);
+    tick(1000);
 
     // Then
-    expect(flicking1.getPanel(0).element.className.includes("flicking-thumbnail-active")).equal(false);
-    expect(flicking1.getPanel(3).element.className.includes("flicking-thumbnail-active")).equal(true);
+    flicking1.panels.forEach((panel, index) => {
+      expect(panel.element.className.includes("flicking-thumbnail-active")).equal(index === 3);
+    });
   });
 
   it("slidable flicking should move other flickings", async () => {
@@ -130,10 +133,14 @@ describe("Sync", () => {
     await waitEvent(flicking0, "ready");
 
     // When
-    void flicking0.moveTo(1, 0);
-    tick(100);
+    void flicking0.moveTo(2, 0);
+    tick(1000);
+    await waitEvent(flicking1, "changed");
 
     // Then
+    expect(flicking1.index).equal(5);
+    expect(flicking1.index).not.to.equal(0);
+    expect(flicking1.camera.position).equal(1100);
     expect(flicking1.camera.position).not.to.equal(100);
   });
 
@@ -155,9 +162,13 @@ describe("Sync", () => {
 
     // When
     flicking0.trigger(new ComponentEvent("select", { index: 2, panel: flicking0.getPanel(2), direction: null }));
-    tick(100);
+    tick(1000);
+    await waitEvent(flicking1, "changed");
 
     // Then
+    expect(flicking1.index).equal(5);
+    expect(flicking1.index).not.to.equal(0);
+    expect(flicking1.camera.position).equal(1100);
     expect(flicking1.camera.position).not.to.equal(100);
   });
 });
