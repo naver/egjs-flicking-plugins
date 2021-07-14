@@ -12,7 +12,7 @@ const flicking2 = new Flicking("#flick2", {
 
 flicking0.addPlugins(new Flicking.Plugins.Sync({
   type: "camera",
-  _synchronizedFlickingOptions: [
+  synchronizedFlickingOptions: [
     {
       flicking: flicking0,
       isClickable: true,
@@ -36,7 +36,7 @@ const flicking4 = new Flicking("#flick4", {
 
 flicking0.addPlugins(new Flicking.Plugins.Sync({
   type: "index",
-  _synchronizedFlickingOptions: [
+  synchronizedFlickingOptions: [
     {
       flicking: flicking3,
       isSlidable: true,
