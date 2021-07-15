@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,target-densitydpi=medium-dpi">
+        <script src="../../node_modules/@egjs/flicking/dist/flicking.pkgd.js"></script>
+        <script src="../../dist/plugins.js"></script>
+        <link rel="stylesheet" href="../../node_modules/@egjs/flicking/dist/flicking.css">
+        <link rel="stylesheet" href="../../node_modules/bulma/css/bulma.min.css">
+        <link rel="stylesheet" href="./css/common.css">
+        <link rel="stylesheet" href="./css/sync.css">
+    </head>
+    <body>
+      <div class="container">
+        <h1 class="title has-text-dark my-4">Sync Between Flickings</h1>
+        <div id="flick0" class="flicking-viewport p-2">
+          <div class="flicking-camera">
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+            <span class="card mr-2">🍔 Hamburger</span>
+            <span class="card mr-2">🍕 Pizza</span>
+            <span class="card mr-2">🍞 Bread</span>
+          </div>
+        </div>
+        <div id="flick1" class="flicking-viewport p-2">
+          <div class="flicking-camera">
+            <span class="card mr-2">🍎 Apple</span>
+            <span class="card mr-2">🍉 Watermelon</span>
+            <span class="card mr-2">🥝 Kiwi</span>
+            <span class="card mr-2">🍎 Apple</span>
+            <span class="card mr-2">🍉 Watermelon</span>
+            <span class="card mr-2">🥝 Kiwi</span>
+            <span class="card mr-2">🍎 Apple</span>
+            <span class="card mr-2">🍉 Watermelon</span>
+            <span class="card mr-2">🥝 Kiwi</span>
+          </div>
+        </div>
+        <div id="flick2" class="flicking-viewport p-2">
+          <div class="flicking-camera">
+            <span class="card mr-2">🥛 Milk</span>
+            <span class="card mr-2">☕ Coffee</span>
+            <span class="card mr-2">🍵 Green tea</span>
+            <span class="card mr-2">🥛 Milk</span>
+            <span class="card mr-2">☕ Coffee</span>
+            <span class="card mr-2">🍵 Green tea</span>
+            <span class="card mr-2">🥛 Milk</span>
+            <span class="card mr-2">☕ Coffee</span>
+            <span class="card mr-2">🍵 Green tea</span>
+            <span class="card mr-2">🥛 Milk</span>
+            <span class="card mr-2">☕ Coffee</span>
+            <span class="card mr-2">🍵 Green tea</span>
+            <span class="card mr-2">🥛 Milk</span>
+            <span class="card mr-2">☕ Coffee</span>
+            <span class="card mr-2">🍵 Green tea</span>
+            <span class="card mr-2">🥛 Milk</span>
+            <span class="card mr-2">☕ Coffee</span>
+            <span class="card mr-2">🍵 Green tea</span>
+          </div>
+        </div>
+        <h1 class="title has-text-dark my-4">Sync By Index</h1>
+        <div id="flick3" class="flicking-viewport">
+          <div class="flicking-camera">
+            <div class="slide"><img src="./img/bg01.jpg" /></div>
+            <div class="slide"><img src="./img/bg02.jpg" /></div>
+            <div class="slide"><img src="./img/bg03.jpg" /></div>
+            <div class="slide"><img src="./img/bg01.jpg" /></div>
+            <div class="slide"><img src="./img/bg02.jpg" /></div>
+            <div class="slide"><img src="./img/bg03.jpg" /></div>
+            <div class="slide"><img src="./img/bg01.jpg" /></div>
+            <div class="slide"><img src="./img/bg02.jpg" /></div>
+            <div class="slide"><img src="./img/bg03.jpg" /></div>
+          </div>
+        </div>
+        <div id="flick4" class="flicking-viewport">
+          <div class="flicking-camera">
+            <span class="card mr-2 mt-2"><img src="./img/bg01.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg02.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg03.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg01.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg02.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg03.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg01.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg02.jpg" /></span>
+            <span class="card mr-2 mt-2"><img src="./img/bg03.jpg" /></span>
+          </div>
+        </div>
+      </div>
+      <script src="./js/sync.js"></script>
+    </body>
+</html>
