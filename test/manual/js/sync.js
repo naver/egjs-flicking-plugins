@@ -34,7 +34,7 @@ const flicking4 = new Flicking("#flick4", {
   bound: true
 });
 
-flicking0.addPlugins(new Flicking.Plugins.Sync({
+flicking3.addPlugins(new Flicking.Plugins.Sync({
   type: "index",
   synchronizedFlickingOptions: [
     {
