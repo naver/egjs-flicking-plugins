@@ -43,6 +43,7 @@ class Sync implements Plugin {
     });
   }
 
+  /** */
   public constructor({
     type = SYNC.TYPE.CAMERA,
     synchronizedFlickingOptions = []
