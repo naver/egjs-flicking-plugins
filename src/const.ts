@@ -24,3 +24,10 @@ export const PAGINATION = {
     SCROLL: "scroll"
   }
 } as const;
+
+export const SYNC = {
+  TYPE: {
+    CAMERA: "camera",
+    INDEX: "index"
+  }
+} as const;
