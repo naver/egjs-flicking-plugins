@@ -86,20 +86,31 @@ class ScrollBulletRenderer extends Renderer {
 
     if (anchorPoints.length <= 0) return;
 
-    const bulletClass = `${pagination.classPrefix}-${PAGINATION.BULLET_SUFFIX}`;
     const bulletActiveClass = `${pagination.classPrefix}-${PAGINATION.BULLET_ACTIVE_SUFFIX}`;
-    const bulletPrevClass = (offset: number) => `${pagination.classPrefix}-${PAGINATION.SCROLL_PREV_SUFFIX}${offset > 1 ? offset : ""}`;
-    const bulletNextClass = (offset: number) => `${pagination.classPrefix}-${PAGINATION.SCROLL_NEXT_SUFFIX}${offset > 1 ? offset : ""}`;
+    const prevClassPrefix = `${pagination.classPrefix}-${PAGINATION.SCROLL_PREV_SUFFIX}`;
+    const nextClassPrefix = `${pagination.classPrefix}-${PAGINATION.SCROLL_NEXT_SUFFIX}`;
+    const bulletPrevClass = (offset: number) => `${prevClassPrefix}${offset > 1 ? offset : ""}`;
+    const bulletNextClass = (offset: number) => `${nextClassPrefix}${offset > 1 ? offset : ""}`;
+
+    const prevClassRegex = new RegExp(`^${prevClassPrefix}`);
+    const nextClassRegex = new RegExp(`^${nextClassPrefix}`);
 
     bullets.forEach((bullet, idx) => {
       const indexOffset = idx - activeIndex;
+      const classList = bullet.className.split(" ");
+
+      for (const className of classList) {
+        if (className === bulletActiveClass || prevClassRegex.test(className) || nextClassRegex.test(className)) {
+          removeClass(bullet, className);
+        }
+      }
 
       if (indexOffset === 0) {
-        bullet.className = `${bulletClass} ${bulletActiveClass}`;
+        addClass(bullet, bulletActiveClass);
       } else if (indexOffset > 0) {
-        bullet.className = `${bulletClass} ${bulletNextClass(Math.abs(indexOffset))}`;
+        addClass(bullet, bulletNextClass(Math.abs(indexOffset)));
       } else {
-        bullet.className = `${bulletClass} ${bulletPrevClass(Math.abs(indexOffset))}`;
+        addClass(bullet, bulletPrevClass(Math.abs(indexOffset)));
       }
     });
 
