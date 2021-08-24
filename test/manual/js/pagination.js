@@ -17,6 +17,7 @@ const flicking4 = new Flicking("#pagination-dynamic2");
 flicking4.addPlugins(new Flicking.Plugins.Pagination({
   type: "scroll",
   classPrefix: "pagination-bound",
+  renderBullet: (className) => `<span class="${className} hi"></span>`,
   scrollOnChange: (index, ctx) => {
     if (ctx.sliderIndex < 0) {
       const firstIndex = Math.min(Math.max(index, 2), ctx.total - 2);
