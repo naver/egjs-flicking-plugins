@@ -58,7 +58,7 @@
 		"not op_mini all"
 	],
 	"peerDependencies": {
-		"@egjs/flicking": "~4.1.0"
+		"@egjs/flicking": "^4.1.0"
 	},
 	"devDependencies": {
 		"@egjs/build-helper": "0.0.5",
