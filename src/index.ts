@@ -8,7 +8,7 @@ import Parallax from "./Parallax";
 import Fade from "./Fade";
 import AutoPlay from "./AutoPlay";
 import Arrow from "./Arrow";
-import Sync from "./Sync";
+import Sync, { SyncOptions, SychronizableFlickingOptions } from "./Sync";
 
 export * from "./pagination";
 
@@ -18,6 +18,11 @@ export {
   AutoPlay,
   Arrow,
   Sync
+};
+
+export type {
+  SyncOptions,
+  SychronizableFlickingOptions
 };
 
 export * from "./const";
