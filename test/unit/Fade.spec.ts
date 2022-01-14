@@ -8,16 +8,18 @@ describe("Fade", () => {
 
   beforeEach(() => {
     const wrapper = sandbox("flick");
-    wrapper.style.width = "199px";
-    wrapper.className = "flicking-viewport";
-    wrapper.innerHTML = `
+    const viewportEl = document.createElement("div");
+    viewportEl.style.width = "199px";
+    viewportEl.className = "flicking-viewport";
+    viewportEl.innerHTML = `
       <div class="flicking-camera">
         <div style="width: 200px; height: 200px;"><p></p></div>
         <div style="width: 200px; height: 200px;"><p></p></div>
         <div style="width: 200px; height: 200px;"><p></p></div>
       </div>
     `;
-    flicking = new Flicking(wrapper);
+    wrapper.appendChild(viewportEl);
+    flicking = new Flicking(viewportEl);
   });
 
   afterEach(() => {

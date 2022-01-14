@@ -10,6 +10,8 @@ module.exports = function(config) {
       },
     },
     files: [
+      "./node_modules/hammer-simulator/index.js",
+      "./test/hammer-simulator.run.js",
       "./test/setup.js",
       "./src/**/*.ts",
       "./test/**/*.ts",
@@ -40,7 +42,7 @@ module.exports = function(config) {
     customLaunchers: {
       CustomChromeHeadless: {
         base: "ChromeHeadless",
-        flags: ["--window-size=400,300", "--no-sandbox", "--disable-setuid-sandbox"],
+        flags: ["--window-size=1600,900", "--no-sandbox", "--disable-setuid-sandbox"],
       },
     },
     reporters: ["mocha"],

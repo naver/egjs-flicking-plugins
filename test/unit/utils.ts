@@ -49,16 +49,18 @@ export const createFlickingFixture = () => {
   return viewport;
 };
 
-export function simulate(el: HTMLElement, option?: object, time: number = 15000): Promise<void> {
-  let targetElement = el.querySelector(".eg-flick-viewport");
-
-  if (!targetElement) {
-    targetElement = el;
-  }
+export const simulate = (el: HTMLElement, option: Partial<{
+  pos: [number, number];
+  deltaX: number;
+  deltaY: number;
+  duration: number;
+  easing: string;
+}> = {}, time: number = 10000): Promise<void> => {
+  const elBbox = el.getBoundingClientRect();
 
   return new Promise<void>(resolve => {
-    Simulator.gestures.pan(targetElement, {
-      pos: [50, 15],
+    Simulator.gestures.pan(el, {
+      pos: [elBbox.left + elBbox.width / 2, elBbox.top + elBbox.height / 2],
       deltaX: 0,
       deltaY: 0,
       duration: 500,
@@ -68,7 +70,7 @@ export function simulate(el: HTMLElement, option?: object, time: number = 15000)
 
     tick(time);
   });
-}
+};
 
 export const waitEvent = (flicking: Flicking, eventName: typeof EVENTS[keyof typeof EVENTS]) => new Promise(res => {
   flicking.once(eventName, res);
