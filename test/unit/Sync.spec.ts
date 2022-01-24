@@ -1,8 +1,7 @@
-import { ComponentEvent } from "@egjs/component";
 import Flicking from "@egjs/flicking";
 
 import Sync from "../../src/Sync";
-import { sandbox, cleanup, waitEvent, tick } from "../unit/utils";
+import { sandbox, cleanup, waitEvent, tick, simulate } from "../unit/utils";
 
 describe("Sync", () => {
   let flicking0: Flicking;
@@ -10,21 +9,24 @@ describe("Sync", () => {
 
   beforeEach(() => {
     const wrapper0 = sandbox("flick0");
-    wrapper0.style.width = "199px";
-    wrapper0.className = "flicking-viewport";
-    wrapper0.innerHTML = `
+    const viewportEl0 = document.createElement("div");
+    viewportEl0.style.width = "199px";
+    viewportEl0.className = "flicking-viewport";
+    viewportEl0.innerHTML = `
       <div class="flicking-camera">
         <div style="width: 200px; height: 200px;"><p></p></div>
         <div style="width: 200px; height: 200px;"><p></p></div>
         <div style="width: 200px; height: 200px;"><p></p></div>
       </div>
     `;
-    flicking0 = new Flicking(wrapper0);
+    wrapper0.appendChild(viewportEl0);
+    flicking0 = new Flicking(viewportEl0);
 
     const wrapper1 = sandbox("flick1");
-    wrapper1.style.width = "199px";
-    wrapper1.className = "flicking-viewport";
-    wrapper1.innerHTML = `
+    const viewportEl1 = document.createElement("div");
+    viewportEl1.style.width = "199px";
+    viewportEl1.className = "flicking-viewport";
+    viewportEl1.innerHTML = `
       <div class="flicking-camera">
         <div style="width: 200px; height: 200px;"><p></p></div>
         <div style="width: 200px; height: 200px;"><p></p></div>
@@ -34,7 +36,8 @@ describe("Sync", () => {
         <div style="width: 200px; height: 200px;"><p></p></div>
       </div>
     `;
-    flicking1 = new Flicking(wrapper1);
+    wrapper1.appendChild(viewportEl1);
+    flicking1 = new Flicking(viewportEl1);
   });
 
   afterEach(() => {
@@ -112,7 +115,7 @@ describe("Sync", () => {
 
     // Then
     flicking1.panels.forEach((panel, index) => {
-      expect(panel.element.className.includes("flicking-thumbnail-active")).equal(index === 3);
+      expect(panel.element.classList.contains("flicking-thumbnail-active")).equal(index === 1);
     });
   });
 
@@ -135,13 +138,10 @@ describe("Sync", () => {
     // When
     void flicking0.moveTo(2, 0);
     tick(1000);
-    await waitEvent(flicking1, "changed");
 
     // Then
-    expect(flicking1.index).equal(5);
-    expect(flicking1.index).not.to.equal(0);
-    expect(flicking1.camera.position).equal(1100);
-    expect(flicking1.camera.position).not.to.equal(100);
+    expect(flicking1.index).equal(2);
+    expect(flicking1.camera.position).equal(flicking1.panels[2].position);
   });
 
   it("clickable flicking should move other flickings", async () => {
@@ -161,14 +161,11 @@ describe("Sync", () => {
     await waitEvent(flicking0, "ready");
 
     // When
-    flicking0.trigger(new ComponentEvent("select", { index: 2, panel: flicking0.getPanel(2), direction: null }));
-    tick(1000);
-    await waitEvent(flicking1, "changed");
+    await simulate(flicking0.panels[2].element, { deltaX: 0, deltaY: 0 });
+    tick(10000);
 
     // Then
-    expect(flicking1.index).equal(5);
-    expect(flicking1.index).not.to.equal(0);
-    expect(flicking1.camera.position).equal(1100);
-    expect(flicking1.camera.position).not.to.equal(100);
+    expect(flicking1.index).equal(2);
+    expect(flicking1.camera.position).equal(flicking1.panels[2].position);
   });
 });
