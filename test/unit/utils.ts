@@ -49,6 +49,27 @@ export const createFlickingFixture = () => {
   return viewport;
 };
 
+export const createPaginationFixture = () => {
+  const defaultFixture = createFlickingFixture();
+  const paginationWrapper = document.createElement("div");
+
+  paginationWrapper.className = "flicking-pagination";
+  defaultFixture.appendChild(paginationWrapper);
+
+  return defaultFixture;
+};
+
+export const createFlicking = async (el: HTMLElement, option: ConstructorParameters<typeof Flicking>[1] = {}): Promise<Flicking> => {
+  const flicking = new Flicking(el, option);
+
+  if (!flicking.autoInit) return Promise.resolve(flicking);
+
+  return new Promise(resolve => {
+    flicking.once(EVENTS.READY, () => resolve(flicking));
+  });
+};
+
+
 export const simulate = (el: HTMLElement, option: Partial<{
   pos: [number, number];
   deltaX: number;

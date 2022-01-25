@@ -58,3 +58,11 @@ const applyBulletSize = (newIndex, ctx) => {
     bullet.style.transform = "";
   });
 };
+
+document.querySelector("#remove").addEventListener("click", () => {
+  flicking.remove(0, flicking.panelCount);
+});
+
+document.querySelector("#add").addEventListener("click", () => {
+  flicking.append(`<div class="card mr-2"></div>`);
+});
