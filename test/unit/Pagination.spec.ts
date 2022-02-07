@@ -1,6 +1,7 @@
 import Flicking from "@egjs/flicking";
+import * as sinon from "sinon";
 import Pagination from "../../src/pagination/Pagination";
-import { cleanup, createFlicking, createFlickingFixture, createPaginationFixture, sandbox } from "./utils";
+import { cleanup, createFlicking, createPaginationFixture, sandbox } from "./utils";
 
 describe("Pagination", () => {
   afterEach(() => {
@@ -53,6 +54,40 @@ describe("Pagination", () => {
       // There should be one active bullet selected
       const bullets = [].slice.apply(document.querySelectorAll(".flicking-pagination-bullet-active"));
       expect(bullets.length).to.equal(1);
+    });
+  });
+
+  describe("Events", () => {
+    let addEventListener: sinon.SinonStub;
+
+    beforeEach(() => {
+      addEventListener = sinon.stub(HTMLElement.prototype, "addEventListener");
+    });
+
+    afterEach(() => {
+      addEventListener.restore();
+    });
+
+    it("should add touch start listener with passive: true", async () => {
+      // Given
+      const flicking = await createFlicking(createFixture());
+      const pagination = new Pagination();
+
+      // When
+      flicking.addPlugins(pagination);
+      await flicking.init();
+
+      // Then
+      const touchStartEvents = addEventListener.getCalls()
+        .filter(call => {
+          return call.args[0] === "touchstart" && call.thisValue.classList.contains("flicking-pagination-bullet");
+        });
+
+      expect(touchStartEvents.length).to.be.greaterThan(0);
+      expect(touchStartEvents.every(call => {
+        const [type, _, options] = call.args;
+        return type === "touchstart" && options && (options as AddEventListenerOptions).passive;
+      })).to.be.true;
     });
   });
 });

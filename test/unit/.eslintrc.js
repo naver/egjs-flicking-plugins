@@ -12,6 +12,7 @@ module.exports = {
     "guard-for-in": "off",
     "max-classes-per-file": "off",
     "prefer-arrow/prefer-arrow-functions": "off",
+    "arrow-body-style": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-unused-expressions": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",

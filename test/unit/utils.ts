@@ -59,6 +59,20 @@ export const createPaginationFixture = () => {
   return defaultFixture;
 };
 
+export const createArrowFixture = () => {
+  const defaultFixture = createFlickingFixture();
+  const prevArrow = document.createElement("span");
+  const nextArrow = document.createElement("span");
+
+  prevArrow.className = "flicking-arrow-prev";
+  nextArrow.className = "flicking-arrow-next";
+
+  defaultFixture.appendChild(prevArrow);
+  defaultFixture.appendChild(nextArrow);
+
+  return defaultFixture;
+};
+
 export const createFlicking = async (el: HTMLElement, option: ConstructorParameters<typeof Flicking>[1] = {}): Promise<Flicking> => {
   const flicking = new Flicking(el, option);
 
