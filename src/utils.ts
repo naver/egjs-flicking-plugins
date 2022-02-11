@@ -1,4 +1,6 @@
 export const addClass = (el: HTMLElement, className: string) => {
+  if (!el) return;
+
   if (el.classList) {
     el.classList.add(className);
   } else {
@@ -11,6 +13,8 @@ export const addClass = (el: HTMLElement, className: string) => {
 };
 
 export const removeClass = (el: HTMLElement, className: string) => {
+  if (!el) return;
+
   if (el.classList) {
     el.classList.remove(className);
   } else {

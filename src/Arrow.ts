@@ -79,8 +79,8 @@ class Arrow implements Plugin {
     const nextEl = getElement(this._nextElSelector, parentEl, "Arrow");
 
     [BROWSER.MOUSE_DOWN, BROWSER.TOUCH_START].forEach(evt => {
-      prevEl.addEventListener(evt, this._preventInputPropagation);
-      nextEl.addEventListener(evt, this._preventInputPropagation);
+      prevEl.addEventListener(evt, this._preventInputPropagation, { passive: true });
+      nextEl.addEventListener(evt, this._preventInputPropagation, { passive: true });
     });
 
     prevEl.addEventListener(BROWSER.CLICK, this._onPrevClick);

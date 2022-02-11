@@ -49,6 +49,41 @@ export const createFlickingFixture = () => {
   return viewport;
 };
 
+export const createPaginationFixture = () => {
+  const defaultFixture = createFlickingFixture();
+  const paginationWrapper = document.createElement("div");
+
+  paginationWrapper.className = "flicking-pagination";
+  defaultFixture.appendChild(paginationWrapper);
+
+  return defaultFixture;
+};
+
+export const createArrowFixture = () => {
+  const defaultFixture = createFlickingFixture();
+  const prevArrow = document.createElement("span");
+  const nextArrow = document.createElement("span");
+
+  prevArrow.className = "flicking-arrow-prev";
+  nextArrow.className = "flicking-arrow-next";
+
+  defaultFixture.appendChild(prevArrow);
+  defaultFixture.appendChild(nextArrow);
+
+  return defaultFixture;
+};
+
+export const createFlicking = async (el: HTMLElement, option: ConstructorParameters<typeof Flicking>[1] = {}): Promise<Flicking> => {
+  const flicking = new Flicking(el, option);
+
+  if (!flicking.autoInit) return Promise.resolve(flicking);
+
+  return new Promise(resolve => {
+    flicking.once(EVENTS.READY, () => resolve(flicking));
+  });
+};
+
+
 export const simulate = (el: HTMLElement, option: Partial<{
   pos: [number, number];
   deltaX: number;

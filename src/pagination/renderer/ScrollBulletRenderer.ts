@@ -46,7 +46,7 @@ class ScrollBulletRenderer extends Renderer {
 
       bullet.addEventListener(BROWSER.TOUCH_START, e => {
         e.stopPropagation();
-      });
+      }, { passive: true });
 
       bullet.addEventListener(BROWSER.CLICK, () => {
         flicking.moveTo(anchorPoint.panel.index)
