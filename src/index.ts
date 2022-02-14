@@ -9,6 +9,7 @@ import Fade from "./Fade";
 import AutoPlay from "./AutoPlay";
 import Arrow from "./Arrow";
 import Sync, { SyncOptions, SychronizableFlickingOptions } from "./Sync";
+import Perspective from "./Perspective";
 
 export * from "./pagination";
 
@@ -17,7 +18,8 @@ export {
   Fade,
   AutoPlay,
   Arrow,
-  Sync
+  Sync,
+  Perspective
 };
 
 export type {
