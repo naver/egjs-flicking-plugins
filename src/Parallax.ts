@@ -48,6 +48,7 @@ class Parallax implements Plugin {
     if (!this._flicking) return;
 
     this._flicking.off(EVENTS.MOVE, this._onMove);
+    this._flicking.off(EVENTS.AFTER_RESIZE, this.update);
     this._flicking = null;
   }
 
