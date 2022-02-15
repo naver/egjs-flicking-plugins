@@ -9,7 +9,7 @@ describe("Perspective", () => {
   beforeEach(() => {
     const wrapper = sandbox("flick");
     wrapper.style.width = "199px";
-    wrapper.className = "flicking-viewport";
+    wrapper.classList.add("flicking-viewport");
     wrapper.innerHTML = `
       <div class="flicking-camera">
         <div style="width: 200px; height: 200px;"><p></p></div>
