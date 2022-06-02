@@ -96,5 +96,5 @@
 
 .flicking-arrow-prev.is-thin::after,
 .flicking-arrow-next.is-thin::after{
-  top : calc(50% - 2px);
+  top: calc(50% - 2px);
 }
