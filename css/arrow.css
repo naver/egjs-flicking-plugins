@@ -87,14 +87,14 @@
   background-color: #e6e6e6;
 }
 
-.flicking-arrow-prev.thin::before,
-.flicking-arrow-prev.thin::after,
-.flicking-arrow-next.thin::before,
-.flicking-arrow-next.thin::after{
+.flicking-arrow-prev.is-thin::before,
+.flicking-arrow-prev.is-thin::after,
+.flicking-arrow-next.is-thin::before,
+.flicking-arrow-next.is-thin::after{
   height: 3px;
 }
 
-.flicking-arrow-prev.thin::after,
-.flicking-arrow-next.thin::after{
+.flicking-arrow-prev.is-thin::after,
+.flicking-arrow-next.is-thin::after{
   top : calc(50% - 2px);
 }
