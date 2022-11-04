@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import Flicking from "@egjs/flicking";
+import Flicking, { EVENTS } from "@egjs/flicking";
 import * as sinon from "sinon";
 
 import AutoPlay from "../../src/AutoPlay";
 
-import { createFlickingFixture, tick, waitEvent } from "./utils";
+import { cleanup, createFlickingFixture, sandbox, tick, waitEvent } from "./utils";
 
 describe("AutoPlay", () => {
   it("can receive older API of receiving duration and direction", () => {
@@ -51,20 +51,37 @@ describe("AutoPlay", () => {
   it("should apply animationDuration to animation when moving panel", async () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500, animationDuration: 200 });
-    const flicking = new Flicking(createFlickingFixture());
-    const changedSpy = sinon.spy();
-    flicking.on("changed", changedSpy);
+    const wrapper = sandbox("flick0");
+    const viewportEl = document.createElement("div");
+    viewportEl.innerHTML = `
+      <div class="flicking-camera">
+        <div style="width: 200px; height: 200px;"><p></p></div>
+        <div style="width: 200px; height: 200px;"><p></p></div>
+        <div style="width: 200px; height: 200px;"><p></p></div>
+      </div>
+    `;
+    wrapper.appendChild(viewportEl);
+    const flicking = new Flicking(viewportEl);
+    const moveStartSpy = sinon.spy();
+    const moveEndSpy = sinon.spy();
+    flicking.on(EVENTS.MOVE_START, moveStartSpy);
+    flicking.on(EVENTS.MOVE_END, moveEndSpy);
 
     // When
     flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
 
     // Then
-    expect(changedSpy.called).to.be.false;
+    expect(moveStartSpy.called).to.be.false;
+    expect(moveEndSpy.called).to.be.false;
     tick(600);
-    expect(changedSpy.called).to.be.false;
+    expect(moveStartSpy.calledOnce).to.be.true;
+    expect(moveEndSpy.called).to.be.false;
     tick(500);
-    expect(changedSpy.calledOnce).to.be.true;
+    expect(moveStartSpy.calledOnce).to.be.true;
+    expect(moveEndSpy.calledOnce).to.be.true;
+    cleanup();
+    flicking.destroy();
   });
 
   it("can stop autoplay if stop is called before duration", () => {
