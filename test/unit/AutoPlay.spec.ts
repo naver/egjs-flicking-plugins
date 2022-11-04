@@ -48,6 +48,25 @@ describe("AutoPlay", () => {
     expect(nextStub.calledOnce).to.be.true;
   });
 
+  it("should apply animationDuration to animation when moving panel", async () => {
+    // Given
+    const plugin = new AutoPlay({ direction: "NEXT", duration: 500, animationDuration: 200 });
+    const flicking = new Flicking(createFlickingFixture());
+    const changedSpy = sinon.spy();
+    flicking.on("changed", changedSpy);
+
+    // When
+    flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
+
+    // Then
+    expect(changedSpy.called).to.be.false;
+    tick(600);
+    expect(changedSpy.called).to.be.false;
+    tick(500);
+    expect(changedSpy.calledOnce).to.be.true;
+  });
+
   it("can stop autoplay if stop is called before duration", () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500 });
