@@ -65,8 +65,8 @@ class AutoPlay implements Plugin {
     flicking.on({
       [EVENTS.MOVE_START]: this.stop,
       [EVENTS.HOLD_START]: this.stop,
-      [EVENTS.MOVE_END]: this._move,
-      [EVENTS.SELECT]: this._move
+      [EVENTS.MOVE_END]: this.play,
+      [EVENTS.SELECT]: this.play
     });
 
     this._flicking = flicking;
@@ -91,8 +91,8 @@ class AutoPlay implements Plugin {
 
     flicking.off(EVENTS.MOVE_START, this.stop);
     flicking.off(EVENTS.HOLD_START, this.stop);
-    flicking.off(EVENTS.MOVE_END, this._move);
-    flicking.off(EVENTS.SELECT, this._move);
+    flicking.off(EVENTS.MOVE_END, this.play);
+    flicking.off(EVENTS.SELECT, this.play);
 
     const targetEl = flicking.element;
     targetEl.removeEventListener("mouseenter", this._onMouseEnter, false);
@@ -105,7 +105,15 @@ class AutoPlay implements Plugin {
     // DO-NOTHING
   }
 
-  public play = (duration?: number) => {
+  public play = () => {
+    this._movePanel(this._duration);
+  };
+
+  public stop = () => {
+    clearTimeout(this._timerId);
+  };
+
+  private _movePanel(duration: number): void {
     const flicking = this._flicking;
     const direction = this._direction;
 
@@ -127,16 +135,8 @@ class AutoPlay implements Plugin {
       }
 
       this.play();
-    }, duration ?? this._duration);
-  };
-
-  public stop = () => {
-    clearTimeout(this._timerId);
-  };
-
-  private _move = () => {
-    this.play();
-  };
+    }, duration);
+  }
 
   private _onMouseEnter = () => {
     this._mouseEntered = true;
@@ -145,7 +145,7 @@ class AutoPlay implements Plugin {
 
   private _onMouseLeave = () => {
     this._mouseEntered = false;
-    this.play(this._delayAfterHover);
+    this._movePanel(this._delayAfterHover);
   };
 }
 
