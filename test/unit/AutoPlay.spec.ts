@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import Flicking from "@egjs/flicking";
+import Flicking, { EVENTS } from "@egjs/flicking";
 import * as sinon from "sinon";
 
 import AutoPlay from "../../src/AutoPlay";
 
-import { createFlickingFixture, tick, waitEvent } from "./utils";
+import { cleanup, createFlickingFixture, sandbox, tick, waitEvent } from "./utils";
 
 describe("AutoPlay", () => {
   it("can receive older API of receiving duration and direction", () => {
@@ -46,6 +46,23 @@ describe("AutoPlay", () => {
     expect(nextStub.called).to.be.false;
     tick(500);
     expect(nextStub.calledOnce).to.be.true;
+  });
+
+  it("should apply animationDuration to animation when moving panel", async () => {
+    // Given
+    const plugin = new AutoPlay({ direction: "NEXT", duration: 500, animationDuration: 200 });
+    const flicking = new Flicking(createFlickingFixture());
+    const nextSpy = sinon.spy(flicking, "next");
+
+    // When
+    flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
+
+    // Then
+    expect(nextSpy.called).to.be.false;
+    tick(500);
+    expect(nextSpy.calledOnce).to.be.true;
+    expect(nextSpy.firstCall.calledWith(200)).to.be.true;
   });
 
   it("can stop autoplay if stop is called before duration", () => {
