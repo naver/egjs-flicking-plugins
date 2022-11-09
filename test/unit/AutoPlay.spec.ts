@@ -51,37 +51,18 @@ describe("AutoPlay", () => {
   it("should apply animationDuration to animation when moving panel", async () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500, animationDuration: 200 });
-    const wrapper = sandbox("flick0");
-    const viewportEl = document.createElement("div");
-    viewportEl.innerHTML = `
-      <div class="flicking-camera">
-        <div style="width: 200px; height: 200px;"><p></p></div>
-        <div style="width: 200px; height: 200px;"><p></p></div>
-        <div style="width: 200px; height: 200px;"><p></p></div>
-      </div>
-    `;
-    wrapper.appendChild(viewportEl);
-    const flicking = new Flicking(viewportEl);
-    const moveStartSpy = sinon.spy();
-    const moveEndSpy = sinon.spy();
-    flicking.on(EVENTS.MOVE_START, moveStartSpy);
-    flicking.on(EVENTS.MOVE_END, moveEndSpy);
+    const flicking = new Flicking(createFlickingFixture());
+    const nextSpy = sinon.spy(flicking, "next");
 
     // When
     flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
 
     // Then
-    expect(moveStartSpy.called).to.be.false;
-    expect(moveEndSpy.called).to.be.false;
-    tick(600);
-    expect(moveStartSpy.calledOnce).to.be.true;
-    expect(moveEndSpy.called).to.be.false;
+    expect(nextSpy.called).to.be.false;
     tick(500);
-    expect(moveStartSpy.calledOnce).to.be.true;
-    expect(moveEndSpy.calledOnce).to.be.true;
-    cleanup();
-    flicking.destroy();
+    expect(nextSpy.calledOnce).to.be.true;
+    expect(nextSpy.firstCall.calledWith(200)).to.be.true;
   });
 
   it("can stop autoplay if stop is called before duration", () => {

@@ -37,7 +37,7 @@ class AutoPlay implements Plugin {
   /**
    * @param {AutoPlayOptions} options Options for the AutoPlay instance.<ko>AutoPlay 옵션</ko>
    * @param {number} options.duration Time to wait before moving on to the next panel.<ko>다음 패널로 움직이기까지 대기 시간</ko>
-   * @param {number | undefined} options.animationDuration Duration of animation of moving to the next panel.<ko>패널이 움직이는 애니메이션의 지속 시간</ko>
+   * @param {number | undefined} options.animationDuration Duration of animation of moving to the next panel. If undefined, duration option of the Flicking instance is used instead.<ko>패널이 움직이는 애니메이션의 지속 시간, undefined라면 Flicking 인스턴스의 duration 값을 사용한다</ko>
    * @param {"PREV" | "NEXT"} options.direction The direction in which the panel moves.<ko>패널이 움직이는 방향</ko>
    * @param {boolean} options.stopOnHover Whether to stop when mouse hover upon the element.<ko>엘리먼트에 마우스를 올렸을 때 AutoPlay를 정지할지 여부</ko>
    * @example
