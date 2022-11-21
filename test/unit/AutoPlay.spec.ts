@@ -104,13 +104,13 @@ describe("AutoPlay", () => {
     expect(stopSpy.calledTwice).to.be.true;
   });
 
-  it("should call play if mouse leaved and stopOnHover is true", async () => {
+  it("should call next after duration if mouse leaved and stopOnHover is true", async () => {
     // Given
     const plugin = new AutoPlay({ stopOnHover: true });
     const flicking = new Flicking(createFlickingFixture());
-    const playSpy = sinon.spy();
+    const nextStub = sinon.stub(flicking, "next");
 
-    plugin.play = playSpy;
+    nextStub.resolves(void 0);
 
     // When
     flicking.addPlugins(plugin);
@@ -118,9 +118,12 @@ describe("AutoPlay", () => {
     const wrapper = flicking.element;
 
     // Then
-    expect(playSpy.calledOnce).to.be.true; // first play call
+    expect(nextStub.called).to.be.false;
     wrapper.dispatchEvent(new Event("mouseleave"));
-    expect(playSpy.calledTwice).to.be.true;
+    tick(2000);
+    expect(nextStub.calledOnce).to.be.true;
+    tick(2000);
+    expect(nextStub.calledTwice).to.be.true;
   });
 
   it("should call next after delayAfterHover milliseconds when mouse leaved and stopOnHover is true", async () => {
