@@ -25,12 +25,14 @@ class AutoPlay implements Plugin {
   private _flicking: Flicking | null = null;
   private _timerId = 0;
   private _mouseEntered = false;
+  private _playing = false;
 
   public get duration() { return this._duration; }
   public get animationDuration() { return this._animationDuration; }
   public get direction() { return this._direction; }
   public get stopOnHover() { return this._stopOnHover; }
   public get delayAfterHover() { return this._delayAfterHover; }
+  public get playing() { return this._playing; }
 
   public set duration(val: number) { this._duration = val; }
   public set animationDuration(val: number | undefined) { this._animationDuration = val; }
@@ -117,6 +119,7 @@ class AutoPlay implements Plugin {
   };
 
   public stop = () => {
+    this._playing = false;
     clearTimeout(this._timerId);
   };
 
@@ -134,6 +137,7 @@ class AutoPlay implements Plugin {
       return;
     }
 
+    this._playing = true;
     this._timerId = window.setTimeout(() => {
       if (direction === DIRECTION.NEXT) {
         flicking.next(this._animationDuration).catch(() => void 0);
