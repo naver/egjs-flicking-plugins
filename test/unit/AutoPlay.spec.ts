@@ -198,4 +198,22 @@ describe("AutoPlay", () => {
     // Then
     expect(nextStub.called).to.be.false;
   });
+
+  it("should apply the status of autoplay to playing property", async () => {
+    // Given
+    const plugin = new AutoPlay({ stopOnHover: true });
+    const flicking = new Flicking(createFlickingFixture());
+
+    // When
+    flicking.addPlugins(plugin);
+    await waitEvent(flicking, "ready");
+    const wrapper = flicking.element;
+
+    // Then
+    expect(plugin.playing).to.be.true;
+    wrapper.dispatchEvent(new Event("mouseenter"));
+    expect(plugin.playing).to.be.false;
+    wrapper.dispatchEvent(new Event("mouseleave"));
+    expect(plugin.playing).to.be.true;
+  });
 });
