@@ -71,7 +71,9 @@ class Fade implements Plugin {
       const target = selector ? el.querySelector<HTMLElement>(selector)! : el;
       const opacity = Math.min(1, Math.max(0, (1 - Math.abs(progress * scale))));
 
-      target.style.opacity = `${opacity}`;
+      if(target) {
+        target.style.opacity = `${opacity}`;
+      }
     });
   };
 }
