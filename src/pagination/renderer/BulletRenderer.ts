@@ -1,28 +1,48 @@
-import { FlickingError } from "@egjs/flicking";
-
 import { PAGINATION } from "../../const";
-import { BROWSER } from "../../event";
 import { addClass, removeClass } from "../../utils";
 
 import Renderer from "./Renderer";
 
 class BulletRenderer extends Renderer {
-  private _childs: HTMLElement[] = [];
+  private _bullets: HTMLElement[] = [];
+  private _prevIndex: number = -1;
+
+  private get _bulletClass() {
+    const pagination = this._pagination;
+    return `${pagination.classPrefix}-${PAGINATION.BULLET_SUFFIX}`;
+  }
+
+  private get _activeClass() {
+    const pagination = this._pagination;
+    return `${pagination.classPrefix}-${PAGINATION.BULLET_ACTIVE_SUFFIX}`;
+  }
+
+  public destroy() {
+    this._bullets = [];
+    this._prevIndex = -1;
+  }
 
   public render() {
     const flicking = this._flicking;
     const pagination = this._pagination;
-    const renderBullet = pagination.renderBullet;
-    const bulletWrapperClass = `${pagination.classPrefix}-${PAGINATION.BULLET_WRAPPER_SUFFIX}`;
-    const bulletClass = `${pagination.classPrefix}-${PAGINATION.BULLET_SUFFIX}`;
-    const bulletActiveClass = `${pagination.classPrefix}-${PAGINATION.BULLET_ACTIVE_SUFFIX}`;
-    const anchorPoints = flicking.camera.anchorPoints;
     const wrapper = this._wrapper;
+    const bulletClass = this._bulletClass;
+    const activeClass = this._activeClass;
+    const renderBullet = pagination.renderBullet;
+    const renderActiveBullet = pagination.renderActiveBullet;
+    const bulletWrapperClass = `${pagination.classPrefix}-${PAGINATION.BULLET_WRAPPER_SUFFIX}`;
+    const anchorPoints = flicking.camera.anchorPoints;
 
     addClass(wrapper, bulletWrapperClass);
 
     wrapper.innerHTML = anchorPoints
-      .map((_, index) => renderBullet(bulletClass, index))
+      .map((anchorPoint, index) => {
+        if (renderActiveBullet && anchorPoint.panel.index === flicking.index) {
+          return renderActiveBullet(bulletClass, index);
+        } else {
+          return renderBullet(bulletClass, index);
+        }
+      })
       .join("\n");
 
     const bullets = [].slice.call(wrapper.children) as HTMLElement[];
@@ -31,46 +51,66 @@ class BulletRenderer extends Renderer {
       const anchorPoint = anchorPoints[index];
 
       if (anchorPoint.panel.index === flicking.index) {
-        addClass(bullet, bulletActiveClass);
+        addClass(bullet, activeClass);
+        this._prevIndex = index;
       }
 
-      bullet.addEventListener(BROWSER.MOUSE_DOWN, e => {
-        e.stopPropagation();
-      });
-
-      bullet.addEventListener(BROWSER.TOUCH_START, e => {
-        e.stopPropagation();
-      }, { passive: true });
-
-      bullet.addEventListener(BROWSER.CLICK, () => {
-        flicking.moveTo(anchorPoint.panel.index)
-          .catch(err => {
-            if (err instanceof FlickingError) return;
-            throw err;
-          });
-      });
+      this._addBulletEvents(bullet, index);
     });
 
-    this._childs = bullets;
+    this._bullets = bullets;
   }
 
   public update(index: number) {
     const flicking = this._flicking;
     const pagination = this._pagination;
-    const bullets = this._childs;
-    const activeClass = `${pagination.classPrefix}-${PAGINATION.BULLET_ACTIVE_SUFFIX}`;
+    const wrapper = this._wrapper;
+    const bullets = this._bullets;
+    const bulletClass = this._bulletClass;
+    const activeClass = this._activeClass;
+    const prevIndex = this._prevIndex;
     const anchorPoints = flicking.camera.anchorPoints;
+    const renderBullet = pagination.renderBullet;
+    const renderActiveBullet = pagination.renderActiveBullet;
 
     if (anchorPoints.length <= 0) return;
 
-    bullets.forEach(bullet => {
-      removeClass(bullet, activeClass);
-    });
-
     const anchorOffset = anchorPoints[0].panel.index;
-    const activeBullet = bullets[index - anchorOffset];
+    const activeBulletIndex = index - anchorOffset;
 
-    addClass(activeBullet, activeClass);
+    if (prevIndex === activeBulletIndex) return;
+
+    if (renderActiveBullet) {
+      const prevBullet = bullets[prevIndex];
+      if (prevBullet) {
+        const newBullet = this._createBulletFromString(
+          renderBullet(bulletClass, prevIndex),
+          prevIndex
+        );
+        prevBullet.parentElement!.replaceChild(newBullet, prevBullet);
+        bullets.splice(prevIndex, 1, newBullet);
+      }
+
+      const activeBullet = bullets[activeBulletIndex];
+      const newActiveBullet = this._createBulletFromString(
+        renderActiveBullet(`${bulletClass} ${activeClass}`, activeBulletIndex),
+        activeBulletIndex
+      );
+
+      wrapper.replaceChild(newActiveBullet, activeBullet);
+      bullets.splice(activeBulletIndex, 1, newActiveBullet);
+    } else {
+      const activeBullet = bullets[activeBulletIndex];
+      const prevBullet = bullets[prevIndex];
+
+      if (prevBullet) {
+        removeClass(prevBullet, activeClass);
+      }
+
+      addClass(activeBullet, activeClass);
+    }
+
+    this._prevIndex = activeBulletIndex;
   }
 }
 

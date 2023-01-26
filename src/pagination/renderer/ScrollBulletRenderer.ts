@@ -1,7 +1,6 @@
-import { DIRECTION, FlickingError } from "@egjs/flicking";
+import { DIRECTION } from "@egjs/flicking";
 
 import { PAGINATION } from "../../const";
-import { BROWSER } from "../../event";
 import { addClass, removeClass } from "../../utils";
 
 import Renderer from "./Renderer";
@@ -11,6 +10,13 @@ class ScrollBulletRenderer extends Renderer {
   private _bulletSize: number = 0;
   private _previousIndex: number = -1;
   private _sliderIndex: number = -1;
+
+  public destroy(): void {
+    this._bullets = [];
+    this._bulletSize = 0;
+    this._previousIndex = -1;
+    this._sliderIndex = -1;
+  }
 
   public render() {
     const wrapper = this._wrapper;
@@ -38,23 +44,7 @@ class ScrollBulletRenderer extends Renderer {
     const bullets = [].slice.call(sliderEl.children) as HTMLElement[];
 
     bullets.forEach((bullet, index) => {
-      const anchorPoint = anchorPoints[index];
-
-      bullet.addEventListener(BROWSER.MOUSE_DOWN, e => {
-        e.stopPropagation();
-      });
-
-      bullet.addEventListener(BROWSER.TOUCH_START, e => {
-        e.stopPropagation();
-      }, { passive: true });
-
-      bullet.addEventListener(BROWSER.CLICK, () => {
-        flicking.moveTo(anchorPoint.panel.index)
-          .catch(err => {
-            if (err instanceof FlickingError) return;
-            throw err;
-          });
-      });
+      this._addBulletEvents(bullet, index);
     });
 
     if (bullets.length <= 0) return;
@@ -66,6 +56,7 @@ class ScrollBulletRenderer extends Renderer {
 
     this._bullets = bullets;
     this._bulletSize = bulletSize;
+    this._previousIndex = -1;
 
     this.update(this._flicking.index);
 
@@ -80,12 +71,16 @@ class ScrollBulletRenderer extends Renderer {
     const bullets = this._bullets;
     const prevIndex = this._previousIndex;
 
+    const renderBullet = pagination.renderBullet;
+    const renderActiveBullet = pagination.renderActiveBullet;
+
     const anchorPoints = flicking.camera.anchorPoints;
     const anchorOffset = anchorPoints[0].panel.index;
     const activeIndex = index - anchorOffset;
 
     if (anchorPoints.length <= 0) return;
 
+    const bulletClass = `${pagination.classPrefix}-${PAGINATION.BULLET_SUFFIX}`;
     const bulletActiveClass = `${pagination.classPrefix}-${PAGINATION.BULLET_ACTIVE_SUFFIX}`;
     const prevClassPrefix = `${pagination.classPrefix}-${PAGINATION.SCROLL_PREV_SUFFIX}`;
     const nextClassPrefix = `${pagination.classPrefix}-${PAGINATION.SCROLL_NEXT_SUFFIX}`;
@@ -94,6 +89,29 @@ class ScrollBulletRenderer extends Renderer {
 
     const prevClassRegex = new RegExp(`^${prevClassPrefix}`);
     const nextClassRegex = new RegExp(`^${nextClassPrefix}`);
+
+    if (renderActiveBullet) {
+      const prevBullet = bullets[prevIndex];
+      if (prevBullet) {
+        const newBullet = this._createBulletFromString(
+          renderBullet(bulletClass, prevIndex),
+          prevIndex
+        );
+        prevBullet.parentElement!.replaceChild(newBullet, prevBullet);
+        bullets.splice(prevIndex, 1, newBullet);
+      }
+
+      const activeBullet = bullets[activeIndex];
+      if (activeBullet) {
+        const newActiveBullet = this._createBulletFromString(
+          renderActiveBullet(bulletClass, activeIndex),
+          activeIndex
+        );
+
+        activeBullet.parentElement!.replaceChild(newActiveBullet, activeBullet);
+        bullets.splice(activeIndex, 1, newActiveBullet);
+      }
+    }
 
     bullets.forEach((bullet, idx) => {
       const indexOffset = idx - activeIndex;
@@ -116,7 +134,7 @@ class ScrollBulletRenderer extends Renderer {
 
     pagination.scrollOnChange(activeIndex, {
       total: bullets.length,
-      prevIndex: prevIndex,
+      prevIndex,
       sliderIndex: this._sliderIndex,
       direction: activeIndex > prevIndex ? DIRECTION.NEXT : DIRECTION.PREV,
       bullets: [...bullets],
