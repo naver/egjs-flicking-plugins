@@ -2,6 +2,13 @@ const flicking = new Flicking("#pagination", { bound: true });
 
 flicking.addPlugins(new Flicking.Plugins.Pagination());
 
+const flicking1_1 = new Flicking("#pagination2", { bound: true });
+
+flicking1_1.addPlugins(new Flicking.Plugins.Pagination({
+  renderBullet: (className, index) => `<span class="${className}">${index + 1}</span>`,
+  renderActiveBullet: (className) => `<span class="${className}"></span>`
+}));
+
 const flicking2 = new Flicking("#pagination-number");
 
 flicking2.addPlugins(new Flicking.Plugins.Pagination({ type: "fraction" }));
@@ -9,7 +16,9 @@ flicking2.addPlugins(new Flicking.Plugins.Pagination({ type: "fraction" }));
 const flicking3 = new Flicking("#pagination-dynamic");
 
 flicking3.addPlugins(new Flicking.Plugins.Pagination({
-  type: "scroll"
+  type: "scroll",
+  renderBullet: (className, index) => `<span class="${className}">${index + 1}</span>`,
+  renderActiveBullet: (className) => `<span class="${className}"></span>`
 }));
 
 const flicking4 = new Flicking("#pagination-dynamic2");

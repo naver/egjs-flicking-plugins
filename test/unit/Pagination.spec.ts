@@ -1,4 +1,3 @@
-import Flicking from "@egjs/flicking";
 import * as sinon from "sinon";
 import Pagination from "../../src/pagination/Pagination";
 import { cleanup, createFlicking, createPaginationFixture, sandbox } from "./utils";
@@ -18,9 +17,9 @@ describe("Pagination", () => {
 
   describe("Options", () => {
     describe("renderBullet", () => {
-      it("should not remove custom classes when the 'scroll' type is used", () => {
+      it("should not remove custom classes when the 'scroll' type is used", async () => {
         // Given
-        const flicking = new Flicking(createFixture());
+        const flicking = await createFlicking(createFixture());
         const pagination = new Pagination({
           renderBullet: (className: string) => `<span class="${className} test"></span>`,
           type: "scroll"
@@ -32,6 +31,54 @@ describe("Pagination", () => {
         // Then
         const bullets = [].slice.apply(document.querySelectorAll(".flicking-pagination-bullet"));
         expect(bullets.every(bullet => bullet.classList.contains("test"))).to.be.true;
+      });
+    });
+
+    describe("renderActiveBullet", () => {
+      it("is false by default", async () => {
+        // Given
+        const flicking = await createFlicking(createFixture());
+        const pagination = new Pagination();
+
+        // When
+        pagination.init(flicking);
+
+        // Then
+        expect(pagination.renderActiveBullet).to.be.null;
+      });
+
+      it("should render active bullet if a render function is given", async () => {
+        // Given
+        const flicking = await createFlicking(createFixture());
+        const pagination = new Pagination({
+          type: "bullet", // default
+          renderActiveBullet: (className) => `<span class="${className}">ACTIVE</span>`
+        });
+
+        // When
+        pagination.init(flicking);
+
+        // Then
+        const activeBullet = document.querySelector(".flicking-pagination-bullet-active");
+        expect(activeBullet).not.to.be.null;
+        expect(activeBullet?.innerHTML).to.equal("ACTIVE");
+      });
+
+      it("should render active bullet if a render function is given & type is scroll", async () => {
+        // Given
+        const flicking = await createFlicking(createFixture());
+        const pagination = new Pagination({
+          type: "scroll",
+          renderActiveBullet: (className) => `<span class="${className}">ACTIVE</span>`
+        });
+
+        // When
+        pagination.init(flicking);
+
+        // Then
+        const activeBullet = document.querySelector(".flicking-pagination-bullet-active");
+        expect(activeBullet).not.to.be.null;
+        expect(activeBullet?.innerHTML).to.equal("ACTIVE");
       });
     });
   });
