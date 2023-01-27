@@ -98,7 +98,7 @@ class ScrollBulletRenderer extends Renderer {
           prevIndex
         );
         prevBullet.parentElement!.replaceChild(newBullet, prevBullet);
-        bullets.splice(prevIndex, 1, newBullet);
+        bullets[prevIndex] = newBullet;
       }
 
       const activeBullet = bullets[activeIndex];
@@ -109,7 +109,7 @@ class ScrollBulletRenderer extends Renderer {
         );
 
         activeBullet.parentElement!.replaceChild(newActiveBullet, activeBullet);
-        bullets.splice(activeIndex, 1, newActiveBullet);
+        bullets[activeIndex] = newActiveBullet;
       }
     }
 

@@ -88,7 +88,7 @@ class BulletRenderer extends Renderer {
           prevIndex
         );
         prevBullet.parentElement!.replaceChild(newBullet, prevBullet);
-        bullets.splice(prevIndex, 1, newBullet);
+        bullets[prevIndex] = newBullet;
       }
 
       const activeBullet = bullets[activeBulletIndex];
@@ -98,7 +98,7 @@ class BulletRenderer extends Renderer {
       );
 
       wrapper.replaceChild(newActiveBullet, activeBullet);
-      bullets.splice(activeBulletIndex, 1, newActiveBullet);
+      bullets[activeBulletIndex] = newActiveBullet;
     } else {
       const activeBullet = bullets[activeBulletIndex];
       const prevBullet = bullets[prevIndex];
