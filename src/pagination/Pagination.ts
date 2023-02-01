@@ -16,6 +16,7 @@ export interface PaginationOptions {
   bulletCount: number;
   renderBullet: (className: string, index: number) => string;
   renderFraction: (currentClass: string, totalClass: string) => string;
+  renderActiveBullet: ((className: string, index: number) => string) | null;
   fractionCurrentFormat: (index: number) => string;
   fractionTotalFormat: (total: number) => string;
   scrollOnChange: (index: number, ctx: ScrollContext) => any;
@@ -37,6 +38,7 @@ class Pagination implements Plugin {
   private _classPrefix: PaginationOptions["classPrefix"];
   private _bulletCount: PaginationOptions["bulletCount"];
   private _renderBullet: PaginationOptions["renderBullet"];
+  private _renderActiveBullet: PaginationOptions["renderActiveBullet"];
   private _renderFraction: PaginationOptions["renderFraction"];
   private _fractionCurrentFormat: PaginationOptions["fractionCurrentFormat"];
   private _fractionTotalFormat: PaginationOptions["fractionTotalFormat"];
@@ -48,6 +50,7 @@ class Pagination implements Plugin {
   public get classPrefix() { return this._classPrefix; }
   public get bulletCount() { return this._bulletCount; }
   public get renderBullet() { return this._renderBullet; }
+  public get renderActiveBullet() { return this._renderActiveBullet; }
   public get renderFraction() { return this._renderFraction; }
   public get fractionCurrentFormat() { return this._fractionCurrentFormat; }
   public get fractionTotalFormat() { return this._fractionTotalFormat; }
@@ -59,6 +62,7 @@ class Pagination implements Plugin {
   public set bulletWrapperclassPrefixClass(val: PaginationOptions["classPrefix"]) { this._classPrefix = val; }
   public set bulletCount(val: PaginationOptions["bulletCount"]) { this._bulletCount = val; }
   public set renderBullet(val: PaginationOptions["renderBullet"]) { this._renderBullet = val; }
+  public set renderActiveBullet(val: PaginationOptions["renderActiveBullet"]) { this._renderActiveBullet = val; }
   public set renderFraction(val: PaginationOptions["renderFraction"]) { this._renderFraction = val; }
   public set fractionCurrentFormat(val: PaginationOptions["fractionCurrentFormat"]) { this._fractionCurrentFormat = val; }
   public set fractionTotalFormat(val: PaginationOptions["fractionTotalFormat"]) { this._fractionTotalFormat = val; }
@@ -71,6 +75,7 @@ class Pagination implements Plugin {
     classPrefix = PAGINATION.PREFIX,
     bulletCount = 5,
     renderBullet = (className: string) => `<span class="${className}"></span>`,
+    renderActiveBullet = null,
     renderFraction = (currentClass: string, totalClass: string) => `<span class="${currentClass}"></span>/<span class="${totalClass}"></span>`,
     fractionCurrentFormat = (index: number) => index.toString(),
     fractionTotalFormat = (index: number) => index.toString(),
@@ -82,6 +87,7 @@ class Pagination implements Plugin {
     this._classPrefix = classPrefix;
     this._bulletCount = bulletCount;
     this._renderBullet = renderBullet;
+    this._renderActiveBullet = renderActiveBullet;
     this._renderFraction = renderFraction;
     this._fractionCurrentFormat = fractionCurrentFormat;
     this._fractionTotalFormat = fractionTotalFormat;
@@ -125,6 +131,7 @@ class Pagination implements Plugin {
     flicking.off(EVENTS.WILL_RESTORE, this._onIndexChange);
     flicking.off(EVENTS.PANEL_CHANGE, this.update);
 
+    this._renderer.destroy();
     this._removeAllChilds();
     this._flicking = null;
   }

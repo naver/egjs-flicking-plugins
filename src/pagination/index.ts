@@ -1,6 +1,9 @@
-import Pagination from "./Pagination";
+import Pagination, { PaginationOptions } from "./Pagination";
 
-export * from "./renderer";
 export {
   Pagination
+};
+
+export type {
+  PaginationOptions
 };
