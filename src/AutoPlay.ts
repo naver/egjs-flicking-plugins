@@ -1,4 +1,4 @@
-import Flicking, { EVENTS, Plugin, DIRECTION } from "@egjs/flicking";
+import Flicking, { EVENTS, Plugin, DIRECTION, MOVE_TYPE } from "@egjs/flicking";
 
 interface AutoPlayOptions {
   duration: number;
@@ -139,10 +139,55 @@ class AutoPlay implements Plugin {
 
     this._playing = true;
     this._timerId = window.setTimeout(() => {
+      let animationDuration = this._animationDuration || flicking.duration;
+      const moveType = flicking.moveType;
+      // for freeScroll
+      if (moveType === MOVE_TYPE.FREE_SCROLL || moveType?.[0] === MOVE_TYPE.FREE_SCROLL) {
+        const range = flicking.camera.range;
+        const cameraPosition = flicking.camera.position;
+        const currentPanel = flicking.currentPanel;
+        const prevPanel = currentPanel.prev();
+        const nextPanel = currentPanel.next();
+        const currentPosition = currentPanel.position;
+        let nextPosition = nextPanel?.position ?? range.max;
+        let prevPosition = prevPanel?.position ?? range.min;
+
+        // circular: prev (last) > cur (0) => prev(-1) < cur(0)
+        if (prevPosition > currentPosition) {
+          prevPosition = range.min - (range.max - prevPosition);
+        }
+        // current (last) > next (0)
+        if (nextPosition < currentPosition) {
+          nextPosition += range.max;
+        }
+        if (direction === DIRECTION.NEXT) {
+          // prev - cur - camera - next
+          const size = nextPosition - currentPosition;
+          let restSize = nextPosition - cameraPosition;
+
+          if (cameraPosition < currentPosition) {
+            // prev - camera - cur - next
+            restSize = nextPosition - cameraPosition;
+          }
+
+          animationDuration *= restSize / size;
+        } else {
+          // prev - caemra - cur - next
+          const size = currentPosition - prevPosition;
+          let restSize = cameraPosition - prevPosition;
+
+          if (cameraPosition > currentPosition) {
+            // prev - cur - camera - next
+            restSize = cameraPosition - prevPosition;
+          }
+          animationDuration *= restSize / size;
+        }
+      }
+
       if (direction === DIRECTION.NEXT) {
-        flicking.next(this._animationDuration).catch(() => void 0);
+        flicking.next(animationDuration).catch(() => void 0);
       } else {
-        flicking.prev(this._animationDuration).catch(() => void 0);
+        flicking.prev(animationDuration).catch(() => void 0);
       }
 
       this.play();
