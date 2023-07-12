@@ -25,7 +25,7 @@ body {
   overflow: hidden;
   margin-right: 10px;
 }
-#autoplay .panel:after {
+.autoplay .panel:after {
   content: "";
   position: relative;
   display: block;
@@ -34,19 +34,19 @@ body {
   background: #f55;
   height: 120px
 }
-#autoplay .panel:nth-child(5n + 1):after {
+.autoplay .panel.p1:after {
   background: #F47071;
 }
-#autoplay .panel:nth-child(5n + 2):after {
+.autoplay .panel.p2:after {
   background: #F69462;
 }
-#autoplay .panel:nth-child(5n + 3):after {
+.autoplay .panel.p3:after {
   background: #EDE484;
 }
-#autoplay .panel:nth-child(5n + 4):after {
+.autoplay .panel.p4:after {
   background: #90F290;
 }
-#autoplay .panel:nth-child(5n + 5):after {
+.autoplay .panel.p5:after {
   background: #78CAFF;
 }
 .flick-container .panel img {

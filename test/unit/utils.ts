@@ -110,3 +110,9 @@ export const simulate = (el: HTMLElement, option: Partial<{
 export const waitEvent = (flicking: Flicking, eventName: typeof EVENTS[keyof typeof EVENTS]) => new Promise(res => {
   flicking.once(eventName, res);
 });
+
+
+export const wait = (time = 100) => new Promise<void>(resolve => {
+  setTimeout(resolve, time);
+  tick(time);
+});

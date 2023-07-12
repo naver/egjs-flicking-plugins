@@ -4,7 +4,7 @@ import * as sinon from "sinon";
 
 import AutoPlay from "../../src/AutoPlay";
 
-import { cleanup, createFlickingFixture, sandbox, tick, waitEvent } from "./utils";
+import { createFlickingFixture, sandbox, tick, wait, waitEvent } from "./utils";
 
 describe("AutoPlay", () => {
   it("can receive older API of receiving duration and direction", () => {
@@ -215,5 +215,78 @@ describe("AutoPlay", () => {
     expect(plugin.playing).to.be.false;
     wrapper.dispatchEvent(new Event("mouseleave"));
     expect(plugin.playing).to.be.true;
+  });
+  (["PREV", "NEXT"] as const).forEach(direction => {
+    it(`should call resume ${direction} as much as the ratio-fixed duration when stop playing`, async () => {
+      // Given
+      const wrapper = sandbox("flick");
+      const viewportEl = document.createElement("div");
+      viewportEl.style.width = "199px";
+      viewportEl.className = "flicking-viewport";
+      viewportEl.innerHTML = `
+      <div class="flicking-camera">
+        <div class="flicking-panel-target" style="display: inline-block; width: 200px; height: 200px;"></div>
+        <div style="display: inline-block; width: 200px; height: 200px;"></div>
+        <div style="display: inline-block; width: 200px; height: 200px;"></div>
+      </div>
+    `;
+      wrapper.appendChild(viewportEl);
+
+      const plugin = new AutoPlay({
+        stopOnHover: true,
+        duration: 0,
+        direction,
+        animationDuration: 1000
+      });
+      const flicking = new Flicking(viewportEl, {
+        align: "prev",
+        moveType: "freeScroll",
+        circular: true,
+        easing: x => x,
+        duration: 1000
+      });
+      flicking.addPlugins(plugin);
+      await waitEvent(flicking, "ready");
+      const flickingWrapper = flicking.element;
+
+      await wait(500);
+      const target = flickingWrapper.querySelector(".flicking-panel-target")!;
+
+      // When
+      target.dispatchEvent(new MouseEvent("mousedown", {
+        buttons: 1,
+        clientX: 0,
+        clientY: 0,
+        bubbles: true,
+        cancelable: true
+      }));
+
+      // half (100) 0.5s
+      const halfIndex = flicking.currentPanel.index;
+
+      await wait(100);
+      target.dispatchEvent(new MouseEvent("mouseup", {
+        buttons: 1,
+        clientX: 0,
+        clientY: 0,
+        bubbles: true,
+        cancelable: true
+      }));
+      await wait(600);
+
+      // half (200) 0.5s
+      const nextIndex = flicking.currentPanel.index;
+
+      // Then
+      expect(halfIndex).to.be.equals(0);
+      if (direction === "PREV") {
+        // 0 => 2 (-1)
+        expect(nextIndex).to.be.equals(2);
+      } else {
+        // 0 => 1
+        expect(nextIndex).to.be.equals(1);
+      }
+    });
+
   });
 });
