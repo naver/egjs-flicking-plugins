@@ -29,8 +29,8 @@ describe("Fade", () => {
 
   it("should set opacity to 1 for current panel", async () => {
     // Given & When
-    flicking.addPlugins(new Fade());
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Fade());
 
     // Then
     expect(flicking.currentPanel.element.style.opacity).to.equal("1");
@@ -38,8 +38,8 @@ describe("Fade", () => {
 
   it("should apply opacity to child elements if a selector is given", async () => {
     // Given & When
-    flicking.addPlugins(new Fade("p"));
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Fade("p"));
 
     // Then
     const currentPanelEl = flicking.currentPanel.element;
@@ -59,8 +59,8 @@ describe("Fade", () => {
 
   it("should be updated whenever flicking moves", async () => {
     // Given
-    flicking.addPlugins(new Fade());
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Fade());
 
     // When
     void flicking.moveTo(1, 0);

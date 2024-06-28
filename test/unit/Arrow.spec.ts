@@ -64,8 +64,8 @@ describe("Arrow", () => {
       it("should interrupt ongoing animation when interruptable is true", async () => {
         // Given
         const plugin = new Arrow({ interruptable: true });
-        flicking.addPlugins(plugin);
         await waitEvent(flicking, "ready");
+        flicking.addPlugins(plugin);
 
         // When
         const nextArrow = flicking.element.querySelector(".flicking-arrow-next");
@@ -82,8 +82,8 @@ describe("Arrow", () => {
       it("should not interrupt ongoing animation when interruptable is true", async () => {
         // Given
         const plugin = new Arrow({ interruptable: false });
-        flicking.addPlugins(plugin);
         await waitEvent(flicking, "ready");
+        flicking.addPlugins(plugin);
 
         // When
         const nextArrow = flicking.element.querySelector(".flicking-arrow-next");
