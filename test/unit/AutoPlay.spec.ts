@@ -30,6 +30,21 @@ describe("AutoPlay", () => {
     expect(playSpy.calledOnce).to.be.true;
   });
 
+  it("should not call play after initializing if stopOnInit is true", async () => {
+    // Given
+    const plugin = new AutoPlay({ stopOnInit: true });
+    const flicking = new Flicking(createFlickingFixture());
+    const playSpy = sinon.spy(plugin, "play");
+
+    // When
+    await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
+
+    // Then
+    expect(playSpy.called).to.be.false;
+    expect(plugin.playing).to.be.false;
+  });
+
   it("should call Flicking's move method after duration", async () => {
     // Given
     const plugin = new AutoPlay({ direction: "NEXT", duration: 500 });

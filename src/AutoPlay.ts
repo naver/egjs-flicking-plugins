@@ -5,6 +5,7 @@ interface AutoPlayOptions {
   animationDuration: number | undefined;
   direction: typeof DIRECTION["NEXT"] | typeof DIRECTION["PREV"];
   stopOnHover: boolean;
+  stopOnInit: boolean;
   delayAfterHover: number;
 }
 
@@ -19,6 +20,7 @@ class AutoPlay implements Plugin {
   private _animationDuration: AutoPlayOptions["animationDuration"];
   private _direction: AutoPlayOptions["direction"];
   private _stopOnHover: AutoPlayOptions["stopOnHover"];
+  private _stopOnInit: AutoPlayOptions["stopOnInit"];
   private _delayAfterHover: AutoPlayOptions["delayAfterHover"];
 
   /* Internal Values */
@@ -31,6 +33,7 @@ class AutoPlay implements Plugin {
   public get animationDuration() { return this._animationDuration; }
   public get direction() { return this._direction; }
   public get stopOnHover() { return this._stopOnHover; }
+  public get stopOnInit() { return this._stopOnInit; }
   public get delayAfterHover() { return this._delayAfterHover; }
   public get playing() { return this._playing; }
 
@@ -38,6 +41,7 @@ class AutoPlay implements Plugin {
   public set animationDuration(val: number | undefined) { this._animationDuration = val; }
   public set direction(val: AutoPlayOptions["direction"]) { this._direction = val; }
   public set stopOnHover(val: boolean) { this._stopOnHover = val; }
+  public set stopOnInit(val: boolean) { this._stopOnInit = val; }
   public set delayAfterHover(val: number) { this._delayAfterHover = val; }
 
   /**
@@ -46,6 +50,7 @@ class AutoPlay implements Plugin {
    * @param {number | undefined} options.animationDuration Duration of animation of moving to the next panel. If undefined, duration option of the Flicking instance is used instead.<ko>패널이 움직이는 애니메이션의 지속 시간, undefined라면 Flicking 인스턴스의 duration 값을 사용한다</ko>
    * @param {"PREV" | "NEXT"} options.direction The direction in which the panel moves.<ko>패널이 움직이는 방향</ko>
    * @param {boolean} options.stopOnHover Whether to stop when mouse hover upon the element.<ko>엘리먼트에 마우스를 올렸을 때 AutoPlay를 정지할지 여부</ko>
+   * @param {boolean} options.stopOnInit Whether to stop when the plugin is initialized.<ko>플러그인이 초기화될 때 AutoPlay가 정지 상태일지 여부</ko>
    * @param {number} options.delayAfterHover If stopOnHover is true, the amount of time to wait before moving on to the next panel when mouse leaves the element.<ko>stopOnHover를 사용한다면 마우스가 엘리먼트로부터 나간 뒤 다음 패널로 움직이기까지 대기 시간</ko>
    * @example
    * ```ts
@@ -57,12 +62,14 @@ class AutoPlay implements Plugin {
     animationDuration = undefined,
     direction = DIRECTION.NEXT,
     stopOnHover = false,
+    stopOnInit = false,
     delayAfterHover
   }: Partial<AutoPlayOptions> = {}) {
     this._duration = duration;
     this._animationDuration = animationDuration;
     this._direction = direction;
     this._stopOnHover = stopOnHover;
+    this._stopOnInit = stopOnInit;
     this._delayAfterHover = delayAfterHover ?? duration;
   }
 
@@ -85,7 +92,9 @@ class AutoPlay implements Plugin {
       targetEl.addEventListener("mouseleave", this._onMouseLeave, false);
     }
 
-    this.play();
+    if (!this._stopOnInit) {
+      this.play();
+    }
   }
 
   public destroy(): void {
