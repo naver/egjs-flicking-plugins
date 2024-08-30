@@ -48,6 +48,7 @@ describe("Sync", () => {
 
   it("main flicking should move with other flickings", async () => {
     // Given
+    await waitEvent(flicking0, "ready");
     flicking0.addPlugins(new Sync({
       type: "camera",
       synchronizedFlickingOptions: [
@@ -59,7 +60,6 @@ describe("Sync", () => {
         }
       ]
     }));
-    await waitEvent(flicking0, "ready");
 
     // When
     void flicking0.control.moveToPosition(500, 0);
@@ -71,6 +71,7 @@ describe("Sync", () => {
 
   it("other flickings should move main flicking", async () => {
     // Given
+    await waitEvent(flicking1, "ready");
     flicking0.addPlugins(new Sync({
       type: "camera",
       synchronizedFlickingOptions: [
@@ -82,7 +83,6 @@ describe("Sync", () => {
         }
       ]
     }));
-    await waitEvent(flicking1, "ready");
 
     // When
     void flicking1.control.moveToPosition(1100, 0);
@@ -94,6 +94,7 @@ describe("Sync", () => {
 
   it("active panel should have active class", async () => {
     // Given
+    await waitEvent(flicking0, "ready");
     flicking0.addPlugins(new Sync({
       type: "index",
       synchronizedFlickingOptions: [
@@ -107,7 +108,6 @@ describe("Sync", () => {
         }
       ]
     }));
-    await waitEvent(flicking0, "ready");
 
     // When
     void flicking0.moveTo(1, 0);
@@ -121,6 +121,7 @@ describe("Sync", () => {
 
   it("slidable flicking should move other flickings", async () => {
     // Given
+    await waitEvent(flicking0, "ready");
     flicking0.addPlugins(new Sync({
       type: "index",
       synchronizedFlickingOptions: [
@@ -133,7 +134,6 @@ describe("Sync", () => {
         }
       ]
     }));
-    await waitEvent(flicking0, "ready");
 
     // When
     void flicking0.moveTo(2, 0);
@@ -146,6 +146,7 @@ describe("Sync", () => {
 
   it("clickable flicking should move other flickings", async () => {
     // Given
+    await waitEvent(flicking0, "ready");
     flicking0.addPlugins(new Sync({
       type: "index",
       synchronizedFlickingOptions: [
@@ -158,7 +159,6 @@ describe("Sync", () => {
         }
       ]
     }));
-    await waitEvent(flicking0, "ready");
 
     // When
     await simulate(flicking0.panels[2].element, { deltaX: 0, deltaY: 0 });

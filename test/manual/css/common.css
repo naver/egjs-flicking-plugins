@@ -19,6 +19,10 @@ body {
   width: 200px;
   height: 200px;
 }
+#arrow .card, #arrow2 .card, #arrow3 .card {
+  padding: 20px 30px;
+  font-size: 36px;
+}
 #parallax .panel {
   width: 500px;
   position: relative;

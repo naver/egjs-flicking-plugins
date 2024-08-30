@@ -23,8 +23,8 @@ describe("AutoPlay", () => {
     const playSpy = sinon.spy(plugin, "play");
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
 
     // Then
     expect(playSpy.calledOnce).to.be.true;
@@ -54,8 +54,8 @@ describe("AutoPlay", () => {
     nextStub.resolves(void 0);
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
 
     // Then
     expect(nextStub.called).to.be.false;
@@ -70,8 +70,8 @@ describe("AutoPlay", () => {
     const nextSpy = sinon.spy(flicking, "next");
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
 
     // Then
     expect(nextSpy.called).to.be.false;
@@ -109,8 +109,8 @@ describe("AutoPlay", () => {
     plugin.stop = stopSpy;
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
     const wrapper = flicking.element;
 
     // Then
@@ -128,8 +128,8 @@ describe("AutoPlay", () => {
     nextStub.resolves(void 0);
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
     const wrapper = flicking.element;
 
     // Then
@@ -155,8 +155,8 @@ describe("AutoPlay", () => {
     nextStub.resolves(void 0);
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
     const wrapper = flicking.element;
 
     // Then
@@ -220,8 +220,8 @@ describe("AutoPlay", () => {
     const flicking = new Flicking(createFlickingFixture());
 
     // When
-    flicking.addPlugins(plugin);
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(plugin);
     const wrapper = flicking.element;
 
     // Then
@@ -260,8 +260,8 @@ describe("AutoPlay", () => {
         easing: x => x,
         duration: 1000
       });
-      flicking.addPlugins(plugin);
       await waitEvent(flicking, "ready");
+      flicking.addPlugins(plugin);
       const flickingWrapper = flicking.element;
 
       await wait(500);

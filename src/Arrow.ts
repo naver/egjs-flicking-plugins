@@ -1,4 +1,4 @@
-import Flicking, { EVENTS, FlickingError, Plugin } from "@egjs/flicking";
+import Flicking, { EVENTS, FlickingError, Plugin, WillChangeEvent } from "@egjs/flicking";
 
 import { BROWSER } from "./event";
 import { ARROW } from "./const";
@@ -11,6 +11,7 @@ interface ArrowOptions {
   disabledClass: string;
   moveCount: number;
   moveByViewportSize: boolean;
+  interruptable: boolean;
 }
 
 /**
@@ -23,6 +24,7 @@ class Arrow implements Plugin {
   private _flicking: Flicking | null = null;
   private _prevEl: HTMLElement;
   private _nextEl: HTMLElement;
+  private _nextIndex: number;
 
   /* Options */
   private _parentEl: ArrowOptions["parentEl"];
@@ -31,6 +33,7 @@ class Arrow implements Plugin {
   private _disabledClass: ArrowOptions["disabledClass"];
   private _moveCount: ArrowOptions["moveCount"];
   private _moveByViewportSize: ArrowOptions["moveByViewportSize"];
+  private _interruptable: ArrowOptions["interruptable"];
 
   public get prevEl() { return this._prevEl; }
   public get nextEl() { return this._nextEl; }
@@ -41,6 +44,7 @@ class Arrow implements Plugin {
   public get disabledClass() { return this._disabledClass; }
   public get moveCount() { return this._moveCount; }
   public get moveByViewportSize() { return this._moveByViewportSize; }
+  public get interruptable() { return this._interruptable; }
 
   public set parentEl(val: ArrowOptions["parentEl"]) { this._parentEl = val; }
   public set prevElSelector(val: ArrowOptions["prevElSelector"]) { this._prevElSelector = val; }
@@ -48,6 +52,7 @@ class Arrow implements Plugin {
   public set disabledClass(val: ArrowOptions["disabledClass"]) { this._disabledClass = val; }
   public set moveCount(val: ArrowOptions["moveCount"]) { this._moveCount = val; }
   public set moveByViewportSize(val: ArrowOptions["moveByViewportSize"]) { this._moveByViewportSize = val; }
+  public set interruptable(val: ArrowOptions["interruptable"]) { this._interruptable = val; }
 
   public constructor({
     parentEl = null,
@@ -55,7 +60,8 @@ class Arrow implements Plugin {
     nextElSelector = ARROW.NEXT_SELECTOR,
     disabledClass = ARROW.DISABLED_CLASS,
     moveCount = 1,
-    moveByViewportSize = false
+    moveByViewportSize = false,
+    interruptable = false
   }: Partial<ArrowOptions> = {}) {
     this._parentEl = parentEl;
     this._prevElSelector = prevElSelector;
@@ -63,6 +69,7 @@ class Arrow implements Plugin {
     this._disabledClass = disabledClass;
     this._moveCount = moveCount;
     this._moveByViewportSize = moveByViewportSize;
+    this._interruptable = interruptable;
   }
 
   public init(flicking: Flicking): void {
@@ -73,6 +80,7 @@ class Arrow implements Plugin {
     this._flicking = flicking;
 
     flicking.on(EVENTS.MOVE, this._onAnimation);
+    flicking.on(EVENTS.WILL_CHANGE, this._onWillChange);
 
     const parentEl = this._parentEl ? this._parentEl : flicking.element;
     const prevEl = getElement(this._prevElSelector, parentEl, "Arrow");
@@ -100,6 +108,7 @@ class Arrow implements Plugin {
     }
 
     flicking.off(EVENTS.MOVE, this._onAnimation);
+    flicking.off(EVENTS.WILL_CHANGE, this._onWillChange);
 
     const prevEl = this._prevEl;
     const nextEl = this._nextEl;
@@ -124,10 +133,16 @@ class Arrow implements Plugin {
 
   private _onPrevClick = () => {
     const flicking = this._flicking!;
+    const index = flicking.animating ? this._nextIndex : flicking.index;
+    const currentPanel = flicking.animating ? flicking.panels[this._nextIndex] : flicking.currentPanel;
     const camera = flicking.camera;
     const anchorPoints = camera.anchorPoints;
 
-    if (flicking.animating || anchorPoints.length <= 0) return;
+    if ((flicking.animating && !this.interruptable) || anchorPoints.length <= 0) return;
+
+    if (flicking.animating) {
+      flicking.stopAnimation();
+    }
 
     const firstAnchor = anchorPoints[0];
     const moveCount = this._moveCount;
@@ -137,18 +152,18 @@ class Arrow implements Plugin {
         .catch(this._onCatch);
     } else {
       if (flicking.circularEnabled) {
-        let targetPanel = flicking.currentPanel;
+        let targetPanel = currentPanel;
 
         for (let i = 0; i < moveCount; i++) {
           targetPanel = targetPanel.prev()!;
         }
 
         targetPanel.focus().catch(this._onCatch);
-      } else if (flicking.index > firstAnchor.panel.index) {
-        flicking.moveTo(Math.max(flicking.index - moveCount, firstAnchor.panel.index))
+      } else if (index > firstAnchor.panel.index) {
+        flicking.moveTo(Math.max(index - moveCount, firstAnchor.panel.index))
           .catch(this._onCatch);
       } else if (camera.position > camera.range.min) {
-        flicking.moveTo(flicking.index)
+        flicking.moveTo(index)
           .catch(this._onCatch);
       }
     }
@@ -156,11 +171,16 @@ class Arrow implements Plugin {
 
   private _onNextClick = () => {
     const flicking = this._flicking!;
-
+    const index = flicking.animating ? this._nextIndex : flicking.index;
+    const currentPanel = flicking.animating ? flicking.panels[this._nextIndex] : flicking.currentPanel;
     const camera = flicking.camera;
     const anchorPoints = camera.anchorPoints;
 
-    if (flicking.animating || anchorPoints.length <= 0) return;
+    if ((flicking.animating && !this.interruptable) || anchorPoints.length <= 0) return;
+
+    if (flicking.animating) {
+      flicking.stopAnimation();
+    }
 
     const lastAnchor = anchorPoints[anchorPoints.length - 1];
     const moveCount = this._moveCount;
@@ -170,18 +190,18 @@ class Arrow implements Plugin {
         .catch(this._onCatch);
     } else {
       if (flicking.circularEnabled) {
-        let targetPanel = flicking.currentPanel;
+        let targetPanel = currentPanel;
 
         for (let i = 0; i < moveCount; i++) {
           targetPanel = targetPanel.next()!;
         }
 
         targetPanel.focus().catch(this._onCatch);
-      } else if (flicking.index < lastAnchor.panel.index) {
-        flicking.moveTo(Math.min(flicking.index + moveCount, lastAnchor.panel.index))
+      } else if (index < lastAnchor.panel.index) {
+        flicking.moveTo(Math.min(index + moveCount, lastAnchor.panel.index))
           .catch(this._onCatch);
       } else if (camera.position > camera.range.min) {
-        flicking.moveTo(flicking.index)
+        flicking.moveTo(index)
           .catch(this._onCatch);
       }
     }
@@ -197,6 +217,10 @@ class Arrow implements Plugin {
     } else {
       this._updateClass(controller.animatingContext.end);
     }
+  };
+
+  private _onWillChange = (e: WillChangeEvent) => {
+    this._nextIndex = e.index;
   };
 
   private _updateClass(pos: number) {
