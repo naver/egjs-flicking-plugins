@@ -34,6 +34,7 @@ export interface SychronizableFlickingOptions {
 class Sync implements Plugin {
   /* Internal Values */
   private _flicking: Flicking | null = null;
+  private _disabledIndex: number[] = [];
 
   /* Options */
   private _type: SyncOptions["type"];
@@ -173,19 +174,20 @@ class Sync implements Plugin {
   };
 
   private _onMoveStart = (e: MoveStartEvent): void => {
-    this._synchronizedFlickingOptions.forEach(({ flicking }) => {
-      if (flicking !== e.currentTarget) {
+    this._disabledIndex = [];
+    this._synchronizedFlickingOptions.forEach(({ flicking }, i) => {
+      if (flicking !== e.currentTarget && flicking.control.controller.enabled) {
+        this._disabledIndex.push(i);
         flicking.disableInput();
       }
     });
   };
 
   private _onMoveEnd = (e: MoveEndEvent): void => {
-    this._synchronizedFlickingOptions.forEach(({ flicking }) => {
-      if (flicking !== e.currentTarget) {
-        flicking.enableInput();
-        flicking.control.updateInput();
-      }
+    this._disabledIndex.forEach((i) => {
+      const flicking = this._synchronizedFlickingOptions[i].flicking;
+      flicking.enableInput();
+      flicking.control.updateInput();
     });
   };
 
