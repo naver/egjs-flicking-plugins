@@ -168,4 +168,33 @@ describe("Sync", () => {
     expect(flicking1.index).equal(2);
     expect(flicking1.camera.position).equal(flicking1.panels[2].position);
   });
+
+  [true, false].forEach((enabled) => {
+    it(`should check and recover enabled status of flickings (enabled: ${enabled})`, async () => {
+      // Given
+      flicking0.addPlugins(new Sync({
+        type: "camera",
+        synchronizedFlickingOptions: [
+          {
+            flicking: flicking0
+          },
+          {
+            flicking: flicking1
+          }
+        ]
+      }));
+      await waitEvent(flicking0, "ready");
+
+      if (!enabled) {
+        flicking1.disableInput();
+      }
+  
+      // When
+      void flicking0.control.moveToPosition(500, 0);
+
+      // Then
+      expect(flicking1.camera.position).equal(1100);
+      expect(flicking1.control.controller.enabled).equal(enabled);
+    });
+  })
 });
