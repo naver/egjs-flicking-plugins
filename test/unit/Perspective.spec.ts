@@ -27,8 +27,8 @@ describe("Perspective", () => {
 
   it("should set transform to default for current panel", async () => {
     // Given & When
-    flicking.addPlugins(new Perspective());
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Perspective());
 
     // Then
     expect(flicking.currentPanel.element.style.transform).to.equal("perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)");
@@ -36,8 +36,8 @@ describe("Perspective", () => {
 
   it("should set transform to default that except perspective for current panel when allocated other arguments", async () => {
     // Given & When
-    flicking.addPlugins(new Perspective({perspective: 500, rotate: 0.5, scale: 0.5}));
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Perspective({perspective: 500, rotate: 0.5, scale: 0.5}));
 
     // Then
     expect(flicking.currentPanel.element.style.transform).to.equal("perspective(500px) rotateX(0deg) rotateY(0deg) scale(1)");
@@ -45,8 +45,8 @@ describe("Perspective", () => {
 
   it("should apply transform to child elements if a selector is given", async () => {
     // Given & When
-    flicking.addPlugins(new Perspective({selector: "p"}));
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Perspective({selector: "p"}));
 
     // Then
     const currentPanelEl = flicking.currentPanel.element;
@@ -66,8 +66,8 @@ describe("Perspective", () => {
 
   it("should be updated whenever flicking moves", async () => {
     // Given
-    flicking.addPlugins(new Perspective());
     await waitEvent(flicking, "ready");
+    flicking.addPlugins(new Perspective());
 
     // When
     void flicking.moveTo(1, 0);
